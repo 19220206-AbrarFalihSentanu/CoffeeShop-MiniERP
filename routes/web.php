@@ -76,9 +76,12 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(fun
     Route::get('/inventory/export', [OwnerInventoryController::class, 'export'])->name('inventory.export');
 
     // Order Approval
-    // Route::get('/orders/approval', [OrderController::class, 'approval'])->name('orders.approval');
-    // Route::post('/orders/{order}/approve', [OrderController::class, 'approve'])->name('orders.approve');
-    // Route::post('/orders/{order}/reject', [OrderController::class, 'reject'])->name('orders.reject');
+    Route::prefix('orders/approval')->name('orders.approval.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Owner\OrderApprovalController::class, 'index'])->name('index');
+        Route::get('/{order}', [\App\Http\Controllers\Owner\OrderApprovalController::class, 'show'])->name('show');
+        Route::post('/{order}/approve', [\App\Http\Controllers\Owner\OrderApprovalController::class, 'approve'])->name('approve');
+        Route::post('/{order}/reject', [\App\Http\Controllers\Owner\OrderApprovalController::class, 'reject'])->name('reject');
+    });
 
     // Purchase Order Approval Routes
     Route::prefix('purchase-orders')->name('purchase-orders.')->group(function () {
@@ -178,14 +181,17 @@ Route::middleware(['auth', 'customer'])->prefix('customer')->name('customer.')->
     Route::post('/update-prices', [CartController::class, 'updatePrices'])->name('updatePrices');
     Route::get('/count', [CartController::class, 'count'])->name('count');
 
-    // Checkout & Orders
-    // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    // Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
-    // Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    // Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    // Checkout
+    Route::get('/checkout', [\App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [\App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
 
-    // Payment
-    // Route::post('/orders/{order}/payment', [PaymentController::class, 'upload'])->name('payment.upload');
+    // Orders
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Customer\OrderController::class, 'index'])->name('index');
+        Route::get('/{order}', [\App\Http\Controllers\Customer\OrderController::class, 'show'])->name('show');
+        Route::post('/{order}/upload-payment', [\App\Http\Controllers\Customer\OrderController::class, 'uploadPayment'])->name('uploadPayment');
+        Route::post('/{order}/cancel', [\App\Http\Controllers\Customer\OrderController::class, 'cancel'])->name('cancel');
+    });
 });
 
 // ============================================================

@@ -89,13 +89,17 @@
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Approval</span></li>
-
-            <li class="menu-item {{ request()->routeIs('owner.orders.approval') ? 'active' : '' }}">
-                <a href="javascript:void(0);" class="menu-link">
+            {{-- OWNER MENU - Ubah menu Approval Order --}}
+            <li class="menu-item {{ request()->routeIs('owner.orders.approval.*') ? 'active' : '' }}">
+                <a href="{{ route('owner.orders.approval.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-check-circle"></i>
                     <div>Approval Order</div>
-                    <span class="badge badge-center rounded-pill bg-warning">0</span>
+                    @php
+                        $pendingOrderCount = \App\Models\Order::where('status', 'pending')->count();
+                    @endphp
+                    @if ($pendingOrderCount > 0)
+                        <span class="badge badge-center rounded-pill bg-danger ms-auto">{{ $pendingOrderCount }}</span>
+                    @endif
                 </a>
             </li>
 
@@ -251,11 +255,17 @@
 
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Pesanan</span></li>
 
-            {{-- LINK ORDERS (akan dibuat di fase 3) --}}
+            {{-- CUSTOMER MENU - Ubah menu Pesanan Saya --}}
             <li class="menu-item {{ request()->routeIs('customer.orders.*') ? 'active' : '' }}">
-                <a href="javascript:void(0);" class="menu-link">
+                <a href="{{ route('customer.orders.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-shopping-bag"></i>
                     <div>Pesanan Saya</div>
+                    @php
+                        $myOrderCount = \App\Models\Order::forCustomer(auth()->id())->count();
+                    @endphp
+                    @if ($myOrderCount > 0)
+                        <span class="badge bg-info ms-auto">{{ $myOrderCount }}</span>
+                    @endif
                 </a>
             </li>
         @endif

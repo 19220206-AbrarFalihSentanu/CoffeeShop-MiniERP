@@ -331,8 +331,7 @@
                                     <i class="bx bx-x-circle me-1"></i>Ada Produk Tidak Tersedia
                                 </button>
                             @else
-                                <a href="javascript:void(0);" class="btn btn-primary w-100 mb-2"
-                                    onclick="alert('Fitur checkout akan segera tersedia!')">
+                                <a href="{{ route('customer.checkout.index') }}" class="btn btn-primary w-100 mb-2">
                                     <i class="bx bx-credit-card me-1"></i>Lanjut ke Checkout
                                 </a>
                             @endif
