@@ -95,6 +95,24 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(fun
             ->name('reject');
     });
 
+    // Payment Verification (Owner)
+    Route::prefix('payments')->name('payments.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Owner\PaymentVerificationController::class, 'index'])
+            ->name('index');
+        Route::get('/{payment}', [\App\Http\Controllers\Owner\PaymentVerificationController::class, 'show'])
+            ->name('show');
+        Route::post('/{payment}/verify', [\App\Http\Controllers\Owner\PaymentVerificationController::class, 'verify'])
+            ->name('verify');
+        Route::post('/{payment}/reject', [\App\Http\Controllers\Owner\PaymentVerificationController::class, 'reject'])
+            ->name('reject');
+        Route::post('/{payment}/process-order', [\App\Http\Controllers\Owner\PaymentVerificationController::class, 'processOrder'])
+            ->name('processOrder');
+        Route::post('/{payment}/ship-order', [\App\Http\Controllers\Owner\PaymentVerificationController::class, 'shipOrder'])
+            ->name('shipOrder');
+        Route::post('/{payment}/complete-order', [\App\Http\Controllers\Owner\PaymentVerificationController::class, 'completeOrder'])
+            ->name('completeOrder');
+    });
+
     // Settings Routes
     Route::get('/settings', [OwnerSettingController::class, 'index'])->name('settings.index');
     Route::post('/settings/general', [OwnerSettingController::class, 'updateGeneral'])->name('settings.updateGeneral');
@@ -156,9 +174,23 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('purchase-orders/{purchaseOrder}/submit', [\App\Http\Controllers\Admin\PurchaseOrderController::class, 'submit'])
         ->name('purchase-orders.submit');
 
-    // Payment Verification
-    // Route::get('/payments/verification', [PaymentController::class, 'verification'])->name('payments.verification');
-    // Route::post('/payments/{payment}/verify', [PaymentController::class, 'verify'])->name('payments.verify');
+    // Payment Verification (Admin)
+    Route::prefix('payments')->name('payments.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'index'])
+            ->name('index');
+        Route::get('/{payment}', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'show'])
+            ->name('show');
+        Route::post('/{payment}/verify', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'verify'])
+            ->name('verify');
+        Route::post('/{payment}/reject', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'reject'])
+            ->name('reject');
+        Route::post('/{payment}/process-order', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'processOrder'])
+            ->name('processOrder');
+        Route::post('/{payment}/ship-order', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'shipOrder'])
+            ->name('shipOrder');
+        Route::post('/{payment}/complete-order', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'completeOrder'])
+            ->name('completeOrder');
+    });
 });
 
 // ============================================================
@@ -191,6 +223,7 @@ Route::middleware(['auth', 'customer'])->prefix('customer')->name('customer.')->
         Route::get('/{order}', [\App\Http\Controllers\Customer\OrderController::class, 'show'])->name('show');
         Route::post('/{order}/upload-payment', [\App\Http\Controllers\Customer\OrderController::class, 'uploadPayment'])->name('uploadPayment');
         Route::post('/{order}/cancel', [\App\Http\Controllers\Customer\OrderController::class, 'cancel'])->name('cancel');
+        Route::post('/{order}/confirm-received', [\App\Http\Controllers\Customer\OrderController::class, 'confirmReceived'])->name('confirmReceived');
     });
 });
 

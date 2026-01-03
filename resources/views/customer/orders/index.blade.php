@@ -25,11 +25,15 @@
                         <option value="">Semua Status</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Approval
                         </option>
-                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
+                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Menunggu Pembayaran
+                        </option>
                         <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
                         <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Sudah Dibayar</option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai
+                        <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Sedang Diproses
                         </option>
+                        <option value="shipped" {{ request('status') == 'shipped' ? 'selected' : '' }}>Dalam Pengiriman
+                        </option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
                     </select>
                 </div>
                 <div class="col-auto">
@@ -95,11 +99,25 @@
                                 <i class="bx bx-x-circle me-1"></i>Batalkan Pesanan
                             </button>
                         </form>
-                    @elseif($order->isApproved())
+                    @elseif($order->isApproved() && !$order->hasPayment())
                         <div class="alert alert-success py-2 mb-2">
                             <small>
                                 <i class="bx bx-check-circle me-1"></i>
                                 Pesanan disetujui! Silakan upload bukti pembayaran
+                            </small>
+                        </div>
+                    @elseif($order->isApproved() && $order->payment?->isPending())
+                        <div class="alert alert-info py-2 mb-2">
+                            <small>
+                                <i class="bx bx-time-five me-1"></i>
+                                Bukti pembayaran sedang diverifikasi
+                            </small>
+                        </div>
+                    @elseif($order->isApproved() && $order->payment?->isRejected())
+                        <div class="alert alert-danger py-2 mb-2">
+                            <small>
+                                <i class="bx bx-x-circle me-1"></i>
+                                <strong>Pembayaran ditolak!</strong> Silakan upload ulang bukti pembayaran
                             </small>
                         </div>
                     @elseif($order->isRejected())
@@ -112,8 +130,32 @@
                     @elseif($order->isPaid())
                         <div class="alert alert-info py-2 mb-0">
                             <small>
-                                <i class="bx bx-package me-1"></i>
-                                Pembayaran terverifikasi. Pesanan sedang diproses.
+                                <i class="bx bx-credit-card me-1"></i>
+                                Pembayaran terverifikasi. Menunggu diproses.
+                            </small>
+                        </div>
+                    @elseif($order->isProcessing())
+                        <div class="alert alert-primary py-2 mb-0">
+                            <small>
+                                <i class="bx bx-box me-1"></i>
+                                Pesanan sedang dikemas.
+                            </small>
+                        </div>
+                    @elseif($order->isShipped())
+                        <div class="alert alert-info py-2 mb-0">
+                            <small>
+                                <i class="bx bx-truck me-1"></i>
+                                Pesanan dalam pengiriman.
+                                @if ($order->tracking_number)
+                                    <br><strong>Resi:</strong> {{ $order->tracking_number }}
+                                @endif
+                            </small>
+                        </div>
+                    @elseif($order->isCompleted())
+                        <div class="alert alert-success py-2 mb-0">
+                            <small>
+                                <i class="bx bx-check-double me-1"></i>
+                                Pesanan selesai. Terima kasih!
                             </small>
                         </div>
                     @endif

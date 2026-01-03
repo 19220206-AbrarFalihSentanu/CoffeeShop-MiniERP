@@ -89,6 +89,8 @@
                 </a>
             </li>
 
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Approval</span></li>
+
             {{-- OWNER MENU - Ubah menu Approval Order --}}
             <li class="menu-item {{ request()->routeIs('owner.orders.approval.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.orders.approval.index') }}" class="menu-link">
@@ -112,6 +114,22 @@
                     @endphp
                     @if ($pendingCount > 0)
                         <span class="badge badge-center rounded-pill bg-danger ms-auto">{{ $pendingCount }}</span>
+                    @endif
+                </a>
+            </li>
+
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Transaksi</span></li>
+
+            <li class="menu-item {{ request()->routeIs('owner.payments.*') ? 'active' : '' }}">
+                <a href="{{ route('owner.payments.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-credit-card"></i>
+                    <div data-i18n="Payment Verification">Verifikasi Pembayaran</div>
+                    @php
+                        $pendingPaymentsCount = \App\Models\Payment::where('status', 'pending')->count();
+                    @endphp
+                    @if ($pendingPaymentsCount > 0)
+                        <span
+                            class="badge badge-center rounded-pill bg-danger ms-auto">{{ $pendingPaymentsCount }}</span>
                     @endif
                 </a>
             </li>
@@ -212,10 +230,17 @@
 
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Transaksi</span></li>
 
-            <li class="menu-item">
-                <a href="javascript:void(0);" class="menu-link">
+            <li class="menu-item {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.payments.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-credit-card"></i>
                     <div data-i18n="Payment Verification">Verifikasi Pembayaran</div>
+                    @php
+                        $pendingPaymentsCount = \App\Models\Payment::where('status', 'pending')->count();
+                    @endphp
+                    @if ($pendingPaymentsCount > 0)
+                        <span
+                            class="badge badge-center rounded-pill bg-danger ms-auto">{{ $pendingPaymentsCount }}</span>
+                    @endif
                 </a>
             </li>
         @elseif(Auth::user()->isCustomer())

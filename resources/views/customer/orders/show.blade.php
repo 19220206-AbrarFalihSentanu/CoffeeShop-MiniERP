@@ -115,6 +115,24 @@
                             pesanan selama masih dalam status ini.</p>
                     </div>
                 </div>
+            @elseif($order->isApproved() && $order->payment?->isPending())
+                <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+                    <i class="bx bx-time-five bx-md me-3"></i>
+                    <div>
+                        <h6 class="alert-heading mb-1">Menunggu Verifikasi Pembayaran</h6>
+                        <p class="mb-0">Bukti pembayaran Anda sedang diperiksa oleh Admin/Owner. Harap menunggu
+                            konfirmasi.</p>
+                    </div>
+                </div>
+            @elseif($order->isApproved() && $order->payment?->isRejected())
+                <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+                    <i class="bx bx-x-circle bx-md me-3"></i>
+                    <div>
+                        <h6 class="alert-heading mb-1">Pembayaran Ditolak</h6>
+                        <p class="mb-0"><strong>Alasan:</strong> {{ $order->payment->rejection_reason }}<br>Silakan upload
+                            ulang bukti pembayaran yang benar.</p>
+                    </div>
+                </div>
             @elseif($order->isApproved())
                 <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
                     <i class="bx bx-check-circle bx-md me-3"></i>
@@ -133,18 +151,49 @@
                 </div>
             @elseif($order->isPaid())
                 <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
-                    <i class="bx bx-package bx-md me-3"></i>
+                    <i class="bx bx-credit-card bx-md me-3"></i>
                     <div>
                         <h6 class="alert-heading mb-1">Pembayaran Terverifikasi</h6>
-                        <p class="mb-0">Pesanan Anda sedang diproses dan akan segera dikirim.</p>
+                        <p class="mb-0">Pembayaran telah diverifikasi. Pesanan akan segera diproses.</p>
                     </div>
                 </div>
-            @elseif($order->status === 'completed')
+            @elseif($order->isProcessing())
+                <div class="alert alert-primary d-flex align-items-center mb-4" role="alert">
+                    <i class="bx bx-box bx-md me-3"></i>
+                    <div>
+                        <h6 class="alert-heading mb-1">Pesanan Sedang Diproses</h6>
+                        <p class="mb-0">Pesanan Anda sedang dikemas dan akan segera dikirim.</p>
+                    </div>
+                </div>
+            @elseif($order->isShipped())
+                <div class="alert alert-info mb-4" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="bx bx-truck bx-md me-3"></i>
+                        <div class="flex-grow-1">
+                            <h6 class="alert-heading mb-1">Pesanan Dalam Pengiriman</h6>
+                            <p class="mb-0">
+                                Pesanan Anda sedang dalam perjalanan ke alamat tujuan.
+                                @if ($order->tracking_number)
+                                    <br><strong>Nomor Resi:</strong> {{ $order->tracking_number }}
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="mb-0 small">Sudah menerima pesanan? Klik tombol di samping untuk konfirmasi.</p>
+                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#confirmReceivedModal">
+                            <i class="bx bx-check-circle me-1"></i> Barang Diterima
+                        </button>
+                    </div>
+                </div>
+            @elseif($order->isCompleted())
                 <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
                     <i class="bx bx-check-double bx-md me-3"></i>
                     <div>
                         <h6 class="alert-heading mb-1">Pesanan Selesai</h6>
-                        <p class="mb-0">Terima kasih telah berbelanja di toko kami!</p>
+                        <p class="mb-0">Pesanan telah diterima. Terima kasih telah berbelanja!</p>
                     </div>
                 </div>
             @endif
@@ -234,25 +283,30 @@
                 </div>
             </div>
 
-            {{-- Upload Payment Proof (if approved) --}}
-            @if ($order->canUploadPayment())
+            {{-- Upload Payment Proof (if approved or need reupload) --}}
+            @if ($order->canUploadPayment() || $order->canReuploadPayment())
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="bx bx-upload me-2"></i>Upload Bukti Pembayaran</h5>
                     </div>
                     <div class="card-body">
-                        @if ($order->payment_proof)
-                            <div class="alert alert-info mb-3">
-                                <i class="bx bx-info-circle me-1"></i>
-                                Anda sudah mengupload bukti pembayaran. Upload ulang jika diperlukan.
+                        @if ($order->canReuploadPayment())
+                            <div class="alert alert-danger mb-3">
+                                <i class="bx bx-x-circle me-1"></i>
+                                <strong>Pembayaran Ditolak!</strong><br>
+                                <span class="text-muted">Alasan: {{ $order->payment->rejection_reason }}</span><br>
+                                Silakan upload ulang bukti pembayaran yang benar.
                             </div>
-                            <div class="mb-3 text-center">
-                                <p class="mb-2">Bukti Pembayaran Saat Ini:</p>
-                                <a href="{{ Storage::url($order->payment_proof) }}" target="_blank">
-                                    <img src="{{ Storage::url($order->payment_proof) }}" alt="Bukti Pembayaran"
-                                        class="payment-proof-preview border">
-                                </a>
-                            </div>
+                            @if ($order->payment->payment_proof)
+                                <div class="mb-3 text-center">
+                                    <p class="mb-2">Bukti Pembayaran Sebelumnya (Ditolak):</p>
+                                    <a href="{{ Storage::url($order->payment->payment_proof) }}" target="_blank">
+                                        <img src="{{ Storage::url($order->payment->payment_proof) }}"
+                                            alt="Bukti Pembayaran" class="payment-proof-preview border"
+                                            style="opacity: 0.5;">
+                                    </a>
+                                </div>
+                            @endif
                         @endif
 
                         <form action="{{ route('customer.orders.uploadPayment', $order) }}" method="POST"
@@ -265,15 +319,15 @@
                                         class="form-select @error('payment_method') is-invalid @enderror" required>
                                         <option value="">-- Pilih Metode --</option>
                                         <option value="transfer_bank"
-                                            {{ old('payment_method', $order->payment_method) == 'transfer_bank' ? 'selected' : '' }}>
+                                            {{ old('payment_method', $order->payment?->payment_method) == 'transfer_bank' ? 'selected' : '' }}>
                                             Transfer Bank
                                         </option>
                                         <option value="e_wallet"
-                                            {{ old('payment_method', $order->payment_method) == 'e_wallet' ? 'selected' : '' }}>
+                                            {{ old('payment_method', $order->payment?->payment_method) == 'e_wallet' ? 'selected' : '' }}>
                                             E-Wallet (GoPay, OVO, Dana)
                                         </option>
                                         <option value="cash"
-                                            {{ old('payment_method', $order->payment_method) == 'cash' ? 'selected' : '' }}>
+                                            {{ old('payment_method', $order->payment?->payment_method) == 'cash' ? 'selected' : '' }}>
                                             Cash (Bayar di Tempat)
                                         </option>
                                     </select>
@@ -294,9 +348,19 @@
                                 </div>
 
                                 <div class="col-12">
+                                    <label class="form-label">Catatan (Opsional)</label>
+                                    <textarea name="customer_notes" class="form-control @error('customer_notes') is-invalid @enderror" rows="2"
+                                        placeholder="Contoh: Transfer dari rekening a.n. Budi...">{{ old('customer_notes', $order->payment?->customer_notes) }}</textarea>
+                                    <small class="text-muted">Maksimal 500 karakter</small>
+                                    @error('customer_notes')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="bx bx-upload me-1"></i>
-                                        {{ $order->payment_proof ? 'Upload Ulang' : 'Upload Bukti Pembayaran' }}
+                                        {{ $order->canReuploadPayment() ? 'Upload Ulang Bukti Pembayaran' : 'Upload Bukti Pembayaran' }}
                                     </button>
                                 </div>
                             </div>
@@ -306,14 +370,14 @@
             @endif
 
             {{-- Payment Proof (if paid or completed) --}}
-            @if (in_array($order->status, ['paid', 'processing', 'shipped', 'completed']) && $order->payment_proof)
+            @if (in_array($order->status, ['paid', 'processing', 'shipped', 'completed']) && $order->payment?->payment_proof)
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="bx bx-receipt me-2"></i>Bukti Pembayaran</h5>
                     </div>
                     <div class="card-body text-center">
-                        <a href="{{ Storage::url($order->payment_proof) }}" target="_blank">
-                            <img src="{{ Storage::url($order->payment_proof) }}" alt="Bukti Pembayaran"
+                        <a href="{{ Storage::url($order->payment->payment_proof) }}" target="_blank">
+                            <img src="{{ Storage::url($order->payment->payment_proof) }}" alt="Bukti Pembayaran"
                                 class="payment-proof-preview border">
                         </a>
                         <p class="mt-2 mb-0">
@@ -360,27 +424,16 @@
                             <span class="badge {{ $order->status_badge_class }}">{{ $order->status_display }}</span>
                         </p>
                     </div>
-                    @if ($order->payment_method)
+                    @if ($order->payment?->payment_method)
                         <div class="mb-3">
                             <label class="text-muted small">Metode Pembayaran</label>
-                            <p class="mb-0">
-                                @switch($order->payment_method)
-                                    @case('transfer_bank')
-                                        Transfer Bank
-                                    @break
-
-                                    @case('e_wallet')
-                                        E-Wallet
-                                    @break
-
-                                    @case('cash')
-                                        Cash
-                                    @break
-
-                                    @default
-                                        {{ $order->payment_method }}
-                                @endswitch
-                            </p>
+                            <p class="mb-0">{{ $order->payment->payment_method_display }}</p>
+                        </div>
+                    @endif
+                    @if ($order->payment?->isVerified())
+                        <div class="mb-3">
+                            <label class="text-muted small">Diverifikasi Pada</label>
+                            <p class="mb-0">{{ $order->payment->verified_at->format('d M Y, H:i') }}</p>
                         </div>
                     @endif
                     <hr>
@@ -448,6 +501,22 @@
                                     <strong class="d-block">Pembayaran Terverifikasi</strong>
                                     <small class="text-muted">{{ $order->paid_at->format('d M Y, H:i') }}</small>
                                 </div>
+                            @elseif($order->payment?->isPending())
+                                <div class="timeline-item active">
+                                    <strong class="d-block">Menunggu Verifikasi Pembayaran</strong>
+                                    <small class="text-muted">Upload pada
+                                        {{ $order->payment->created_at->format('d M Y, H:i') }}</small>
+                                </div>
+                            @elseif($order->payment?->isRejected())
+                                <div class="timeline-item error">
+                                    <strong class="d-block text-danger">Pembayaran Ditolak</strong>
+                                    <small
+                                        class="text-muted">{{ $order->payment->rejected_at?->format('d M Y, H:i') }}</small>
+                                </div>
+                                <div class="timeline-item active">
+                                    <strong class="d-block">Menunggu Upload Ulang</strong>
+                                    <small class="text-muted">Silakan upload bukti pembayaran baru</small>
+                                </div>
                             @elseif($order->isApproved())
                                 <div class="timeline-item active">
                                     <strong class="d-block">Menunggu Pembayaran</strong>
@@ -456,14 +525,33 @@
                             @endif
                         @endif
 
+                        {{-- Proses Pesanan --}}
+                        @if ($order->isProcessing() || $order->isShipped() || $order->isCompleted())
+                            <div class="timeline-item completed">
+                                <strong class="d-block">Pesanan Diproses</strong>
+                                <small class="text-muted">Sedang dikemas</small>
+                            </div>
+                        @elseif($order->isPaid())
+                            <div class="timeline-item active">
+                                <strong class="d-block">Menunggu Diproses</strong>
+                                <small class="text-muted">Pesanan akan segera dikemas</small>
+                            </div>
+                        @endif
+
                         {{-- Pengiriman --}}
                         @if ($order->shipped_at)
-                            <div class="timeline-item completed">
+                            <div class="timeline-item {{ $order->isCompleted() ? 'completed' : 'active' }}">
                                 <strong class="d-block">Pesanan Dikirim</strong>
                                 <small class="text-muted">{{ $order->shipped_at->format('d M Y, H:i') }}</small>
                                 @if ($order->tracking_number)
-                                    <br><small class="text-muted">Resi: {{ $order->tracking_number }}</small>
+                                    <br><small class="text-muted"><strong>Resi:</strong>
+                                        {{ $order->tracking_number }}</small>
                                 @endif
+                            </div>
+                        @elseif($order->isProcessing())
+                            <div class="timeline-item">
+                                <strong class="d-block text-muted">Menunggu Pengiriman</strong>
+                                <small class="text-muted">-</small>
                             </div>
                         @endif
 
@@ -498,4 +586,44 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Konfirmasi Barang Diterima --}}
+    @if ($order->isShipped())
+        <div class="modal fade" id="confirmReceivedModal" tabindex="-1" aria-labelledby="confirmReceivedModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmReceivedModalLabel">
+                            <i class="bx bx-check-circle text-success me-2"></i>Konfirmasi Penerimaan Barang
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('customer.orders.confirmReceived', $order) }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="text-center mb-3">
+                                <i class="bx bx-package text-primary" style="font-size: 4rem;"></i>
+                            </div>
+                            <p class="text-center mb-3">
+                                Apakah Anda yakin telah menerima pesanan <strong>{{ $order->order_number }}</strong> dengan
+                                baik?
+                            </p>
+                            <div class="alert alert-warning small mb-0">
+                                <i class="bx bx-info-circle me-1"></i>
+                                Setelah dikonfirmasi, status pesanan akan menjadi <strong>Selesai</strong> dan tidak dapat
+                                diubah kembali.
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bx bx-check me-1"></i>Ya, Barang Sudah Diterima
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection

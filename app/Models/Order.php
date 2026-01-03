@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -76,6 +77,11 @@ class Order extends Model
         return $this->morphOne(FinancialLog::class, 'reference');
     }
 
+    public function payment(): HasOne
+    {
+        return $this->hasOne(Payment::class);
+    }
+
     // Status Check Methods
     public function isPending(): bool
     {
@@ -97,14 +103,56 @@ class Order extends Model
         return $this->status === 'paid';
     }
 
+    public function isProcessing(): bool
+    {
+        return $this->status === 'processing';
+    }
+
+    public function isShipped(): bool
+    {
+        return $this->status === 'shipped';
+    }
+
+    public function isCompleted(): bool
+    {
+        return $this->status === 'completed';
+    }
+
     public function canApprove(): bool
     {
         return $this->status === 'pending';
     }
 
+    public function canProcess(): bool
+    {
+        return $this->status === 'paid';
+    }
+
+    public function canShip(): bool
+    {
+        return $this->status === 'processing';
+    }
+
+    public function canComplete(): bool
+    {
+        return $this->status === 'shipped';
+    }
+
+    public function hasPayment(): bool
+    {
+        return $this->payment !== null;
+    }
+
     public function canUploadPayment(): bool
     {
-        return $this->status === 'approved';
+        return $this->status === 'approved' && !$this->hasPayment();
+    }
+
+    public function canReuploadPayment(): bool
+    {
+        return $this->status === 'approved'
+            && $this->hasPayment()
+            && $this->payment->isRejected();
     }
 
     // Display Methods
