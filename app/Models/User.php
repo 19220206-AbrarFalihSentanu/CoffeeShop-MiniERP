@@ -27,6 +27,7 @@ class User extends Authenticatable
         'phone',
         'address',
         'is_active',
+        'profile_photo',
     ];
 
     /**
@@ -111,5 +112,18 @@ class User extends Authenticatable
     public function getCartTotalAttribute(): float
     {
         return $this->carts()->get()->sum('subtotal');
+    }
+
+    /**
+     * Get profile photo URL
+     */
+    public function getProfilePhotoUrlAttribute(): string
+    {
+        if ($this->profile_photo) {
+            return asset('storage/' . $this->profile_photo);
+        }
+
+        // Default avatar dengan inisial
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=696cff&color=fff&size=200';
     }
 }
