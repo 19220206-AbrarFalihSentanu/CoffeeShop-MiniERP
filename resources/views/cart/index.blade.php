@@ -25,12 +25,12 @@
         }
 
         .quantity-control input[type="number"] {
-            width: 50px;
-            min-width: 50px;
-            max-width: 50px;
+            width: 70px;
+            min-width: 70px;
+            max-width: 70px;
             height: 38px;
             padding: 0.5rem 0.25rem !important;
-            font-size: 0.9rem !important;
+            font-size: 0.85rem !important;
             font-weight: 500 !important;
             text-align: center !important;
             border: none !important;
@@ -218,7 +218,7 @@
                                                         <small class="text-muted">
                                                             <span
                                                                 class="badge bg-label-info">{{ $item->product->category->name }}</span>
-                                                            | {{ $item->product->weight }}g
+                                                            | {{ $item->product->unit ?? 'kg' }}
                                                         </small>
                                                         <br>
                                                         @if (!$item->isAvailable())
@@ -228,7 +228,7 @@
                                                         @elseif($item->product->getAvailableStock() < $item->quantity)
                                                             <span class="badge bg-warning mt-1">
                                                                 <i class="bx bx-error"></i> Stok terbatas:
-                                                                {{ $item->product->getAvailableStock() }}
+                                                                {{ $item->product->formatQuantity($item->product->getAvailableStock()) }}
                                                             </span>
                                                         @endif
                                                     </div>
@@ -244,27 +244,42 @@
                                                 @else
                                                     <strong>Rp {{ number_format($item->price, 0, ',', '.') }}</strong>
                                                 @endif
+                                                <small
+                                                    class="text-muted d-block">/{{ $item->product->unit ?? 'kg' }}</small>
                                             </td>
                                             <td>
+                                                @php
+                                                    $increment =
+                                                        $item->product->order_increment > 0
+                                                            ? $item->product->order_increment
+                                                            : 0.5;
+                                                    $minQty =
+                                                        $item->product->min_order_qty > 0
+                                                            ? $item->product->min_order_qty
+                                                            : $increment;
+                                                    $maxQty = $item->product->getAvailableStock();
+                                                @endphp
                                                 <form action="{{ route('customer.update', $item) }}" method="POST"
                                                     class="d-inline">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="quantity-control">
                                                         <button class="btn-qty" type="button"
-                                                            onclick="decreaseQuantity({{ $item->id }})">
+                                                            onclick="decreaseQuantity({{ $item->id }}, {{ $increment }}, {{ $minQty }})">
                                                             <i class="bx bx-minus"></i>
                                                         </button>
                                                         <input type="number" id="qty-{{ $item->id }}" name="quantity"
-                                                            value="{{ (int) $item->quantity }}" min="1"
-                                                            max="{{ $item->product->getAvailableStock() }}"
-                                                            onchange="this.form.submit()">
+                                                            value="{{ rtrim(rtrim(number_format($item->quantity, 3, '.', ''), '0'), '.') }}"
+                                                            min="{{ $minQty }}" max="{{ $maxQty }}"
+                                                            step="{{ $increment }}" onchange="this.form.submit()">
                                                         <button class="btn-qty" type="button"
-                                                            onclick="increaseQuantity({{ $item->id }}, {{ $item->product->getAvailableStock() }})">
+                                                            onclick="increaseQuantity({{ $item->id }}, {{ $maxQty }}, {{ $increment }}, '{{ $item->product->unit ?? 'kg' }}')">
                                                             <i class="bx bx-plus"></i>
                                                         </button>
                                                     </div>
                                                 </form>
+                                                <small
+                                                    class="text-muted d-block mt-1">{{ $item->product->unit ?? 'kg' }}</small>
                                             </td>
                                             <td>
                                                 <strong class="text-primary">
@@ -300,7 +315,7 @@
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Subtotal ({{ $cartItems->sum('quantity') }} item)</span>
+                                <span>Subtotal ({{ number_format($cartItems->sum('quantity'), 2) }} total)</span>
                                 <strong>Rp {{ number_format($subtotal, 0, ',', '.') }}</strong>
                             </div>
 
@@ -361,27 +376,27 @@
 
 @push('scripts')
     <script>
-        function decreaseQuantity(itemId) {
+        function decreaseQuantity(itemId, increment, minQty) {
             const input = document.getElementById('qty-' + itemId);
-            console.log('Input element:', input);
-            console.log('Input value:', input ? input.value : 'not found');
-            let value = parseInt(input.value);
-            if (value > 1) {
-                input.value = value - 1;
+            let value = parseFloat(input.value);
+            let newValue = value - increment;
+            if (newValue >= minQty) {
+                input.value = newValue.toFixed(3).replace(/\.?0+$/, '');
                 input.form.submit();
+            } else {
+                alert('Jumlah minimal: ' + minQty);
             }
         }
 
-        function increaseQuantity(itemId, maxQty) {
+        function increaseQuantity(itemId, maxQty, increment, unit) {
             const input = document.getElementById('qty-' + itemId);
-            console.log('Input element:', input);
-            console.log('Input value:', input ? input.value : 'not found');
-            let value = parseInt(input.value);
-            if (value < maxQty) {
-                input.value = value + 1;
+            let value = parseFloat(input.value);
+            let newValue = value + increment;
+            if (newValue <= maxQty) {
+                input.value = newValue.toFixed(3).replace(/\.?0+$/, '');
                 input.form.submit();
             } else {
-                alert('Stok maksimal: ' + maxQty + ' unit');
+                alert('Stok maksimal: ' + maxQty + ' ' + unit);
             }
         }
     </script>

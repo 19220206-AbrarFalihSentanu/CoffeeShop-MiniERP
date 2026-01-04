@@ -20,16 +20,24 @@ class OrderItem extends Model
         'product_weight',
         'product_type',
         'quantity',
+        'unit',
         'unit_price',
         'subtotal',
     ];
 
     protected $casts = [
         'product_weight' => 'decimal:2',
-        'quantity' => 'integer',
+        'quantity' => 'decimal:3',
         'unit_price' => 'decimal:2',
         'subtotal' => 'decimal:2',
     ];
+
+    // Format quantity dengan satuan
+    public function getFormattedQuantityAttribute(): string
+    {
+        $formatted = rtrim(rtrim(number_format($this->quantity, 3, ',', '.'), '0'), ',');
+        return $formatted . ' ' . $this->unit;
+    }
 
     // Relationships
     public function order(): BelongsTo

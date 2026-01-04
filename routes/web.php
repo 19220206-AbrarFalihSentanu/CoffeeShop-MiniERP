@@ -120,9 +120,72 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(fun
     Route::post('/settings/landing', [OwnerSettingController::class, 'updateLanding'])->name('settings.updateLanding');
     Route::post('/settings/delete-image', [OwnerSettingController::class, 'deleteImage'])->name('settings.deleteImage');
 
-    // Reports
-    // Route::get('/reports/financial', [ReportController::class, 'financial'])->name('reports.financial');
-    // Route::get('/reports/inventory', [ReportController::class, 'inventory'])->name('reports.inventory');
+    // ============================================================
+    // FINANCIAL MANAGEMENT ROUTES
+    // ============================================================
+
+    // Financial Dashboard & Logs
+    Route::prefix('financial')->name('financial.')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Owner\FinancialController::class, 'dashboard'])
+            ->name('dashboard');
+
+        Route::get('/', [\App\Http\Controllers\Owner\FinancialController::class, 'index'])
+            ->name('index');
+
+        Route::get('/expense/create', [\App\Http\Controllers\Owner\FinancialController::class, 'createExpense'])
+            ->name('expense.create');
+
+        Route::post('/expense', [\App\Http\Controllers\Owner\FinancialController::class, 'storeExpense'])
+            ->name('expense.store');
+
+        Route::delete('/{financialLog}', [\App\Http\Controllers\Owner\FinancialController::class, 'destroy'])
+            ->name('destroy');
+    });
+
+    // ============================================================
+    // INVOICE ROUTES
+    // ============================================================
+    Route::prefix('invoices')->name('invoices.')->group(function () {
+        Route::get('/{order}/generate', [\App\Http\Controllers\Owner\InvoiceController::class, 'generate'])
+            ->name('generate');
+
+        Route::get('/{order}/preview', [\App\Http\Controllers\Owner\InvoiceController::class, 'preview'])
+            ->name('preview');
+
+        Route::get('/{order}/download', [\App\Http\Controllers\Owner\InvoiceController::class, 'download'])
+            ->name('download');
+
+        Route::post('/{order}/regenerate', [\App\Http\Controllers\Owner\InvoiceController::class, 'regenerate'])
+            ->name('regenerate');
+
+        Route::get('/{order}/exists', [\App\Http\Controllers\Owner\InvoiceController::class, 'exists'])
+            ->name('exists');
+    });
+
+    // ============================================================
+    // REPORTS ROUTES
+    // ============================================================
+    Route::prefix('reports')->name('reports.')->group(function () {
+        // Financial Reports
+        Route::get('/financial', [\App\Http\Controllers\Owner\ReportController::class, 'financial'])
+            ->name('financial');
+
+        Route::get('/financial/export/excel', [\App\Http\Controllers\Owner\ReportController::class, 'exportFinancialExcel'])
+            ->name('financial.export.excel');
+
+        Route::get('/financial/export/pdf', [\App\Http\Controllers\Owner\ReportController::class, 'exportFinancialPdf'])
+            ->name('financial.export.pdf');
+
+        // Inventory Reports
+        Route::get('/inventory', [\App\Http\Controllers\Owner\ReportController::class, 'inventory'])
+            ->name('inventory');
+
+        Route::get('/inventory/export/excel', [\App\Http\Controllers\Owner\ReportController::class, 'exportInventoryExcel'])
+            ->name('inventory.export.excel');
+
+        Route::get('/inventory/export/pdf', [\App\Http\Controllers\Owner\ReportController::class, 'exportInventoryPdf'])
+            ->name('inventory.export.pdf');
+    });
 });
 
 // ============================================================
@@ -235,6 +298,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
     Route::get('/catalog/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
     Route::get('/products/{product}/quick-view', [CatalogController::class, 'quickView'])->name('catalog.quickView');
+});
+
+// ============================================================
+// INVOICE ROUTES (Accessible by ALL authenticated users)
+// ============================================================
+Route::middleware(['auth'])->prefix('invoices')->name('invoices.')->group(function () {
+    Route::get('/{order}/preview', [\App\Http\Controllers\InvoiceController::class, 'preview'])
+        ->name('preview');
+    Route::get('/{order}/download', [\App\Http\Controllers\InvoiceController::class, 'download'])
+        ->name('download');
 });
 
 // ============================================================

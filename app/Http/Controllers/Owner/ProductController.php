@@ -92,6 +92,9 @@ class ProductController extends Controller
             'description' => ['nullable', 'string'],
             'type' => ['required', 'in:whole_bean,ground,instant'],
             'weight' => ['required', 'numeric', 'min:0'],
+            'unit' => ['required', 'in:gram,kg,ton'],
+            'min_order_qty' => ['nullable', 'numeric', 'min:0'],
+            'order_increment' => ['nullable', 'numeric', 'min:0'],
             'cost_price' => ['required', 'numeric', 'min:0'],
             'price' => ['required', 'numeric', 'min:0'],
 
@@ -103,8 +106,8 @@ class ProductController extends Controller
             'discount_end_date' => ['nullable', 'date', 'after_or_equal:discount_start_date'],
 
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
-            'min_stock' => ['required', 'integer', 'min:0'],
-            'initial_stock' => ['required', 'integer', 'min:0'], // FIX: pastikan integer
+            'min_stock' => ['required', 'numeric', 'min:0'],
+            'initial_stock' => ['required', 'numeric', 'min:0'],
             'is_active' => ['boolean'],
             'is_featured' => ['boolean']
         ]);
@@ -177,6 +180,9 @@ class ProductController extends Controller
             'description' => ['nullable', 'string'],
             'type' => ['required', 'in:whole_bean,ground,instant'],
             'weight' => ['required', 'numeric', 'min:0'],
+            'unit' => ['required', 'in:gram,kg,ton'],
+            'min_order_qty' => ['nullable', 'numeric', 'min:0'],
+            'order_increment' => ['nullable', 'numeric', 'min:0'],
             'cost_price' => ['required', 'numeric', 'min:0'],
             'price' => ['required', 'numeric', 'min:0'],
 
@@ -188,7 +194,7 @@ class ProductController extends Controller
             'discount_end_date' => ['nullable', 'date', 'after_or_equal:discount_start_date'],
 
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
-            'min_stock' => ['required', 'integer', 'min:0'],
+            'min_stock' => ['required', 'numeric', 'min:0'],
             'is_active' => ['boolean'],
             'is_featured' => ['boolean']
         ]);

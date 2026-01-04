@@ -101,13 +101,16 @@ class OrderApprovalController extends Controller
                 'transaction_date' => now()->toDateString(),
             ]);
 
+            // Auto-generate Invoice PDF
+            $invoiceController = new \App\Http\Controllers\Owner\InvoiceController();
+            $invoiceController->generate($order);
+
             DB::commit();
 
-            // TODO: Generate Invoice PDF
-            // TODO: Send email to customer with invoice
+            // TODO: Send email to customer with invoice attachment
 
             return redirect()->route('owner.orders.approval.show', $order)
-                ->with('success', 'Order berhasil disetujui! Stok telah dikurangi. Email notifikasi telah dikirim ke customer.');
+                ->with('success', 'Order berhasil disetujui! Stok telah dikurangi. Invoice telah dibuat.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Gagal approve order: ' . $e->getMessage());

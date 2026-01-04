@@ -18,8 +18,8 @@ class Inventory extends Model
     ];
 
     protected $casts = [
-        'quantity' => 'integer',
-        'reserved' => 'integer'
+        'quantity' => 'decimal:3',
+        'reserved' => 'decimal:3'
     ];
 
     // Relationship
@@ -32,6 +32,17 @@ class Inventory extends Model
     public function getAvailableAttribute()
     {
         return $this->quantity - $this->reserved;
+    }
+
+    // Format stok dengan satuan dari produk
+    public function getFormattedQuantityAttribute(): string
+    {
+        return $this->product ? $this->product->formatQuantity($this->quantity) : $this->quantity;
+    }
+
+    public function getFormattedAvailableAttribute(): string
+    {
+        return $this->product ? $this->product->formatQuantity($this->available) : $this->available;
     }
 
     // Helper: Tambah stok

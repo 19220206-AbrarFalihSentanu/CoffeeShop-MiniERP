@@ -116,6 +116,7 @@ class CheckoutController extends Controller
                     'product_weight' => $cartItem->product->weight,
                     'product_type' => $cartItem->product->type,
                     'quantity' => $cartItem->quantity,
+                    'unit' => $cartItem->product->unit ?? 'kg',
                     'unit_price' => $cartItem->price,
                 ]);
 

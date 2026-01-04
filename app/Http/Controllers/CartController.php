@@ -55,22 +55,56 @@ class CartController extends Controller
     }
 
     /**
+     * Validate quantity against product's min_order_qty and order_increment
+     */
+    private function validateQuantityRules(Product $product, $quantity): ?string
+    {
+        $unit = $product->unit ?? 'kg';
+
+        // Check minimum order quantity
+        if ($product->min_order_qty > 0 && $quantity < $product->min_order_qty) {
+            return "Minimal pemesanan adalah {$product->formatQuantity($product->min_order_qty)}.";
+        }
+
+        // Check order increment
+        if ($product->order_increment > 0) {
+            $baseQty = $product->min_order_qty > 0 ? $product->min_order_qty : 0;
+            $remainder = fmod(($quantity - $baseQty), $product->order_increment);
+
+            // Use small epsilon for floating point comparison
+            if ($remainder > 0.0001 && abs($remainder - $product->order_increment) > 0.0001) {
+                return "Jumlah pesanan harus kelipatan {$product->formatQuantity($product->order_increment)} dari minimum order.";
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Add product to cart
      */
     public function add(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'quantity' => ['required', 'integer', 'min:1']
+            'quantity' => ['required', 'numeric', 'min:0.001']
         ]);
+
+        $quantity = (float) $validated['quantity'];
 
         // Check if product is active
         if (!$product->is_active) {
             return back()->with('error', 'Produk tidak tersedia.');
         }
 
+        // Validate quantity rules (min order, increment)
+        $quantityError = $this->validateQuantityRules($product, $quantity);
+        if ($quantityError) {
+            return back()->with('error', $quantityError);
+        }
+
         // Check stock availability
-        if (!$product->hasStock($validated['quantity'])) {
-            return back()->with('error', 'Stok tidak mencukupi. Stok tersedia: ' . $product->getAvailableStock());
+        if (!$product->hasStock($quantity)) {
+            return back()->with('error', 'Stok tidak mencukupi. Stok tersedia: ' . $product->formatQuantity($product->getAvailableStock()));
         }
 
         try {
@@ -83,12 +117,19 @@ class CartController extends Controller
 
             if ($cartItem) {
                 // Update quantity
-                $newQuantity = $cartItem->quantity + $validated['quantity'];
+                $newQuantity = $cartItem->quantity + $quantity;
+
+                // Validate new total quantity rules
+                $quantityError = $this->validateQuantityRules($product, $newQuantity);
+                if ($quantityError) {
+                    DB::rollBack();
+                    return back()->with('error', $quantityError);
+                }
 
                 // Check stock for new quantity
                 if (!$product->hasStock($newQuantity)) {
                     DB::rollBack();
-                    return back()->with('error', 'Tidak dapat menambah. Stok maksimal: ' . $product->getAvailableStock());
+                    return back()->with('error', 'Tidak dapat menambah. Stok maksimal: ' . $product->formatQuantity($product->getAvailableStock()));
                 }
 
                 $cartItem->update([
@@ -129,18 +170,27 @@ class CartController extends Controller
         }
 
         $validated = $request->validate([
-            'quantity' => ['required', 'integer', 'min:1']
+            'quantity' => ['required', 'numeric', 'min:0.001']
         ]);
 
+        $quantity = (float) $validated['quantity'];
+        $product = $cart->product;
+
+        // Validate quantity rules (min order, increment)
+        $quantityError = $this->validateQuantityRules($product, $quantity);
+        if ($quantityError) {
+            return back()->with('error', $quantityError);
+        }
+
         // Check stock availability
-        if (!$cart->product->hasStock($validated['quantity'])) {
-            return back()->with('error', 'Stok tidak mencukupi untuk produk ' . $cart->product->name . '. Stok tersedia: ' . $cart->product->getAvailableStock());
+        if (!$product->hasStock($quantity)) {
+            return back()->with('error', 'Stok tidak mencukupi untuk produk ' . $product->name . '. Stok tersedia: ' . $product->formatQuantity($product->getAvailableStock()));
         }
 
         try {
             $cart->update([
-                'quantity' => $validated['quantity'],
-                'price' => $cart->product->final_price // Update to current price
+                'quantity' => $quantity,
+                'price' => $product->final_price // Update to current price
             ]);
 
             return back()->with('success', 'Jumlah produk berhasil diperbarui!');

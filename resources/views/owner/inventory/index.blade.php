@@ -167,36 +167,41 @@
                                 <td>
                                     <strong>{{ $product->name }}</strong>
                                     <br>
-                                    <small class="text-muted">{{ $product->weight }}g</small>
+                                    <small class="text-muted">{{ $product->weight }}g | Satuan:
+                                        {{ $product->unit }}</small>
                                 </td>
                                 <td><code>{{ $product->sku }}</code></td>
                                 <td>
                                     <span class="badge bg-info">{{ $product->category->name }}</span>
                                 </td>
                                 <td>
-                                    <strong>{{ $product->inventory ? $product->inventory->quantity : 0 }}</strong>
+                                    <strong>{{ $product->inventory ? number_format($product->inventory->quantity, 2) : 0 }}</strong>
+                                    <small class="text-muted">{{ $product->unit }}</small>
                                 </td>
                                 <td>
-                                    {{ $product->inventory ? $product->inventory->reserved : 0 }}
+                                    {{ $product->inventory ? number_format($product->inventory->reserved, 2) : 0 }}
+                                    <small class="text-muted">{{ $product->unit }}</small>
                                 </td>
                                 <td>
                                     @if ($product->inventory)
                                         @if ($product->inventory->available <= 0)
-                                            <span class="badge bg-danger">0</span>
+                                            <span class="badge bg-danger">0 {{ $product->unit }}</span>
                                         @elseif($product->isLowStock())
                                             <span class="badge bg-warning">
-                                                {{ $product->inventory->available }}
+                                                {{ number_format($product->inventory->available, 2) }}
+                                                {{ $product->unit }}
                                             </span>
                                         @else
                                             <span class="badge bg-success">
-                                                {{ $product->inventory->available }}
+                                                {{ number_format($product->inventory->available, 2) }}
+                                                {{ $product->unit }}
                                             </span>
                                         @endif
                                     @else
                                         <span class="badge bg-secondary">-</span>
                                     @endif
                                 </td>
-                                <td>{{ $product->min_stock }}</td>
+                                <td>{{ number_format($product->min_stock, 2) }} {{ $product->unit }}</td>
                                 <td>
                                     <small class="text-muted">
                                         Rp

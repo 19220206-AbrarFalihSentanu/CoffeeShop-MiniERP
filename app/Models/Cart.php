@@ -20,7 +20,7 @@ class Cart extends Model
     ];
 
     protected $casts = [
-        'quantity' => 'integer',
+        'quantity' => 'decimal:3',
         'price' => 'decimal:2'
     ];
 
@@ -39,6 +39,12 @@ class Cart extends Model
     public function getSubtotalAttribute()
     {
         return $this->quantity * $this->price;
+    }
+
+    // Format quantity dengan satuan dari produk
+    public function getFormattedQuantityAttribute(): string
+    {
+        return $this->product ? $this->product->formatQuantity($this->quantity) : $this->quantity;
     }
 
     // Check if product still available with requested quantity

@@ -239,9 +239,11 @@
                                         </td>
                                         <td class="text-center">
                                             Rp {{ number_format($item->price, 0, ',', '.') }}
+                                            <small class="text-muted d-block">/{{ $item->unit ?? 'kg' }}</small>
                                         </td>
                                         <td class="text-center">
-                                            {{ $item->quantity }}
+                                            {{ rtrim(rtrim(number_format($item->quantity, 3, '.', ''), '0'), '.') }}
+                                            <small class="text-muted">{{ $item->unit ?? 'kg' }}</small>
                                         </td>
                                         <td class="text-end">
                                             <strong>Rp {{ number_format($item->subtotal, 0, ',', '.') }}</strong>
@@ -569,6 +571,19 @@
             {{-- Action Buttons --}}
             <div class="card">
                 <div class="card-body">
+                    {{-- Invoice Buttons (show when order is approved or later) --}}
+                    @if (in_array($order->status, ['approved', 'paid', 'processing', 'shipped', 'completed']))
+                        <div class="d-flex gap-2 mb-2">
+                            <a href="{{ route('invoices.preview', $order) }}" target="_blank"
+                                class="btn btn-outline-primary flex-fill">
+                                <i class="bx bx-file me-1"></i>Lihat Invoice
+                            </a>
+                            <a href="{{ route('invoices.download', $order) }}" class="btn btn-primary flex-fill">
+                                <i class="bx bx-download me-1"></i>Download Invoice
+                            </a>
+                        </div>
+                    @endif
+
                     @if ($order->isPending())
                         <form action="{{ route('customer.orders.cancel', $order) }}" method="POST"
                             onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?')">

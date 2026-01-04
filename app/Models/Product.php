@@ -22,6 +22,9 @@ class Product extends Model
         'description',
         'type',
         'weight',
+        'unit',
+        'min_order_qty',
+        'order_increment',
         'cost_price',
         'price',
         'has_discount',
@@ -36,8 +39,17 @@ class Product extends Model
         'is_featured'
     ];
 
+    // Satuan yang tersedia
+    const UNITS = [
+        'gram' => 'Gram (g)',
+        'kg' => 'Kilogram (kg)',
+        'ton' => 'Ton',
+    ];
+
     protected $casts = [
         'weight' => 'decimal:2',
+        'min_order_qty' => 'decimal:3',
+        'order_increment' => 'decimal:3',
         'cost_price' => 'decimal:2',
         'price' => 'decimal:2',
         'discount_value' => 'decimal:2',
@@ -48,6 +60,19 @@ class Product extends Model
         'discount_start_date' => 'date',
         'discount_end_date' => 'date'
     ];
+
+    // Accessor untuk label satuan
+    public function getUnitLabelAttribute(): string
+    {
+        return self::UNITS[$this->unit] ?? $this->unit;
+    }
+
+    // Format quantity dengan satuan
+    public function formatQuantity($qty): string
+    {
+        $formatted = rtrim(rtrim(number_format($qty, 3, ',', '.'), '0'), ',');
+        return $formatted . ' ' . $this->unit;
+    }
 
     // Auto-generate slug dan SKU
     protected static function boot()

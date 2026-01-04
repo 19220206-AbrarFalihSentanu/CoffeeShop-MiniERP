@@ -134,17 +134,34 @@
                 </a>
             </li>
 
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Financial</span></li>
+
+            <li class="menu-item {{ request()->routeIs('owner.financial.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('owner.financial.dashboard') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-line-chart"></i>
+                    <div data-i18n="Financial Dashboard">Financial Dashboard</div>
+                </a>
+            </li>
+
+            <li
+                class="menu-item {{ request()->routeIs('owner.financial.index') || request()->routeIs('owner.financial.expense.*') ? 'active' : '' }}">
+                <a href="{{ route('owner.financial.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-wallet"></i>
+                    <div data-i18n="Financial Logs">Financial Logs</div>
+                </a>
+            </li>
+
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Laporan</span></li>
 
-            <li class="menu-item">
-                <a href="javascript:void(0);" class="menu-link">
+            <li class="menu-item {{ request()->routeIs('owner.reports.financial') ? 'active' : '' }}">
+                <a href="{{ route('owner.reports.financial') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
                     <div>Laporan Keuangan</div>
                 </a>
             </li>
 
-            <li class="menu-item">
-                <a href="javascript:void(0);" class="menu-link">
+            <li class="menu-item {{ request()->routeIs('owner.reports.inventory') ? 'active' : '' }}">
+                <a href="{{ route('owner.reports.inventory') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-package"></i>
                     <div>Laporan Stok</div>
                 </a>
@@ -286,7 +303,10 @@
                     <i class="menu-icon tf-icons bx bx-shopping-bag"></i>
                     <div>Pesanan Saya</div>
                     @php
-                        $myOrderCount = \App\Models\Order::forCustomer(auth()->id())->count();
+                        // Count only active orders (not completed or rejected)
+                        $myOrderCount = \App\Models\Order::forCustomer(auth()->id())
+                            ->whereNotIn('status', ['completed', 'rejected', 'cancelled'])
+                            ->count();
                     @endphp
                     @if ($myOrderCount > 0)
                         <span class="badge bg-info ms-auto">{{ $myOrderCount }}</span>

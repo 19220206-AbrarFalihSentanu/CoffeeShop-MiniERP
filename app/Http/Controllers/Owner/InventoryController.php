@@ -93,7 +93,7 @@ class InventoryController extends Controller
     {
         $validated = $request->validate([
             'type' => ['required', 'in:in,out,adjustment'],
-            'quantity' => ['required', 'integer', 'min:1'],
+            'quantity' => ['required', 'numeric', 'min:0.001'],
             'notes' => ['nullable', 'string', 'max:500'],
             'reference' => ['nullable', 'string', 'max:100']
         ]);
@@ -221,7 +221,7 @@ class InventoryController extends Controller
         $validated = $request->validate([
             'adjustments' => ['required', 'array'],
             'adjustments.*.product_id' => ['required', 'exists:products,id'],
-            'adjustments.*.quantity' => ['required', 'integer', 'min:0'],
+            'adjustments.*.quantity' => ['required', 'numeric', 'min:0'],
             'notes' => ['nullable', 'string', 'max:500']
         ]);
 

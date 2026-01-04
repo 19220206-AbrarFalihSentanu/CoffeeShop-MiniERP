@@ -99,10 +99,18 @@
                     </p>
                     <ul class="mb-0">
                         @foreach ($stockIssues as $issue)
+                            @php
+                                $unit = $issue['item']->unit ?? 'kg';
+                                $formatQty = function ($qty) {
+                                    return rtrim(rtrim(number_format($qty, 3, '.', ''), '0'), '.');
+                                };
+                            @endphp
                             <li>
                                 <strong>{{ $issue['item']->product_name }}</strong>:
-                                Dipesan {{ $issue['item']->quantity }}, Tersedia {{ $issue['available'] }}
-                                <span class="text-danger fw-bold">(Kurang {{ $issue['shortage'] }})</span>
+                                Dipesan {{ $formatQty($issue['item']->quantity) }} {{ $unit }},
+                                Tersedia {{ $formatQty($issue['available']) }} {{ $unit }}
+                                <span class="text-danger fw-bold">(Kurang {{ $formatQty($issue['shortage']) }}
+                                    {{ $unit }})</span>
                             </li>
                         @endforeach
                     </ul>
@@ -156,26 +164,32 @@
                                                 <div>
                                                     <h6 class="mb-0">{{ $item->product_name }}</h6>
                                                     <small class="text-muted">
-                                                        {{ $item->product_sku }} | {{ $item->product_weight }}g
+                                                        {{ $item->product_sku }} | {{ $item->unit ?? 'kg' }}
                                                     </small>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <strong>{{ $item->quantity }}</strong>
+                                            <strong>{{ rtrim(rtrim(number_format($item->quantity, 3, '.', ''), '0'), '.') }}</strong>
+                                            <small class="text-muted d-block">{{ $item->unit ?? 'kg' }}</small>
                                         </td>
                                         <td class="text-center">
                                             <span class="stock-indicator stock-{{ $stockStatus }}">
                                                 @if ($stockStatus == 'ok')
-                                                    <i class="bx bx-check-circle me-1"></i>{{ $available }}
+                                                    <i
+                                                        class="bx bx-check-circle me-1"></i>{{ $item->product ? $item->product->formatQuantity($available) : $available }}
                                                 @elseif($stockStatus == 'warning')
-                                                    <i class="bx bx-error-circle me-1"></i>{{ $available }}
+                                                    <i
+                                                        class="bx bx-error-circle me-1"></i>{{ $item->product ? $item->product->formatQuantity($available) : $available }}
                                                 @else
                                                     <i class="bx bx-x-circle me-1"></i>Habis
                                                 @endif
                                             </span>
                                         </td>
-                                        <td class="text-end">Rp {{ number_format($item->unit_price, 0, ',', '.') }}</td>
+                                        <td class="text-end">
+                                            Rp {{ number_format($item->unit_price, 0, ',', '.') }}
+                                            <small class="text-muted d-block">/{{ $item->unit ?? 'kg' }}</small>
+                                        </td>
                                         <td class="text-end fw-bold">Rp {{ number_format($item->subtotal, 0, ',', '.') }}
                                         </td>
                                     </tr>
@@ -358,7 +372,7 @@
                     </div>
                     <div class="mb-3">
                         <small class="text-muted d-block">Total Item</small>
-                        <strong>{{ $order->items->sum('quantity') }} unit</strong>
+                        <strong>{{ $order->items->count() }} produk</strong>
                     </div>
                     <div class="mb-0">
                         <small class="text-muted d-block">Total Amount</small>
@@ -370,6 +384,19 @@
             {{-- Quick Actions --}}
             <div class="card">
                 <div class="card-body">
+                    {{-- Invoice Buttons (show when order is approved or later) --}}
+                    @if (in_array($order->status, ['approved', 'paid', 'processing', 'shipped', 'completed']))
+                        <div class="d-flex gap-2 mb-2">
+                            <a href="{{ route('invoices.preview', $order) }}" target="_blank"
+                                class="btn btn-outline-primary flex-fill">
+                                <i class="bx bx-file me-1"></i>Invoice
+                            </a>
+                            <a href="{{ route('invoices.download', $order) }}" class="btn btn-primary flex-fill">
+                                <i class="bx bx-download me-1"></i>Download
+                            </a>
+                        </div>
+                    @endif
+
                     <a href="{{ route('owner.orders.approval.index') }}" class="btn btn-outline-secondary w-100 mb-2">
                         <i class="bx bx-left-arrow-alt me-1"></i>Kembali ke List
                     </a>

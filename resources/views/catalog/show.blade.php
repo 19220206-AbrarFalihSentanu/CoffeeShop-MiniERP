@@ -100,17 +100,20 @@
                             {{-- SKU & Weight --}}
                             <p class="text-muted mb-3">
                                 <strong>SKU:</strong> <code>{{ $product->sku }}</code> |
-                                <strong>Berat:</strong> {{ $product->weight }}g
+                                <strong>Berat:</strong> {{ $product->weight }}g |
+                                <strong>Satuan:</strong> {{ $product->unit_label }}
                             </p>
 
                             {{-- Price --}}
                             <div class="mb-4">
                                 @if ($product->isDiscountActive())
                                     <p class="text-muted mb-1">
-                                        <del>Rp {{ number_format($product->price, 0, ',', '.') }}</del>
+                                        <del>Rp
+                                            {{ number_format($product->price, 0, ',', '.') }}/{{ $product->unit }}</del>
                                     </p>
                                     <h3 class="text-success mb-2">
-                                        Rp {{ number_format($product->final_price, 0, ',', '.') }}
+                                        Rp {{ number_format($product->final_price, 0, ',', '.') }}<small
+                                            class="text-muted fs-6">/{{ $product->unit }}</small>
                                     </h3>
                                     <div class="alert alert-danger py-2">
                                         <i class="bx bx-purchase-tag me-1"></i>
@@ -125,9 +128,18 @@
                                     </div>
                                 @else
                                     <h3 class="text-primary mb-2">
-                                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                                        Rp {{ number_format($product->price, 0, ',', '.') }}<small
+                                            class="text-muted fs-6">/{{ $product->unit }}</small>
                                     </h3>
                                 @endif
+                                <small class="text-muted">
+                                    <i class="bx bx-info-circle"></i> Min. order:
+                                    {{ number_format($product->min_order_qty, 2) }} {{ $product->unit }}
+                                    @if ($product->order_increment > 0)
+                                        | Kelipatan: {{ number_format($product->order_increment, 2) }}
+                                        {{ $product->unit }}
+                                    @endif
+                                </small>
                             </div>
 
                             {{-- Stock Info --}}
@@ -136,7 +148,8 @@
                                 @if ($product->getAvailableStock() > 0)
                                     <div class="alert alert-success py-2">
                                         <i class="bx bx-check-circle me-1"></i>
-                                        <strong>Tersedia: {{ $product->getAvailableStock() }} unit</strong>
+                                        <strong>Tersedia: {{ number_format($product->getAvailableStock(), 2) }}
+                                            {{ $product->unit }}</strong>
                                     </div>
                                 @else
                                     <div class="alert alert-danger py-2">
@@ -160,20 +173,29 @@
                                     <form action="{{ route('customer.add', $product) }}" method="POST" id="addToCartForm">
                                         @csrf
                                         <div class="mb-4">
-                                            <h6>Jumlah:</h6>
+                                            <h6>Jumlah ({{ $product->unit }}):</h6>
                                             <div class="input-group quantity-input mb-3">
                                                 <button class="btn btn-outline-secondary" type="button"
                                                     onclick="decreaseQty()">
                                                     <i class="bx bx-minus"></i>
                                                 </button>
                                                 <input type="number" class="form-control text-center" id="quantity"
-                                                    name="quantity" value="1" min="1"
-                                                    max="{{ $product->getAvailableStock() }}">
+                                                    name="quantity" value="{{ $product->min_order_qty }}"
+                                                    min="{{ $product->min_order_qty }}"
+                                                    max="{{ $product->getAvailableStock() }}"
+                                                    step="{{ $product->order_increment > 0 ? $product->order_increment : 0.001 }}">
                                                 <button class="btn btn-outline-secondary" type="button"
                                                     onclick="increaseQty()">
                                                     <i class="bx bx-plus"></i>
                                                 </button>
                                             </div>
+                                            <small class="text-muted">
+                                                Min: {{ number_format($product->min_order_qty, 2) }} {{ $product->unit }}
+                                                @if ($product->order_increment > 0)
+                                                    | Kelipatan: {{ number_format($product->order_increment, 2) }}
+                                                    {{ $product->unit }}
+                                                @endif
+                                            </small>
                                         </div>
 
                                         <div class="d-grid gap-2">
@@ -274,22 +296,31 @@
 @push('scripts')
     <script>
         const maxQty = {{ $product->getAvailableStock() }};
+        const minQty = {{ $product->min_order_qty }};
+        const increment = {{ $product->order_increment > 0 ? $product->order_increment : 0.5 }};
+        const unit = '{{ $product->unit }}';
 
         function increaseQty() {
             const qtyInput = document.getElementById('quantity');
-            let qty = parseInt(qtyInput.value);
-            if (qty < maxQty) {
-                qtyInput.value = qty + 1;
+            let qty = parseFloat(qtyInput.value) || minQty;
+            let newQty = qty + increment;
+
+            if (newQty <= maxQty) {
+                qtyInput.value = newQty.toFixed(3).replace(/\.?0+$/, '');
             } else {
-                alert(`Stok maksimal: ${maxQty} unit`);
+                alert(`Stok maksimal: ${maxQty} ${unit}`);
             }
         }
 
         function decreaseQty() {
             const qtyInput = document.getElementById('quantity');
-            let qty = parseInt(qtyInput.value);
-            if (qty > 1) {
-                qtyInput.value = qty - 1;
+            let qty = parseFloat(qtyInput.value) || minQty;
+            let newQty = qty - increment;
+
+            if (newQty >= minQty) {
+                qtyInput.value = newQty.toFixed(3).replace(/\.?0+$/, '');
+            } else {
+                alert(`Minimum order: ${minQty} ${unit}`);
             }
         }
     </script>

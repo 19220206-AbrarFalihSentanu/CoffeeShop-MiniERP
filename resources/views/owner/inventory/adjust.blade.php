@@ -153,15 +153,17 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="quantity" class="form-label">
-                                                Jumlah <span class="text-danger">*</span>
+                                                Jumlah ({{ $product->unit ?? 'kg' }}) <span class="text-danger">*</span>
                                             </label>
-                                            <input type="number" class="form-control @error('quantity') is-invalid @enderror"
-                                                id="quantity" name="quantity" value="{{ old('quantity') }}"
-                                                min="1" required placeholder="Masukkan jumlah">
+                                            <input type="number"
+                                                class="form-control @error('quantity') is-invalid @enderror" id="quantity"
+                                                name="quantity" value="{{ old('quantity') }}" min="0.001" step="0.001"
+                                                required placeholder="Masukkan jumlah">
                                             @error('quantity')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-                                            <small class="text-muted" id="quantityHint">Masukkan jumlah unit</small>
+                                            <small class="text-muted" id="quantityHint">Masukkan jumlah dalam
+                                                {{ $product->unit ?? 'kg' }}</small>
                                         </div>
                                     </div>
 
@@ -170,7 +172,8 @@
                                             <label for="reference" class="form-label">
                                                 Reference / PO Number
                                             </label>
-                                            <input type="text" class="form-control @error('reference') is-invalid @enderror"
+                                            <input type="text"
+                                                class="form-control @error('reference') is-invalid @enderror"
                                                 id="reference" name="reference" value="{{ old('reference') }}"
                                                 placeholder="Contoh: PO-2025-001">
                                             @error('reference')
@@ -200,7 +203,8 @@
                                         <div class="col-md-4">
                                             <small class="text-muted">Stok Sekarang:</small>
                                             <br>
-                                            <strong id="currentStock">{{ $product->inventory ? $product->inventory->quantity : 0 }}</strong>
+                                            <strong
+                                                id="currentStock">{{ $product->inventory ? $product->inventory->quantity : 0 }}</strong>
                                         </div>
                                         <div class="col-md-4">
                                             <small class="text-muted">Perubahan:</small>
@@ -210,7 +214,8 @@
                                         <div class="col-md-4">
                                             <small class="text-muted">Stok Setelah:</small>
                                             <br>
-                                            <strong id="afterStock" class="text-success">{{ $product->inventory ? $product->inventory->quantity : 0 }}</strong>
+                                            <strong id="afterStock"
+                                                class="text-success">{{ $product->inventory ? $product->inventory->quantity : 0 }}</strong>
                                         </div>
                                     </div>
                                 </div>

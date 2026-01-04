@@ -281,6 +281,27 @@
                 </div>
             @endif
 
+            {{-- Invoice Section --}}
+            @if (in_array($payment->order->status, ['approved', 'paid', 'processing', 'shipped', 'completed']))
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bx bx-file-blank me-2"></i>Invoice</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('invoices.preview', $payment->order) }}" target="_blank"
+                                class="btn btn-outline-primary flex-fill">
+                                <i class="bx bx-show me-1"></i>Lihat
+                            </a>
+                            <a href="{{ route('invoices.download', $payment->order) }}"
+                                class="btn btn-primary flex-fill">
+                                <i class="bx bx-download me-1"></i>Download
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <a href="{{ route('admin.payments.index') }}" class="btn btn-outline-secondary w-100 mt-3">
                 <i class="bx bx-arrow-back me-1"></i>Kembali
             </a>

@@ -139,7 +139,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="weight" class="form-label">
                                                 Berat (gram) <span class="text-danger">*</span>
@@ -150,6 +150,62 @@
                                             @error('weight')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="unit" class="form-label">
+                                                Satuan <span class="text-danger">*</span>
+                                            </label>
+                                            <select class="form-select @error('unit') is-invalid @enderror" id="unit"
+                                                name="unit" required>
+                                                @foreach (\App\Models\Product::UNITS as $value => $label)
+                                                    <option value="{{ $value }}"
+                                                        {{ old('unit', $product->unit ?? 'kg') == $value ? 'selected' : '' }}>
+                                                        {{ $label }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('unit')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="min_order_qty" class="form-label">
+                                                Min. Order
+                                            </label>
+                                            <input type="number"
+                                                class="form-control @error('min_order_qty') is-invalid @enderror"
+                                                id="min_order_qty" name="min_order_qty"
+                                                value="{{ old('min_order_qty', $product->min_order_qty ?? 0.5) }}"
+                                                step="0.001" min="0">
+                                            @error('min_order_qty')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <small class="text-muted">Jumlah minimum per order</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="order_increment" class="form-label">
+                                                Kelipatan Order
+                                            </label>
+                                            <input type="number"
+                                                class="form-control @error('order_increment') is-invalid @enderror"
+                                                id="order_increment" name="order_increment"
+                                                value="{{ old('order_increment', $product->order_increment ?? 0.5) }}"
+                                                step="0.001" min="0">
+                                            @error('order_increment')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <small class="text-muted">Kelipatan qty pemesanan (contoh: 0.5 kg)</small>
                                         </div>
                                     </div>
 
@@ -177,8 +233,9 @@
                                             <label for="price" class="form-label">
                                                 Harga Jual (Rp) <span class="text-danger">*</span>
                                             </label>
-                                            <input type="number" class="form-control @error('price') is-invalid @enderror"
-                                                id="price" name="price" value="{{ old('price', $product->price) }}"
+                                            <input type="number"
+                                                class="form-control @error('price') is-invalid @enderror" id="price"
+                                                name="price" value="{{ old('price', $product->price) }}"
                                                 step="0.01" min="0" required>
                                             @error('price')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -218,8 +275,9 @@
                                             </div>
                                         @endif
                                     </div>
-                                    <input type="file" class="form-control d-none @error('image') is-invalid @enderror"
-                                        id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/webp"
+                                    <input type="file"
+                                        class="form-control d-none @error('image') is-invalid @enderror" id="image"
+                                        name="image" accept="image/jpeg,image/png,image/jpg,image/webp"
                                         onchange="previewImage(event)">
                                     @error('image')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
