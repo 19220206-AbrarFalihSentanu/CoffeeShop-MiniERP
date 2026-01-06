@@ -23,8 +23,8 @@
                     <div class="row mb-4">
                         <div class="col-md-12 text-center">
                             <div class="avatar avatar-xl mb-3">
-                                <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar" class="rounded-circle"
-                                    style="width: 120px; height: 120px;">
+                                <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="rounded-circle"
+                                    style="width: 120px; height: 120px; object-fit: cover;">
                             </div>
                             <h4 class="mb-1">{{ $user->name }}</h4>
                             <span

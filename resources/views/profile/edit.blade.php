@@ -158,11 +158,11 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <small class="text-muted d-block">Bergabung Sejak</small>
-                        <strong>{{ $user->created_at->format('d F Y') }}</strong>
+                        <strong>{{ $user->created_at->translatedFormat('d F Y') }}</strong>
                     </div>
                     <div class="mb-3">
                         <small class="text-muted d-block">Terakhir Update</small>
-                        <strong>{{ $user->updated_at->format('d F Y, H:i') }}</strong>
+                        <strong>{{ $user->updated_at->translatedFormat('d F Y, H:i') }} WIB</strong>
                     </div>
                     <div class="mb-0">
                         <small class="text-muted d-block">Status Akun</small>
