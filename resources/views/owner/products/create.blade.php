@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Tambah Produk')
+@section('title', __('products.add_product'))
 
 @push('styles')
     <style>
@@ -50,7 +50,7 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">
-                        <i class="bx bx-plus-circle me-2"></i>Tambah Produk Baru
+                        <i class="bx bx-plus-circle me-2"></i>{{ __('products.add_product') }}
                     </h5>
                 </div>
 

@@ -16,12 +16,22 @@ use App\Http\Controllers\Admin\InventoryController as AdminInventoryController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Owner\SettingController as OwnerSettingController;
+use App\Http\Controllers\Owner\LandingSettingController as OwnerLandingSettingController;
+use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 
-// Public Routes
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+// ============================================================
+// LANGUAGE SWITCH ROUTE
+// ============================================================
+Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
+
+// ============================================================
+// PUBLIC LANDING PAGE ROUTES
+// ============================================================
+Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/landing/product/{id}', [LandingController::class, 'getProductDetail'])->name('landing.product.detail');
+Route::get('/landing/products', [LandingController::class, 'getProductsByCategory'])->name('landing.products.category');
 
 // Authentication Routes (dari Breeze)
 require __DIR__ . '/auth.php';
@@ -75,6 +85,11 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(fun
     Route::post('/inventory/bulk-adjust', [OwnerInventoryController::class, 'processBulkAdjustment'])->name('inventory.processBulkAdjustment');
     Route::get('/inventory/export', [OwnerInventoryController::class, 'export'])->name('inventory.export');
 
+    // Supplier Management
+    Route::resource('/suppliers', \App\Http\Controllers\Owner\SupplierController::class);
+    Route::post('/suppliers/{supplier}/toggle-status', [\App\Http\Controllers\Owner\SupplierController::class, 'toggleStatus'])
+        ->name('suppliers.toggleStatus');
+
     // Order Approval
     Route::prefix('orders/approval')->name('orders.approval.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Owner\OrderApprovalController::class, 'index'])->name('index');
@@ -119,6 +134,27 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(fun
     Route::post('/settings/system', [OwnerSettingController::class, 'updateSystem'])->name('settings.updateSystem');
     Route::post('/settings/landing', [OwnerSettingController::class, 'updateLanding'])->name('settings.updateLanding');
     Route::post('/settings/delete-image', [OwnerSettingController::class, 'deleteImage'])->name('settings.deleteImage');
+
+    // ============================================================
+    // LANDING PAGE SETTINGS ROUTES
+    // ============================================================
+    Route::prefix('landing-settings')->name('landing-settings.')->group(function () {
+        Route::get('/', [OwnerLandingSettingController::class, 'index'])->name('index');
+
+        // Slides Management
+        Route::post('/slides', [OwnerLandingSettingController::class, 'storeSlide'])->name('slides.store');
+        Route::put('/slides/{slide}', [OwnerLandingSettingController::class, 'updateSlide'])->name('slides.update');
+        Route::delete('/slides/{slide}', [OwnerLandingSettingController::class, 'destroySlide'])->name('slides.destroy');
+
+        // Partners Management
+        Route::post('/partners', [OwnerLandingSettingController::class, 'storePartner'])->name('partners.store');
+        Route::put('/partners/{partner}', [OwnerLandingSettingController::class, 'updatePartner'])->name('partners.update');
+        Route::delete('/partners/{partner}', [OwnerLandingSettingController::class, 'destroyPartner'])->name('partners.destroy');
+
+        // Section Settings
+        Route::post('/sections', [OwnerLandingSettingController::class, 'updateSections'])->name('sections.update');
+        Route::post('/sections/delete-image', [OwnerLandingSettingController::class, 'deleteSectionImage'])->name('sections.delete-image');
+    });
 
     // ============================================================
     // FINANCIAL MANAGEMENT ROUTES
@@ -221,6 +257,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/inventory/bulk-adjust', [AdminInventoryController::class, 'bulkAdjust'])->name('inventory.bulkAdjust');
     Route::post('/inventory/bulk-adjust', [AdminInventoryController::class, 'processBulkAdjustment'])->name('inventory.processBulkAdjustment');
     Route::get('/inventory/export', [AdminInventoryController::class, 'export'])->name('inventory.export');
+
+    // Supplier Management
+    Route::resource('/suppliers', \App\Http\Controllers\Admin\SupplierController::class);
+    Route::post('/suppliers/{supplier}/toggle-status', [\App\Http\Controllers\Admin\SupplierController::class, 'toggleStatus'])
+        ->name('suppliers.toggleStatus');
 
     // Receive Purchase Order Routes (HARUS sebelum resource routes)
     Route::prefix('purchase-orders/receive')->name('purchase-orders.receive.')->group(function () {

@@ -1,33 +1,34 @@
 {{-- File: resources/views/owner/financial/manual-expense.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Add Manual Expense')
+@section('title', __('financial.add_expense'))
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <!-- Header -->
         <div class="mb-4">
             <h4 class="fw-bold mb-2">
-                <span class="text-muted fw-light">Financial /</span> Add Manual Expense
+                <span class="text-muted fw-light">{{ __('financial.financial') }} /</span> {{ __('financial.add_expense') }}
             </h4>
-            <p class="text-muted">Record operational expenses manually</p>
+            <p class="text-muted">{{ __('financial.description') }}</p>
         </div>
 
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Expense Details</h5>
+                        <h5 class="card-title mb-0">{{ __('general.details') }}</h5>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('owner.financial.expense.store') }}" method="POST">
                             @csrf
 
                             <div class="mb-3">
-                                <label class="form-label" for="category">Category <span class="text-danger">*</span></label>
+                                <label class="form-label" for="category">{{ __('general.category') }} <span
+                                        class="text-danger">*</span></label>
                                 <select name="category" id="category"
                                     class="form-select @error('category') is-invalid @enderror" required>
-                                    <option value="">-- Select Category --</option>
+                                    <option value="">-- {{ __('financial.select_category') }} --</option>
                                     <option value="operational" {{ old('category') == 'operational' ? 'selected' : '' }}>
                                         Operational (Listrik, Air, dll)
                                     </option>
@@ -50,7 +51,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label" for="amount">Amount (Rp) <span
+                                <label class="form-label" for="amount">{{ __('financial.amount') }} (Rp) <span
                                         class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text">Rp</span>
@@ -65,8 +66,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label" for="transaction_date">Transaction Date <span
-                                        class="text-danger">*</span></label>
+                                <label class="form-label" for="transaction_date">{{ __('financial.transaction_date') }}
+                                    <span class="text-danger">*</span></label>
                                 <input type="date" name="transaction_date" id="transaction_date"
                                     class="form-control @error('transaction_date') is-invalid @enderror"
                                     value="{{ old('transaction_date', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}"
@@ -77,7 +78,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label" for="description">Description <span
+                                <label class="form-label" for="description">{{ __('general.description') }} <span
                                         class="text-danger">*</span></label>
                                 <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
                                     rows="4" minlength="10" maxlength="500" placeholder="Describe the expense in detail (min. 10 characters)"
@@ -92,10 +93,10 @@
 
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class='bx bx-save me-1'></i> Save Expense
+                                    <i class='bx bx-save me-1'></i> {{ __('general.save') }}
                                 </button>
                                 <a href="{{ route('owner.financial.index') }}" class="btn btn-label-secondary">
-                                    <i class='bx bx-x me-1'></i> Cancel
+                                    <i class='bx bx-x me-1'></i> {{ __('general.cancel') }}
                                 </a>
                             </div>
                         </form>
@@ -108,7 +109,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h6 class="card-title mb-0">
-                            <i class='bx bx-info-circle me-1'></i> Information
+                            <i class='bx bx-info-circle me-1'></i> {{ __('general.info') }}
                         </h6>
                     </div>
                     <div class="card-body">
@@ -129,7 +130,7 @@
                 <div class="card mt-3">
                     <div class="card-header">
                         <h6 class="card-title mb-0">
-                            <i class='bx bx-calendar me-1'></i> This Month's Expenses
+                            <i class='bx bx-calendar me-1'></i> {{ __('financial.this_month') }}
                         </h6>
                     </div>
                     <div class="card-body">

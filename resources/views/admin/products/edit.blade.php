@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Edit Produk')
+@section('title', __('products.edit_product'))
 
 @push('styles')
     <style>
@@ -50,7 +50,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
-                        <i class="bx bx-edit me-2"></i>Edit Produk: {{ $product->name }}
+                        <i class="bx bx-edit me-2"></i>{{ __('products.edit_product') }}: {{ $product->name }}
                     </h5>
                     <span class="badge bg-label-info">SKU: {{ $product->sku }}</span>
                 </div>
@@ -65,12 +65,12 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <h6 class="text-primary mb-3">
-                                    <i class="bx bx-info-circle me-1"></i>Informasi Dasar
+                                    <i class="bx bx-info-circle me-1"></i>{{ __('products.product_details') }}
                                 </h6>
 
                                 <div class="mb-3">
                                     <label for="name" class="form-label">
-                                        Nama Produk <span class="text-danger">*</span>
+                                        {{ __('products.product_name') }} <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                                         id="name" name="name" value="{{ old('name', $product->name) }}" required
@@ -84,11 +84,11 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="category_id" class="form-label">
-                                                Kategori <span class="text-danger">*</span>
+                                                {{ __('products.product_category') }} <span class="text-danger">*</span>
                                             </label>
                                             <select class="form-select @error('category_id') is-invalid @enderror"
                                                 id="category_id" name="category_id" required>
-                                                <option value="">Pilih Kategori</option>
+                                                <option value="">{{ __('categories.all_categories') }}</option>
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category->id }}"
                                                         {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
@@ -105,7 +105,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="type" class="form-label">
-                                                Tipe Produk <span class="text-danger">*</span>
+                                                {{ __('general.type') }} <span class="text-danger">*</span>
                                             </label>
                                             <select class="form-select @error('type') is-invalid @enderror" id="type"
                                                 name="type" required>
@@ -130,7 +130,8 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">Deskripsi Produk</label>
+                                    <label for="description"
+                                        class="form-label">{{ __('products.product_description') }}</label>
                                     <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
                                         rows="4">{{ old('description', $product->description) }}</textarea>
                                     @error('description')
@@ -142,7 +143,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="weight" class="form-label">
-                                                Berat (gram) <span class="text-danger">*</span>
+                                                {{ __('products.weight') }} (gram) <span class="text-danger">*</span>
                                             </label>
                                             <input type="number" class="form-control @error('weight') is-invalid @enderror"
                                                 id="weight" name="weight" value="{{ old('weight', $product->weight) }}"

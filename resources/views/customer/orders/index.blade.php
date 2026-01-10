@@ -2,14 +2,14 @@
 
 @extends('layouts.app')
 
-@section('title', 'Pesanan Saya')
+@section('title', __('orders.my_orders'))
 
 @section('content')
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4><i class="bx bx-shopping-bag me-2"></i>Pesanan Saya</h4>
+        <h4><i class="bx bx-shopping-bag me-2"></i>{{ __('orders.my_orders') }}</h4>
         <a href="{{ route('catalog.index') }}" class="btn btn-primary btn-sm">
-            <i class="bx bx-shopping-bag me-1"></i>Belanja Lagi
+            <i class="bx bx-shopping-bag me-1"></i>{{ __('orders.shop_again') }}
         </a>
     </div>
 
@@ -18,27 +18,34 @@
         <div class="card-body py-2">
             <form method="GET" class="row g-2 align-items-center">
                 <div class="col-auto">
-                    <label class="col-form-label col-form-label-sm">Filter Status:</label>
+                    <label class="col-form-label col-form-label-sm">{{ __('orders.filter_status') }}:</label>
                 </div>
                 <div class="col-auto">
                     <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
-                        <option value="">Semua Status</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Approval
+                        <option value="">{{ __('orders.all_status') }}</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
+                            {{ __('orders.status_pending') }}
                         </option>
-                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Menunggu Pembayaran
+                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>
+                            {{ __('orders.status_approved') }}
                         </option>
-                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
-                        <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Sudah Dibayar</option>
-                        <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Sedang Diproses
+                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>
+                            {{ __('orders.status_rejected') }}</option>
+                        <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>
+                            {{ __('orders.status_paid') }}</option>
+                        <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>
+                            {{ __('orders.status_processing') }}
                         </option>
-                        <option value="shipped" {{ request('status') == 'shipped' ? 'selected' : '' }}>Dalam Pengiriman
+                        <option value="shipped" {{ request('status') == 'shipped' ? 'selected' : '' }}>
+                            {{ __('orders.status_shipped') }}
                         </option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>
+                            {{ __('orders.status_completed') }}</option>
                     </select>
                 </div>
                 <div class="col-auto">
                     <a href="{{ route('customer.orders.index') }}" class="btn btn-sm btn-secondary">
-                        <i class="bx bx-reset"></i> Reset
+                        <i class="bx bx-reset"></i> {{ __('general.reset') }}
                     </a>
                 </div>
             </form>
@@ -69,16 +76,17 @@
                             </div>
                         @endforeach
                         @if ($order->items->count() > 3)
-                            <small class="text-muted">+ {{ $order->items->count() - 3 }} produk lainnya</small>
+                            <small class="text-muted">+ {{ $order->items->count() - 3 }}
+                                {{ __('orders.other_products') }}</small>
                         @endif
                     </div>
 
                     <div class="col-md-4 text-end">
-                        <h6 class="mb-2">Total Pembayaran</h6>
+                        <h6 class="mb-2">{{ __('payments.total_payment') }}</h6>
                         <h5 class="text-primary mb-3">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</h5>
 
                         <a href="{{ route('customer.orders.show', $order) }}" class="btn btn-primary btn-sm">
-                            <i class="bx bx-show me-1"></i>Lihat Detail
+                            <i class="bx bx-show me-1"></i>{{ __('general.view_detail') }}
                         </a>
                     </div>
                 </div>
@@ -89,65 +97,65 @@
                         <div class="alert alert-warning py-2 mb-2">
                             <small>
                                 <i class="bx bx-time me-1"></i>
-                                Pesanan menunggu persetujuan dari Owner
+                                {{ __('orders.waiting_approval') }}
                             </small>
                         </div>
                         <form action="{{ route('customer.orders.cancel', $order) }}" method="POST" class="d-inline"
-                            onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?')">
+                            onsubmit="return confirm('{{ __('orders.confirm_cancel') }}')">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-outline-danger">
-                                <i class="bx bx-x-circle me-1"></i>Batalkan Pesanan
+                                <i class="bx bx-x-circle me-1"></i>{{ __('orders.cancel_order') }}
                             </button>
                         </form>
                     @elseif($order->isApproved() && !$order->hasPayment())
                         <div class="alert alert-success py-2 mb-2">
                             <small>
                                 <i class="bx bx-check-circle me-1"></i>
-                                Pesanan disetujui! Silakan upload bukti pembayaran
+                                {{ __('orders.order_approved_upload') }}
                             </small>
                         </div>
                     @elseif($order->isApproved() && $order->payment?->isPending())
                         <div class="alert alert-info py-2 mb-2">
                             <small>
                                 <i class="bx bx-time-five me-1"></i>
-                                Bukti pembayaran sedang diverifikasi
+                                {{ __('orders.payment_verifying') }}
                             </small>
                         </div>
                     @elseif($order->isApproved() && $order->payment?->isRejected())
                         <div class="alert alert-danger py-2 mb-2">
                             <small>
                                 <i class="bx bx-x-circle me-1"></i>
-                                <strong>Pembayaran ditolak!</strong> Silakan upload ulang bukti pembayaran
+                                <strong>{{ __('orders.payment_rejected') }}!</strong> {{ __('orders.please_reupload') }}
                             </small>
                         </div>
                     @elseif($order->isRejected())
                         <div class="alert alert-danger py-2 mb-0">
                             <small>
                                 <i class="bx bx-x-circle me-1"></i>
-                                <strong>Alasan:</strong> {{ $order->rejection_reason }}
+                                <strong>{{ __('orders.rejection_reason') }}:</strong> {{ $order->rejection_reason }}
                             </small>
                         </div>
                     @elseif($order->isPaid())
                         <div class="alert alert-info py-2 mb-0">
                             <small>
                                 <i class="bx bx-credit-card me-1"></i>
-                                Pembayaran terverifikasi. Menunggu diproses.
+                                {{ __('orders.payment_verified_processing') }}
                             </small>
                         </div>
                     @elseif($order->isProcessing())
                         <div class="alert alert-primary py-2 mb-0">
                             <small>
                                 <i class="bx bx-box me-1"></i>
-                                Pesanan sedang dikemas.
+                                {{ __('orders.being_packed') }}
                             </small>
                         </div>
                     @elseif($order->isShipped())
                         <div class="alert alert-info py-2 mb-0">
                             <small>
                                 <i class="bx bx-truck me-1"></i>
-                                Pesanan dalam pengiriman.
+                                {{ __('orders.in_delivery') }}
                                 @if ($order->tracking_number)
-                                    <br><strong>Resi:</strong> {{ $order->tracking_number }}
+                                    <br><strong>{{ __('orders.tracking_number') }}:</strong> {{ $order->tracking_number }}
                                 @endif
                             </small>
                         </div>
@@ -155,7 +163,7 @@
                         <div class="alert alert-success py-2 mb-0">
                             <small>
                                 <i class="bx bx-check-double me-1"></i>
-                                Pesanan selesai. Terima kasih!
+                                {{ __('orders.order_completed_thanks') }}
                             </small>
                         </div>
                     @endif
@@ -166,10 +174,10 @@
         <div class="card">
             <div class="card-body text-center py-5">
                 <i class="bx bx-shopping-bag bx-lg text-muted mb-3"></i>
-                <h5>Belum Ada Pesanan</h5>
-                <p class="text-muted">Anda belum memiliki pesanan. Mulai belanja sekarang!</p>
+                <h5>{{ __('orders.no_orders_yet') }}</h5>
+                <p class="text-muted">{{ __('orders.no_orders_message') }}</p>
                 <a href="{{ route('catalog.index') }}" class="btn btn-primary">
-                    <i class="bx bx-shopping-bag me-1"></i>Mulai Belanja
+                    <i class="bx bx-shopping-bag me-1"></i>{{ __('orders.start_shopping') }}
                 </a>
             </div>
         </div>

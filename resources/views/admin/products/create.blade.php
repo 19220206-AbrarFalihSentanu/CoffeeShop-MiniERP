@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Tambah Produk')
+@section('title', __('products.add_product'))
 
 @push('styles')
     <style>
@@ -50,7 +50,7 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">
-                        <i class="bx bx-plus-circle me-2"></i>Tambah Produk Baru
+                        <i class="bx bx-plus-circle me-2"></i>{{ __('products.create_product') }}
                     </h5>
                 </div>
 
@@ -63,12 +63,12 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <h6 class="text-primary mb-3">
-                                    <i class="bx bx-info-circle me-1"></i>Informasi Dasar
+                                    <i class="bx bx-info-circle me-1"></i>{{ __('products.product_details') }}
                                 </h6>
 
                                 <div class="mb-3">
                                     <label for="name" class="form-label">
-                                        Nama Produk <span class="text-danger">*</span>
+                                        {{ __('products.product_name') }} <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                                         id="name" name="name" value="{{ old('name') }}"
@@ -82,11 +82,11 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="category_id" class="form-label">
-                                                Kategori <span class="text-danger">*</span>
+                                                {{ __('products.product_category') }} <span class="text-danger">*</span>
                                             </label>
                                             <select class="form-select @error('category_id') is-invalid @enderror"
                                                 id="category_id" name="category_id" required>
-                                                <option value="">Pilih Kategori</option>
+                                                <option value="">{{ __('categories.all_categories') }}</option>
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category->id }}"
                                                         {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -103,11 +103,12 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="type" class="form-label">
-                                                Tipe Produk <span class="text-danger">*</span>
+                                                {{ __('general.type') }} <span class="text-danger">*</span>
                                             </label>
                                             <select class="form-select @error('type') is-invalid @enderror" id="type"
                                                 name="type" required>
-                                                <option value="">Pilih Tipe</option>
+                                                <option value="">{{ __('general.select') }} {{ __('general.type') }}
+                                                </option>
                                                 <option value="whole_bean"
                                                     {{ old('type') == 'whole_bean' ? 'selected' : '' }}>
                                                     Whole Bean (Biji Utuh)
@@ -127,9 +128,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">Deskripsi Produk</label>
+                                    <label for="description"
+                                        class="form-label">{{ __('products.product_description') }}</label>
                                     <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
-                                        rows="4" placeholder="Deskripsi lengkap tentang produk ini...">{{ old('description') }}</textarea>
+                                        rows="4" placeholder="{{ __('products.product_description') }}">{{ old('description') }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -141,7 +143,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="weight" class="form-label">
-                                                Berat (gram) <span class="text-danger">*</span>
+                                                {{ __('products.weight') }} (gram) <span class="text-danger">*</span>
                                             </label>
                                             <input type="number" class="form-control @error('weight') is-invalid @enderror"
                                                 id="weight" name="weight" value="{{ old('weight') }}" placeholder="250"
@@ -155,7 +157,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="unit" class="form-label">
-                                                Satuan <span class="text-danger">*</span>
+                                                {{ __('products.product_unit') }} <span class="text-danger">*</span>
                                             </label>
                                             <select class="form-select @error('unit') is-invalid @enderror" id="unit"
                                                 name="unit" required>
@@ -175,7 +177,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="min_order_qty" class="form-label">
-                                                Min. Order
+                                                {{ __('products.min_order') }}
                                             </label>
                                             <input type="number"
                                                 class="form-control @error('min_order_qty') is-invalid @enderror"
@@ -211,7 +213,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="cost_price" class="form-label">
-                                                Harga Modal / HPP (Rp) <span class="text-danger">*</span>
+                                                {{ __('products.cost_price') }} (Rp) <span class="text-danger">*</span>
                                             </label>
                                             <input type="number"
                                                 class="form-control @error('cost_price') is-invalid @enderror"
@@ -229,7 +231,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="price" class="form-label">
-                                                Harga Jual (Rp) <span class="text-danger">*</span>
+                                                {{ __('products.selling_price') }} (Rp) <span class="text-danger">*</span>
                                             </label>
                                             <input type="number"
                                                 class="form-control @error('price') is-invalid @enderror" id="price"
@@ -257,11 +259,12 @@
                             {{-- Upload Gambar --}}
                             <div class="col-md-4">
                                 <h6 class="text-primary mb-3">
-                                    <i class="bx bx-image me-1"></i>Gambar Produk
+                                    <i class="bx bx-image me-1"></i>{{ __('products.product_image') }}
                                 </h6>
 
                                 <div class="mb-3">
-                                    <label for="image" class="form-label">Upload Gambar</label>
+                                    <label for="image" class="form-label">{{ __('general.upload') }}
+                                        {{ __('general.image') }}</label>
                                     <div class="image-preview mb-2" id="imagePreview"
                                         onclick="document.getElementById('image').click()">
                                         <div class="image-preview-placeholder">

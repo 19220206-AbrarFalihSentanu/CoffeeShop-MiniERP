@@ -150,6 +150,54 @@ class SettingSeeder extends Seeder
                 'group' => 'landing_page',
                 'description' => 'Email kontak landing page'
             ],
+
+            // Contact Section Settings
+            [
+                'key' => 'landing_contact_title',
+                'value' => 'Hubungi Kami',
+                'type' => 'text',
+                'group' => 'landing_page',
+                'description' => 'Judul section kontak'
+            ],
+            [
+                'key' => 'landing_contact_subtitle',
+                'value' => 'Kami siap membantu Anda mendapatkan kopi terbaik untuk bisnis Anda',
+                'type' => 'textarea',
+                'group' => 'landing_page',
+                'description' => 'Subjudul section kontak'
+            ],
+
+            // Partner Section Settings
+            [
+                'key' => 'landing_partner_title',
+                'value' => 'Partner Kami',
+                'type' => 'text',
+                'group' => 'landing_page',
+                'description' => 'Judul section partner'
+            ],
+            [
+                'key' => 'landing_partner_subtitle',
+                'value' => 'Kami bangga bekerja sama dengan berbagai partner terpercaya',
+                'type' => 'textarea',
+                'group' => 'landing_page',
+                'description' => 'Subjudul section partner'
+            ],
+
+            // Product Section Settings
+            [
+                'key' => 'landing_product_title',
+                'value' => 'Produk Kami',
+                'type' => 'text',
+                'group' => 'landing_page',
+                'description' => 'Judul section produk'
+            ],
+            [
+                'key' => 'landing_product_subtitle',
+                'value' => 'Berbagai pilihan kopi berkualitas tinggi untuk kebutuhan Anda',
+                'type' => 'textarea',
+                'group' => 'landing_page',
+                'description' => 'Subjudul section produk'
+            ],
         ];
 
         foreach ($settings as $setting) {

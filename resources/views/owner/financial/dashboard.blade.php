@@ -1,7 +1,7 @@
 {{-- File: resources/views/owner/financial/dashboard.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Financial Dashboard')
+@section('title', __('financial.financial_dashboard'))
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -9,19 +9,19 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="fw-bold mb-2">
-                    <span class="text-muted fw-light">Financial /</span> Dashboard
+                    <span class="text-muted fw-light">{{ __('financial.financial') }} /</span> {{ __('general.dashboard') }}
                 </h4>
                 <p class="text-muted mb-0">
-                    Period: {{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} -
+                    {{ __('financial.date_range') }}: {{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} -
                     {{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}
                 </p>
             </div>
             <div>
                 <a href="{{ route('owner.financial.index') }}" class="btn btn-label-primary me-2">
-                    <i class='bx bx-list-ul me-1'></i> View All Logs
+                    <i class='bx bx-list-ul me-1'></i> {{ __('financial.financial_logs') }}
                 </a>
                 <a href="{{ route('owner.financial.expense.create') }}" class="btn btn-primary">
-                    <i class='bx bx-plus me-1'></i> Add Expense
+                    <i class='bx bx-plus me-1'></i> {{ __('financial.add_expense') }}
                 </a>
             </div>
         </div>
@@ -31,16 +31,16 @@
             <div class="card-body">
                 <form method="GET" action="{{ route('owner.financial.dashboard') }}" class="row g-3">
                     <div class="col-md-5">
-                        <label class="form-label">Start Date</label>
+                        <label class="form-label">{{ __('financial.start_date') }}</label>
                         <input type="date" name="start_date" class="form-control" value="{{ $startDate }}" required>
                     </div>
                     <div class="col-md-5">
-                        <label class="form-label">End Date</label>
+                        <label class="form-label">{{ __('financial.end_date') }}</label>
                         <input type="date" name="end_date" class="form-control" value="{{ $endDate }}" required>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button type="submit" class="btn btn-primary w-100">
-                            <i class='bx bx-search me-1'></i> Filter
+                            <i class='bx bx-search me-1'></i> {{ __('general.filter') }}
                         </button>
                     </div>
                 </form>
@@ -54,7 +54,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="card-title mb-0">
-                                <h5 class="mb-0">Total Income</h5>
+                                <h5 class="mb-0">{{ __('financial.total_income') }}</h5>
                             </div>
                             <div class="avatar flex-shrink-0">
                                 <span class="avatar-initial rounded bg-label-success">
@@ -63,7 +63,8 @@
                             </div>
                         </div>
                         <h3 class="mb-2 text-success">Rp {{ number_format($stats['total_income'], 0, ',', '.') }}</h3>
-                        <small class="text-muted">Period: {{ \Carbon\Carbon::parse($startDate)->format('d M') }} -
+                        <small class="text-muted">{{ __('financial.date_range') }}:
+                            {{ \Carbon\Carbon::parse($startDate)->format('d M') }} -
                             {{ \Carbon\Carbon::parse($endDate)->format('d M') }}</small>
                     </div>
                 </div>
@@ -74,7 +75,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="card-title mb-0">
-                                <h5 class="mb-0">Total Expense</h5>
+                                <h5 class="mb-0">{{ __('financial.total_expense') }}</h5>
                             </div>
                             <div class="avatar flex-shrink-0">
                                 <span class="avatar-initial rounded bg-label-danger">
@@ -83,7 +84,8 @@
                             </div>
                         </div>
                         <h3 class="mb-2 text-danger">Rp {{ number_format($stats['total_expense'], 0, ',', '.') }}</h3>
-                        <small class="text-muted">Period: {{ \Carbon\Carbon::parse($startDate)->format('d M') }} -
+                        <small class="text-muted">{{ __('financial.date_range') }}:
+                            {{ \Carbon\Carbon::parse($startDate)->format('d M') }} -
                             {{ \Carbon\Carbon::parse($endDate)->format('d M') }}</small>
                     </div>
                 </div>
@@ -94,7 +96,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="card-title mb-0">
-                                <h5 class="mb-0">Net Profit</h5>
+                                <h5 class="mb-0">{{ __('financial.net_profit') }}</h5>
                             </div>
                             <div class="avatar flex-shrink-0">
                                 <span
@@ -106,7 +108,7 @@
                         <h3 class="mb-2 text-{{ $stats['net_profit'] >= 0 ? 'success' : 'danger' }}">
                             Rp {{ number_format($stats['net_profit'], 0, ',', '.') }}
                         </h3>
-                        <small class="text-muted">Income - Expense</small>
+                        <small class="text-muted">{{ __('financial.income') }} - {{ __('financial.expense') }}</small>
                     </div>
                 </div>
             </div>
@@ -116,7 +118,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="card-title mb-0">
-                                <h5 class="mb-0">Total Orders</h5>
+                                <h5 class="mb-0">{{ __('orders.orders') }}</h5>
                             </div>
                             <div class="avatar flex-shrink-0">
                                 <span class="avatar-initial rounded bg-label-info">
@@ -125,7 +127,7 @@
                             </div>
                         </div>
                         <h3 class="mb-2">{{ $stats['total_orders'] }}</h3>
-                        <small class="text-muted">Approved orders</small>
+                        <small class="text-muted">{{ __('general.approved') }}</small>
                     </div>
                 </div>
             </div>
@@ -137,7 +139,7 @@
             <div class="col-lg-8 mb-4">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h5 class="card-title mb-0">Monthly Trend (Last 6 Months)</h5>
+                        <h5 class="card-title mb-0">{{ __('financial.monthly_report') }}</h5>
                     </div>
                     <div class="card-body">
                         <canvas id="monthlyTrendChart" height="300"></canvas>
@@ -149,7 +151,7 @@
             <div class="col-lg-4 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Income by Category</h5>
+                        <h5 class="card-title mb-0">{{ __('financial.income') }} {{ __('general.category') }}</h5>
                     </div>
                     <div class="card-body">
                         <canvas id="incomeCategoryChart"></canvas>
@@ -163,7 +165,7 @@
             <div class="col-lg-4 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Expense by Category</h5>
+                        <h5 class="card-title mb-0">{{ __('financial.expense') }} {{ __('general.category') }}</h5>
                     </div>
                     <div class="card-body">
                         <canvas id="expenseCategoryChart"></canvas>
@@ -174,7 +176,7 @@
             <div class="col-lg-8 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Top 5 Best Selling Products</h5>
+                        <h5 class="card-title mb-0">{{ __('products.products') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -182,9 +184,9 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name</th>
-                                        <th class="text-end">Quantity Sold</th>
-                                        <th class="text-end">Total Revenue</th>
+                                        <th>{{ __('products.product_name') }}</th>
+                                        <th class="text-end">{{ __('general.quantity') }}</th>
+                                        <th class="text-end">{{ __('general.total') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -198,7 +200,8 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center text-muted">No data available</td>
+                                            <td colspan="4" class="text-center text-muted">{{ __('general.no_data') }}
+                                            </td>
                                         </tr>
                                     @endforelse
                                 </tbody>

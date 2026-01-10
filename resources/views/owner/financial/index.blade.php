@@ -1,7 +1,7 @@
 {{-- File: resources/views/owner/financial/index.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Financial Logs')
+@section('title', __('financial.financial_logs'))
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -9,15 +9,16 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h4 class="fw-bold mb-2">
-                    <span class="text-muted fw-light">Financial /</span> All Logs
+                    <span class="text-muted fw-light">{{ __('financial.financial') }} /</span>
+                    {{ __('financial.financial_logs') }}
                 </h4>
             </div>
             <div>
                 <a href="{{ route('owner.financial.dashboard') }}" class="btn btn-label-primary me-2">
-                    <i class='bx bx-line-chart me-1'></i> Dashboard
+                    <i class='bx bx-line-chart me-1'></i> {{ __('general.dashboard') }}
                 </a>
                 <a href="{{ route('owner.financial.expense.create') }}" class="btn btn-primary">
-                    <i class='bx bx-plus me-1'></i> Add Expense
+                    <i class='bx bx-plus me-1'></i> {{ __('financial.add_expense') }}
                 </a>
             </div>
         </div>
@@ -27,21 +28,21 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <h6 class="text-muted mb-1">Total Income</h6>
+                        <h6 class="text-muted mb-1">{{ __('financial.total_income') }}</h6>
                         <h4 class="text-success mb-0">Rp {{ number_format($totals['income'], 0, ',', '.') }}</h4>
                     </div>
                     <div class="col-md-3">
-                        <h6 class="text-muted mb-1">Total Expense</h6>
+                        <h6 class="text-muted mb-1">{{ __('financial.total_expense') }}</h6>
                         <h4 class="text-danger mb-0">Rp {{ number_format($totals['expense'], 0, ',', '.') }}</h4>
                     </div>
                     <div class="col-md-3">
-                        <h6 class="text-muted mb-1">Net Profit/Loss</h6>
+                        <h6 class="text-muted mb-1">{{ __('financial.net_profit') }}</h6>
                         <h4 class="text-{{ $totals['net'] >= 0 ? 'success' : 'danger' }} mb-0">
                             Rp {{ number_format($totals['net'], 0, ',', '.') }}
                         </h4>
                     </div>
                     <div class="col-md-3">
-                        <h6 class="text-muted mb-1">Total Transactions</h6>
+                        <h6 class="text-muted mb-1">{{ __('financial.all_transactions') }}</h6>
                         <h4 class="mb-0">{{ $logs->total() }}</h4>
                     </div>
                 </div>
@@ -53,17 +54,19 @@
             <div class="card-body">
                 <form method="GET" action="{{ route('owner.financial.index') }}" class="row g-3">
                     <div class="col-md-2">
-                        <label class="form-label">Type</label>
+                        <label class="form-label">{{ __('general.type') }}</label>
                         <select name="type" class="form-select">
-                            <option value="">All Types</option>
-                            <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Income</option>
-                            <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>Expense</option>
+                            <option value="">{{ __('general.all') }} {{ __('general.type') }}</option>
+                            <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>
+                                {{ __('financial.income') }}</option>
+                            <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>
+                                {{ __('financial.expense') }}</option>
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Category</label>
+                        <label class="form-label">{{ __('general.category') }}</label>
                         <select name="category" class="form-select">
-                            <option value="">All Categories</option>
+                            <option value="">{{ __('categories.all_categories') }}</option>
                             @foreach ($categories as $cat)
                                 <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>
                                     {{ ucfirst($cat) }}
@@ -72,17 +75,17 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">Start Date</label>
+                        <label class="form-label">{{ __('financial.start_date') }}</label>
                         <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label">End Date</label>
+                        <label class="form-label">{{ __('financial.end_date') }}</label>
                         <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Search</label>
-                        <input type="text" name="search" class="form-control" placeholder="Search description..."
-                            value="{{ request('search') }}">
+                        <label class="form-label">{{ __('general.search') }}</label>
+                        <input type="text" name="search" class="form-control"
+                            placeholder="{{ __('general.search') }}..." value="{{ request('search') }}">
                     </div>
                     <div class="col-md-1 d-flex align-items-end">
                         <button type="submit" class="btn btn-primary w-100">
@@ -99,14 +102,14 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th class="text-end">Amount</th>
-                            <th>Created By</th>
-                            <th>Reference</th>
-                            <th>Actions</th>
+                            <th>{{ __('general.date') }}</th>
+                            <th>{{ __('general.type') }}</th>
+                            <th>{{ __('general.category') }}</th>
+                            <th>{{ __('general.description') }}</th>
+                            <th class="text-end">{{ __('general.amount') }}</th>
+                            <th>{{ __('general.created_at') }}</th>
+                            <th>{{ __('financial.reference') }}</th>
+                            <th>{{ __('general.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -166,7 +169,7 @@
                                 <td colspan="8" class="text-center py-5">
                                     <div class="text-muted">
                                         <i class='bx bx-file bx-lg'></i>
-                                        <p class="mt-2">No financial logs found</p>
+                                        <p class="mt-2">{{ __('financial.no_transactions') }}</p>
                                     </div>
                                 </td>
                             </tr>

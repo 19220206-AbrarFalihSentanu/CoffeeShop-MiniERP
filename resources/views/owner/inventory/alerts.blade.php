@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Stock Alerts')
+@section('title', __('inventory.stock_alerts'))
 
 @section('content')
     <div class="row">
@@ -10,10 +10,10 @@
             {{-- Header --}}
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4>
-                    <i class="bx bx-bell text-warning me-2"></i>Stock Alerts & Notifications
+                    <i class="bx bx-bell text-warning me-2"></i>{{ __('inventory.stock_alerts') }}
                 </h4>
                 <a href="{{ route('owner.inventory.index') }}" class="btn btn-secondary btn-sm">
-                    <i class="bx bx-arrow-back me-1"></i>Kembali
+                    <i class="bx bx-arrow-back me-1"></i>{{ __('general.back') }}
                 </a>
             </div>
 
@@ -25,10 +25,10 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <h6 class="text-white mb-1">
-                                        <i class="bx bx-error-circle me-1"></i>Stok Menipis
+                                        <i class="bx bx-error-circle me-1"></i>{{ __('inventory.low_stock') }}
                                     </h6>
                                     <h2 class="mb-0">{{ $lowStockProducts->count() }}</h2>
-                                    <small>Produk memerlukan restocking</small>
+                                    <small>{{ __('inventory.low_stock_warning') }}</small>
                                 </div>
                                 <div>
                                     <i class="bx bx-error bx-lg"></i>
@@ -44,10 +44,10 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <h6 class="text-white mb-1">
-                                        <i class="bx bx-x-circle me-1"></i>Stok Habis
+                                        <i class="bx bx-x-circle me-1"></i>{{ __('inventory.out_of_stock') }}
                                     </h6>
                                     <h2 class="mb-0">{{ $outOfStockProducts->count() }}</h2>
-                                    <small>Produk tidak tersedia untuk dijual</small>
+                                    <small>{{ __('inventory.out_of_stock_warning') }}</small>
                                 </div>
                                 <div>
                                     <i class="bx bx-package bx-lg"></i>
@@ -63,7 +63,7 @@
                 <div class="card mb-4">
                     <div class="card-header bg-warning">
                         <h5 class="mb-0 text-white">
-                            <i class="bx bx-error me-1"></i>Produk dengan Stok Menipis
+                            <i class="bx bx-error me-1"></i>{{ __('inventory.low_stock') }}
                         </h5>
                     </div>
                     <div class="card-body">
@@ -71,15 +71,15 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th style="width: 60px">Gambar</th>
-                                        <th>Produk</th>
-                                        <th>SKU</th>
-                                        <th>Kategori</th>
-                                        <th>Stok Tersedia</th>
-                                        <th>Min. Stok</th>
-                                        <th>Persentase</th>
-                                        <th>Status</th>
-                                        <th style="width: 150px">Aksi</th>
+                                        <th style="width: 60px">{{ __('general.image') }}</th>
+                                        <th>{{ __('products.product') }}</th>
+                                        <th>{{ __('inventory.sku') }}</th>
+                                        <th>{{ __('general.category') }}</th>
+                                        <th>{{ __('inventory.available_stock') }}</th>
+                                        <th>{{ __('inventory.minimum_stock') }}</th>
+                                        <th>%</th>
+                                        <th>{{ __('general.status') }}</th>
+                                        <th style="width: 150px">{{ __('general.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -161,29 +161,28 @@
                 <div class="card">
                     <div class="card-header bg-danger">
                         <h5 class="mb-0 text-white">
-                            <i class="bx bx-x-circle me-1"></i>Produk Habis Stok
+                            <i class="bx bx-x-circle me-1"></i>{{ __('inventory.out_of_stock') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="alert alert-danger">
                             <i class="bx bx-error-circle me-1"></i>
-                            <strong>Peringatan!</strong> Produk-produk berikut tidak tersedia untuk dijual dan perlu
-                            segera direstock.
+                            <strong>{{ __('general.warning') }}!</strong> {{ __('inventory.out_of_stock_warning') }}
                         </div>
 
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th style="width: 60px">Gambar</th>
-                                        <th>Produk</th>
-                                        <th>SKU</th>
-                                        <th>Kategori</th>
-                                        <th>Stok Total</th>
-                                        <th>Reserved</th>
-                                        <th>Tersedia</th>
-                                        <th>Status Produk</th>
-                                        <th style="width: 150px">Aksi</th>
+                                        <th style="width: 60px">{{ __('general.image') }}</th>
+                                        <th>{{ __('products.product') }}</th>
+                                        <th>{{ __('inventory.sku') }}</th>
+                                        <th>{{ __('general.category') }}</th>
+                                        <th>{{ __('inventory.stock') }}</th>
+                                        <th>{{ __('inventory.reserved_stock') }}</th>
+                                        <th>{{ __('inventory.available_stock') }}</th>
+                                        <th>{{ __('general.status') }}</th>
+                                        <th style="width: 150px">{{ __('general.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -252,10 +251,10 @@
                 <div class="card">
                     <div class="card-body text-center py-5">
                         <i class="bx bx-check-circle bx-lg text-success mb-3"></i>
-                        <h4>Tidak Ada Stock Alert</h4>
-                        <p class="text-muted">Semua produk memiliki stok yang mencukupi. Kerja bagus! 🎉</p>
+                        <h4>{{ __('inventory.no_alerts') }}</h4>
+                        <p class="text-muted">{{ __('inventory.in_stock') }} 🎉</p>
                         <a href="{{ route('owner.inventory.index') }}" class="btn btn-primary mt-2">
-                            <i class="bx bx-package me-1"></i>Lihat Semua Inventory
+                            <i class="bx bx-package me-1"></i>{{ __('inventory.inventory') }}
                         </a>
                     </div>
                 </div>

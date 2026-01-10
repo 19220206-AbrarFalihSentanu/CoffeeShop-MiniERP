@@ -2,20 +2,20 @@
 
 @extends('layouts.app')
 
-@section('title', 'Riwayat Inventory')
+@section('title', __('inventory.inventory_logs'))
 
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">
-                <i class="bx bx-history me-2"></i>Riwayat Perubahan Inventory
+                <i class="bx bx-history me-2"></i>{{ __('inventory.inventory_logs') }}
             </h5>
             <div>
                 <a href="{{ route('owner.inventory.index') }}" class="btn btn-secondary btn-sm">
-                    <i class="bx bx-arrow-back me-1"></i>Kembali
+                    <i class="bx bx-arrow-back me-1"></i>{{ __('general.back') }}
                 </a>
                 <a href="{{ route('owner.inventory.export') }}" class="btn btn-success btn-sm">
-                    <i class="bx bx-download me-1"></i>Export
+                    <i class="bx bx-download me-1"></i>{{ __('general.export') }}
                 </a>
             </div>
         </div>
@@ -25,9 +25,9 @@
             <form method="GET" class="mb-3">
                 <div class="row g-2">
                     <div class="col-md-3">
-                        <label class="form-label small">Produk</label>
+                        <label class="form-label small">{{ __('products.product') }}</label>
                         <select name="product_id" class="form-select form-select-sm">
-                            <option value="">Semua Produk</option>
+                            <option value="">{{ __('products.all_categories') }}</option>
                             @foreach ($products as $prod)
                                 <option value="{{ $prod->id }}"
                                     {{ request('product_id') == $prod->id ? 'selected' : '' }}>
@@ -38,33 +38,36 @@
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small">Tipe</label>
+                        <label class="form-label small">{{ __('general.type') }}</label>
                         <select name="type" class="form-select form-select-sm">
-                            <option value="">Semua Tipe</option>
-                            <option value="in" {{ request('type') == 'in' ? 'selected' : '' }}>Stock In</option>
-                            <option value="out" {{ request('type') == 'out' ? 'selected' : '' }}>Stock Out</option>
+                            <option value="">{{ __('general.all') }}</option>
+                            <option value="in" {{ request('type') == 'in' ? 'selected' : '' }}>
+                                {{ __('inventory.stock_in') }}</option>
+                            <option value="out" {{ request('type') == 'out' ? 'selected' : '' }}>
+                                {{ __('inventory.stock_out') }}</option>
                             <option value="adjustment" {{ request('type') == 'adjustment' ? 'selected' : '' }}>
-                                Adjustment
+                                {{ __('inventory.adjustment') }}
                             </option>
                         </select>
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small">Dari Tanggal</label>
+                        <label class="form-label small">{{ __('financial.start_date') }}</label>
                         <input type="date" name="start_date" class="form-control form-control-sm"
                             value="{{ request('start_date') }}">
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small">Sampai Tanggal</label>
+                        <label class="form-label small">{{ __('financial.end_date') }}</label>
                         <input type="date" name="end_date" class="form-control form-control-sm"
                             value="{{ request('end_date') }}">
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small">Cari</label>
+                        <label class="form-label small">{{ __('general.search') }}</label>
                         <input type="text" name="search" class="form-control form-control-sm"
-                            placeholder="Reference/Notes..." value="{{ request('search') }}">
+                            placeholder="{{ __('inventory.reference') }}/{{ __('inventory.notes') }}..."
+                            value="{{ request('search') }}">
                     </div>
 
                     <div class="col-md-1">
@@ -81,16 +84,16 @@
                 <table class="table table-hover table-sm">
                     <thead>
                         <tr>
-                            <th style="width: 140px">Tanggal & Waktu</th>
-                            <th>Produk</th>
-                            <th>SKU</th>
-                            <th style="width: 100px">Tipe</th>
-                            <th style="width: 80px">Jumlah</th>
-                            <th style="width: 80px">Before</th>
-                            <th style="width: 80px">After</th>
-                            <th>User</th>
-                            <th>Reference</th>
-                            <th>Catatan</th>
+                            <th style="width: 140px">{{ __('general.date') }}</th>
+                            <th>{{ __('products.product') }}</th>
+                            <th>{{ __('inventory.sku') }}</th>
+                            <th style="width: 100px">{{ __('general.type') }}</th>
+                            <th style="width: 80px">{{ __('general.quantity') }}</th>
+                            <th style="width: 80px">{{ __('general.before') }}</th>
+                            <th style="width: 80px">{{ __('general.after') }}</th>
+                            <th>{{ __('users.users') }}</th>
+                            <th>{{ __('inventory.reference') }}</th>
+                            <th>{{ __('inventory.notes') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -157,7 +160,7 @@
                             <tr>
                                 <td colspan="10" class="text-center py-4">
                                     <i class="bx bx-history bx-lg text-muted"></i>
-                                    <p class="text-muted mt-2">Tidak ada riwayat inventory</p>
+                                    <p class="text-muted mt-2">{{ __('inventory.no_logs') }}</p>
                                 </td>
                             </tr>
                         @endforelse

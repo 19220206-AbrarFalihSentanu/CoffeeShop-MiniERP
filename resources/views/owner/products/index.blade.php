@@ -2,14 +2,14 @@
 
 @extends('layouts.app')
 
-@section('title', 'Kelola Produk')
+@section('title', __('products.manage_products'))
 
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Daftar Produk</h5>
+            <h5 class="mb-0">{{ __('products.product_list') }}</h5>
             <a href="{{ route('owner.products.create') }}" class="btn btn-primary btn-sm">
-                <i class="bx bx-plus me-1"></i> Tambah Produk
+                <i class="bx bx-plus me-1"></i> {{ __('products.add_product') }}
             </a>
         </div>
 
@@ -19,7 +19,7 @@
                 <div class="row g-2">
                     <div class="col-md-3">
                         <select name="category" class="form-select form-select-sm" onchange="this.form.submit()">
-                            <option value="">Semua Kategori</option>
+                            <option value="">{{ __('categories.all_categories') }}</option>
                             @foreach ($categories as $cat)
                                 <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
                                     {{ $cat->name }}
@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-2">
                         <select name="type" class="form-select form-select-sm" onchange="this.form.submit()">
-                            <option value="">Semua Tipe</option>
+                            <option value="">{{ __('general.all') }} {{ __('general.type') }}</option>
                             <option value="whole_bean" {{ request('type') == 'whole_bean' ? 'selected' : '' }}>Whole Bean
                             </option>
                             <option value="ground" {{ request('type') == 'ground' ? 'selected' : '' }}>Ground</option>
@@ -38,20 +38,22 @@
                     </div>
                     <div class="col-md-2">
                         <select name="stock_status" class="form-select form-select-sm" onchange="this.form.submit()">
-                            <option value="">Semua Stok</option>
-                            <option value="low" {{ request('stock_status') == 'low' ? 'selected' : '' }}>Stok Menipis
+                            <option value="">{{ __('inventory.all_status') }}</option>
+                            <option value="low" {{ request('stock_status') == 'low' ? 'selected' : '' }}>
+                                {{ __('inventory.low_stock') }}
                             </option>
-                            <option value="out" {{ request('stock_status') == 'out' ? 'selected' : '' }}>Stok Habis
+                            <option value="out" {{ request('stock_status') == 'out' ? 'selected' : '' }}>
+                                {{ __('inventory.out_of_stock') }}
                             </option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <input type="text" name="search" class="form-control form-control-sm"
-                            placeholder="Cari produk..." value="{{ request('search') }}">
+                            placeholder="{{ __('products.search_products') }}" value="{{ request('search') }}">
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary btn-sm w-100">
-                            <i class="bx bx-search"></i> Cari
+                            <i class="bx bx-search"></i> {{ __('general.search') }}
                         </button>
                     </div>
                 </div>
@@ -62,18 +64,18 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th style="width: 60px">Gambar</th>
-                            <th>SKU</th>
-                            <th>Nama Produk</th>
-                            <th>Kategori</th>
-                            <th>Tipe</th>
-                            <th>Harga Modal</th>
-                            <th>Harga Jual</th>
-                            <th>Margin</th>
-                            <th>Diskon</th>
-                            <th>Stok</th>
-                            <th>Status</th>
-                            <th style="width: 100px">Aksi</th>
+                            <th style="width: 60px">{{ __('general.image') }}</th>
+                            <th>{{ __('inventory.sku') }}</th>
+                            <th>{{ __('products.product_name') }}</th>
+                            <th>{{ __('general.category') }}</th>
+                            <th>{{ __('general.type') }}</th>
+                            <th>{{ __('products.cost_price') }}</th>
+                            <th>{{ __('products.selling_price') }}</th>
+                            <th>{{ __('general.margin') }}</th>
+                            <th>{{ __('general.discount') }}</th>
+                            <th>{{ __('inventory.stock') }}</th>
+                            <th>{{ __('general.status') }}</th>
+                            <th style="width: 100px">{{ __('general.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>

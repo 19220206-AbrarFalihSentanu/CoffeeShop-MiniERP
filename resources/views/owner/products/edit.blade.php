@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Edit Produk')
+@section('title', __('products.edit_product'))
 
 @push('styles')
     <style>
@@ -50,9 +50,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
-                        <i class="bx bx-edit me-2"></i>Edit Produk: {{ $product->name }}
+                        <i class="bx bx-edit me-2"></i>{{ __('products.edit_product') }}: {{ $product->name }}
                     </h5>
-                    <span class="badge bg-label-info">SKU: {{ $product->sku }}</span>
+                    <span class="badge bg-label-info">{{ __('inventory.sku') }}: {{ $product->sku }}</span>
                 </div>
 
                 <div class="card-body">

@@ -2,14 +2,14 @@
 
 @extends('layouts.app')
 
-@section('title', 'Kelola Users')
+@section('title', __('users.manage_users'))
 
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Daftar Users</h5>
+            <h5 class="mb-0">{{ __('users.user_list') }}</h5>
             <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm">
-                <i class="bx bx-plus me-1"></i> Tambah User
+                <i class="bx bx-plus me-1"></i> {{ __('users.add_user') }}
             </a>
         </div>
 
@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <select name="role" class="form-select" onchange="this.form.submit()">
-                            <option value="">Semua Role</option>
+                            <option value="">{{ __('users.all_roles') }}</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->name }}" {{ request('role') == $role->name ? 'selected' : '' }}>
                                     {{ $role->display_name }}
@@ -28,12 +28,12 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" name="search" class="form-control" placeholder="Cari nama atau email..."
-                            value="{{ request('search') }}">
+                        <input type="text" name="search" class="form-control"
+                            placeholder="{{ __('users.search_users') }}" value="{{ request('search') }}">
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary w-100">
-                            <i class="bx bx-search"></i> Cari
+                            <i class="bx bx-search"></i> {{ __('general.search') }}
                         </button>
                     </div>
                 </div>
@@ -45,12 +45,12 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Phone</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <th>{{ __('users.name') }}</th>
+                            <th>{{ __('users.email') }}</th>
+                            <th>{{ __('users.role') }}</th>
+                            <th>{{ __('users.phone') }}</th>
+                            <th>{{ __('general.status') }}</th>
+                            <th>{{ __('general.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,7 +75,7 @@
                                         @csrf
                                         <button type="submit"
                                             class="badge border-0 {{ $user->is_active ? 'bg-success' : 'bg-danger' }}">
-                                            {{ $user->is_active ? 'Aktif' : 'Nonaktif' }}
+                                            {{ $user->is_active ? __('general.active') : __('general.inactive') }}
                                         </button>
                                     </form>
                                 </td>
@@ -87,18 +87,18 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="{{ route('admin.users.show', $user) }}">
-                                                <i class="bx bx-show me-1"></i> Lihat
+                                                <i class="bx bx-show me-1"></i> {{ __('general.view') }}
                                             </a>
                                             <a class="dropdown-item" href="{{ route('admin.users.edit', $user) }}">
-                                                <i class="bx bx-edit me-1"></i> Edit
+                                                <i class="bx bx-edit me-1"></i> {{ __('general.edit') }}
                                             </a>
                                             @if ($user->id !== auth()->id())
                                                 <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
-                                                    onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                                                    onsubmit="return confirm('{{ __('users.confirm_delete_user') }}')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="dropdown-item text-danger">
-                                                        <i class="bx bx-trash me-1"></i> Hapus
+                                                        <i class="bx bx-trash me-1"></i> {{ __('general.delete') }}
                                                     </button>
                                                 </form>
                                             @endif
@@ -108,7 +108,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center">Tidak ada data user.</td>
+                                <td colspan="7" class="text-center">{{ __('users.no_users') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

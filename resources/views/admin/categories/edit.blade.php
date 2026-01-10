@@ -3,14 +3,14 @@
 {{-- ============================================================ --}}
 @extends('layouts.app')
 
-@section('title', 'Edit Kategori')
+@section('title', __('categories.edit_category'))
 
 @section('content')
     <div class="row">
         <div class="col-md-8 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">Edit Kategori: {{ $category->name }}</h5>
+                    <h5 class="mb-0">{{ __('categories.edit_category') }}: {{ $category->name }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.categories.update', $category) }}" method="POST">
@@ -18,7 +18,8 @@
                         @method('PUT')
 
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama Kategori <span class="text-danger">*</span></label>
+                            <label for="name" class="form-label">{{ __('categories.category_name') }} <span
+                                    class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
                                 name="name" value="{{ old('name', $category->name) }}" placeholder="Contoh: Arabica"
                                 required autofocus>
@@ -39,9 +40,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">Deskripsi</label>
+                            <label for="description" class="form-label">{{ __('categories.category_description') }}</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
-                                rows="4" placeholder="Deskripsi singkat tentang kategori ini">{{ old('description', $category->description) }}</textarea>
+                                rows="4" placeholder="{{ __('categories.category_description') }}">{{ old('description', $category->description) }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror>
@@ -49,10 +50,10 @@
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">
-                                <i class="bx bx-arrow-back"></i> Kembali
+                                <i class="bx bx-arrow-back"></i> {{ __('general.back') }}
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bx bx-save"></i> Update Kategori
+                                <i class="bx bx-save"></i> {{ __('general.update') }}
                             </button>
                         </div>
                     </form>

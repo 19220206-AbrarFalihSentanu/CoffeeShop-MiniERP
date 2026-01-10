@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Profil Saya')
+@section('title', __('settings.my_profile'))
 
 @push('styles')
     <style>
@@ -78,14 +78,14 @@
     {{-- Breadcrumb --}}
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Profil Saya</li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('menu.dashboard') }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ __('settings.my_profile') }}</li>
         </ol>
     </nav>
 
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4><i class="bx bx-user-circle me-2"></i>Profil Saya</h4>
+        <h4><i class="bx bx-user-circle me-2"></i>{{ __('settings.my_profile') }}</h4>
     </div>
 
     <div class="row">
@@ -97,7 +97,7 @@
                     <div class="profile-photo-container mb-3">
                         <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="profile-photo"
                             id="profilePhotoPreview">
-                        <label class="profile-photo-upload" title="Ganti Foto">
+                        <label class="profile-photo-upload" title="{{ __('settings.change_photo') }}">
                             <i class="bx bx-camera"></i>
                             <input type="file" id="profilePhotoInput" accept="image/*">
                         </label>
@@ -127,11 +127,11 @@
                         <div class="profile-stats">
                             <div class="stat-item">
                                 <div class="stat-value">{{ $orderCount }}</div>
-                                <div class="stat-label">Total Order</div>
+                                <div class="stat-label">{{ __('dashboard.total_orders') }}</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-value">{{ $completedOrders }}</div>
-                                <div class="stat-label">Selesai</div>
+                                <div class="stat-label">{{ __('dashboard.completed') }}</div>
                             </div>
                         </div>
                     @endif
@@ -142,8 +142,8 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-outline-danger"
-                                onclick="return confirm('Yakin ingin menghapus foto profil?')">
-                                <i class="bx bx-trash me-1"></i>Hapus Foto
+                                onclick="return confirm('{{ __('settings.confirm_delete_photo') }}')">
+                                <i class="bx bx-trash me-1"></i>{{ __('settings.delete_photo') }}
                             </button>
                         </form>
                     @endif
@@ -153,23 +153,23 @@
             {{-- Account Info --}}
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="bx bx-info-circle me-2"></i>Info Akun</h5>
+                    <h5 class="mb-0"><i class="bx bx-info-circle me-2"></i>{{ __('settings.account_info') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <small class="text-muted d-block">Bergabung Sejak</small>
+                        <small class="text-muted d-block">{{ __('settings.joined_since') }}</small>
                         <strong>{{ $user->created_at->translatedFormat('d F Y') }}</strong>
                     </div>
                     <div class="mb-3">
-                        <small class="text-muted d-block">Terakhir Update</small>
+                        <small class="text-muted d-block">{{ __('settings.last_updated') }}</small>
                         <strong>{{ $user->updated_at->translatedFormat('d F Y, H:i') }} WIB</strong>
                     </div>
                     <div class="mb-0">
-                        <small class="text-muted d-block">Status Akun</small>
+                        <small class="text-muted d-block">{{ __('settings.account_status') }}</small>
                         @if ($user->is_active)
-                            <span class="badge bg-success">Aktif</span>
+                            <span class="badge bg-success">{{ __('general.active') }}</span>
                         @else
-                            <span class="badge bg-danger">Nonaktif</span>
+                            <span class="badge bg-danger">{{ __('general.inactive') }}</span>
                         @endif
                     </div>
                 </div>
@@ -181,7 +181,7 @@
             {{-- Update Profile Form --}}
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="bx bx-edit me-2"></i>Edit Profil</h5>
+                    <h5 class="mb-0"><i class="bx bx-edit me-2"></i>{{ __('settings.edit_profile') }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data"
@@ -207,7 +207,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email <span
+                                    <label for="email" class="form-label">{{ __('auth.email') }} <span
                                             class="text-danger">*</span></label>
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
                                         id="email" name="email" value="{{ old('email', $user->email) }}" required>
@@ -221,7 +221,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label">Nomor Telepon</label>
+                                    <label for="phone" class="form-label">{{ __('general.phone') }}</label>
                                     <input type="text" class="form-control @error('phone') is-invalid @enderror"
                                         id="phone" name="phone" value="{{ old('phone', $user->phone) }}"
                                         placeholder="08xxxxxxxxxx">
@@ -232,18 +232,18 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Role</label>
+                                    <label class="form-label">{{ __('users.role') }}</label>
                                     <input type="text" class="form-control"
                                         value="{{ ucfirst($user->role->name ?? 'User') }}" disabled>
-                                    <small class="text-muted">Role tidak dapat diubah</small>
+                                    <small class="text-muted">{{ __('users.role_cannot_change') }}</small>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="address" class="form-label">Alamat</label>
+                            <label for="address" class="form-label">{{ __('general.address') }}</label>
                             <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="3"
-                                placeholder="Alamat lengkap...">{{ old('address', $user->address) }}</textarea>
+                                placeholder="{{ __('orders.full_address') }}...">{{ old('address', $user->address) }}</textarea>
                             @error('address')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -251,7 +251,7 @@
 
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bx bx-save me-1"></i>Simpan Perubahan
+                                <i class="bx bx-save me-1"></i>{{ __('general.save_changes') }}
                             </button>
                         </div>
                     </form>
@@ -261,7 +261,7 @@
             {{-- Change Password Form --}}
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="bx bx-lock-alt me-2"></i>Ubah Password</h5>
+                    <h5 class="mb-0"><i class="bx bx-lock-alt me-2"></i>{{ __('settings.change_password') }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('profile.password') }}" method="POST">
@@ -271,7 +271,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label for="current_password" class="form-label">Password Saat Ini <span
+                                    <label for="current_password"
+                                        class="form-label">{{ __('settings.current_password') }} <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="password"
@@ -292,7 +293,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Password Baru <span
+                                    <label for="password" class="form-label">{{ __('settings.new_password') }} <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="password"
@@ -306,12 +307,13 @@
                                     @error('password')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
-                                    <small class="text-muted">Minimal 8 karakter</small>
+                                    <small class="text-muted">{{ __('auth.password_min') }}</small>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="password_confirmation" class="form-label">Konfirmasi Password <span
+                                    <label for="password_confirmation"
+                                        class="form-label">{{ __('settings.confirm_new_password') }} <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="password" class="form-control" id="password_confirmation"
@@ -327,7 +329,7 @@
 
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-warning">
-                                <i class="bx bx-key me-1"></i>Ubah Password
+                                <i class="bx bx-key me-1"></i>{{ __('settings.change_password') }}
                             </button>
                         </div>
                     </form>
@@ -338,16 +340,15 @@
             @if ($user->isCustomer())
                 <div class="card mt-4 border-danger">
                     <div class="card-header bg-danger text-white">
-                        <h5 class="mb-0"><i class="bx bx-error-circle me-2"></i>Zona Berbahaya</h5>
+                        <h5 class="mb-0"><i class="bx bx-error-circle me-2"></i>{{ __('users.danger_zone') }}</h5>
                     </div>
                     <div class="card-body">
                         <p class="text-muted mb-3">
-                            Setelah akun Anda dihapus, semua data dan informasi akan dihapus secara permanen.
-                            Sebelum menghapus akun, pastikan untuk mengunduh data yang ingin Anda simpan.
+                            {{ __('users.delete_account_warning') }}
                         </p>
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                             data-bs-target="#deleteAccountModal">
-                            <i class="bx bx-trash me-1"></i>Hapus Akun Saya
+                            <i class="bx bx-trash me-1"></i>{{ __('users.delete_my_account') }}
                         </button>
                     </div>
                 </div>
@@ -357,7 +358,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header bg-danger text-white">
-                                <h5 class="modal-title">Konfirmasi Hapus Akun</h5>
+                                <h5 class="modal-title">{{ __('users.confirm_delete_account') }}</h5>
                                 <button type="button" class="btn-close btn-close-white"
                                     data-bs-dismiss="modal"></button>
                             </div>
@@ -367,19 +368,21 @@
                                 <div class="modal-body">
                                     <div class="alert alert-danger">
                                         <i class="bx bx-error-circle me-1"></i>
-                                        <strong>Peringatan!</strong> Tindakan ini tidak dapat dibatalkan.
+                                        <strong>{{ __('general.warning') }}!</strong>
+                                        {{ __('users.action_cannot_undone') }}
                                     </div>
-                                    <p>Untuk mengonfirmasi, masukkan password Anda:</p>
+                                    <p>{{ __('users.enter_password_confirm') }}:</p>
                                     <div class="mb-3">
-                                        <label for="delete_password" class="form-label">Password</label>
+                                        <label for="delete_password" class="form-label">{{ __('auth.password') }}</label>
                                         <input type="password" class="form-control" id="delete_password" name="password"
                                             required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Batal</button>
-                                    <button type="submit" class="btn btn-danger">Ya, Hapus Akun Saya</button>
+                                        data-bs-dismiss="modal">{{ __('general.cancel') }}</button>
+                                    <button type="submit"
+                                        class="btn btn-danger">{{ __('users.yes_delete_account') }}</button>
                                 </div>
                             </form>
                         </div>

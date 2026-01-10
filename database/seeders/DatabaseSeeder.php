@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             SettingSeeder::class,
             SupplierSeeder::class,
+            PartnerSeeder::class,
+            LandingSlideSeeder::class,
         ]);
     }
 }

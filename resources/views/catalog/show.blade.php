@@ -38,7 +38,7 @@
     {{-- Breadcrumb --}}
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('catalog.index') }}">Katalog</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('catalog.index') }}">{{ __('cart.catalog') }}</a></li>
             <li class="breadcrumb-item"><a
                     href="{{ route('catalog.index', ['category' => $product->category_id]) }}">{{ $product->category->name }}</a>
             </li>
@@ -67,12 +67,12 @@
                             <div class="mt-3">
                                 @if ($product->is_featured)
                                     <span class="badge bg-warning me-2">
-                                        <i class="bx bx-star"></i> Produk Unggulan
+                                        <i class="bx bx-star"></i> {{ __('products.is_featured') }}
                                     </span>
                                 @endif
                                 @if ($product->isDiscountActive())
                                     <span class="badge bg-danger me-2">
-                                        <i class="bx bx-purchase-tag"></i> Diskon
+                                        <i class="bx bx-purchase-tag"></i> {{ __('general.discount') }}
                                         {{ number_format($product->discount_percentage, 0) }}%
                                     </span>
                                 @endif
@@ -88,9 +88,9 @@
                                 <span class="badge bg-info me-2">{{ $product->category->name }}</span>
                                 <span class="badge bg-secondary">
                                     @if ($product->type === 'whole_bean')
-                                        <i class="bx bx-coffee-bean"></i> Whole Bean (Biji Utuh)
+                                        <i class="bx bx-coffee-bean"></i> Whole Bean
                                     @elseif($product->type === 'ground')
-                                        <i class="bx bx-coffee"></i> Ground (Bubuk)
+                                        <i class="bx bx-coffee"></i> Ground
                                     @else
                                         <i class="bx bx-coffee-togo"></i> Instant
                                     @endif
@@ -99,9 +99,9 @@
 
                             {{-- SKU & Weight --}}
                             <p class="text-muted mb-3">
-                                <strong>SKU:</strong> <code>{{ $product->sku }}</code> |
-                                <strong>Berat:</strong> {{ $product->weight }}g |
-                                <strong>Satuan:</strong> {{ $product->unit_label }}
+                                <strong>{{ __('products.product_sku') }}:</strong> <code>{{ $product->sku }}</code> |
+                                <strong>{{ __('products.product_weight') }}:</strong> {{ $product->weight }}g |
+                                <strong>{{ __('products.product_unit') }}:</strong> {{ $product->unit_label }}
                             </p>
 
                             {{-- Price --}}
@@ -117,12 +117,12 @@
                                     </h3>
                                     <div class="alert alert-danger py-2">
                                         <i class="bx bx-purchase-tag me-1"></i>
-                                        <strong>Hemat Rp
+                                        <strong>{{ __('general.discount') }} Rp
                                             {{ number_format($product->savings_amount, 0, ',', '.') }}</strong>
                                         ({{ number_format($product->discount_percentage, 0) }}% OFF)
                                         @if ($product->discount_end_date)
                                             <br>
-                                            <small>Berlaku sampai
+                                            <small>{{ __('general.date') }}:
                                                 {{ $product->discount_end_date->format('d M Y') }}</small>
                                         @endif
                                     </div>
@@ -144,17 +144,19 @@
 
                             {{-- Stock Info --}}
                             <div class="mb-4">
-                                <h6>Ketersediaan Stok:</h6>
+                                <h6>{{ __('cart.stock') }}:</h6>
                                 @if ($product->getAvailableStock() > 0)
                                     <div class="alert alert-success py-2">
                                         <i class="bx bx-check-circle me-1"></i>
-                                        <strong>Tersedia: {{ number_format($product->getAvailableStock(), 2) }}
+                                        <strong>{{ __('cart.available') }}:
+                                            {{ number_format($product->getAvailableStock(), 2) }}
                                             {{ $product->unit }}</strong>
                                     </div>
                                 @else
                                     <div class="alert alert-danger py-2">
                                         <i class="bx bx-x-circle me-1"></i>
-                                        <strong>Stok Habis</strong> - Produk sementara tidak tersedia
+                                        <strong>{{ __('cart.out_of_stock') }}</strong> -
+                                        {{ __('cart.item_not_available') }}
                                     </div>
                                 @endif
                             </div>
@@ -162,7 +164,7 @@
                             {{-- Description --}}
                             @if ($product->description)
                                 <div class="mb-4">
-                                    <h6>Deskripsi Produk:</h6>
+                                    <h6>{{ __('cart.description') }}:</h6>
                                     <p class="text-muted">{{ $product->description }}</p>
                                 </div>
                             @endif
@@ -173,7 +175,7 @@
                                     <form action="{{ route('customer.add', $product) }}" method="POST" id="addToCartForm">
                                         @csrf
                                         <div class="mb-4">
-                                            <h6>Jumlah ({{ $product->unit }}):</h6>
+                                            <h6>{{ __('cart.quantity') }} ({{ $product->unit }}):</h6>
                                             <div class="input-group quantity-input mb-3">
                                                 <button class="btn btn-outline-secondary" type="button"
                                                     onclick="decreaseQty()">
@@ -200,19 +202,18 @@
 
                                         <div class="d-grid gap-2">
                                             <button type="submit" class="btn btn-primary btn-lg">
-                                                <i class="bx bx-cart-add me-2"></i>Tambah ke Keranjang
+                                                <i class="bx bx-cart-add me-2"></i>{{ __('cart.add_to_cart') }}
                                             </button>
                                             <a href="{{ route('customer.index') }}"
                                                 class="btn btn-outline-secondary btn-lg">
-                                                <i class="bx bx-cart me-2"></i>Lihat Keranjang
+                                                <i class="bx bx-cart me-2"></i>{{ __('cart.shopping_cart') }}
                                             </a>
                                         </div>
                                     </form>
                                 @else
                                     <div class="alert alert-warning">
                                         <i class="bx bx-info-circle me-1"></i>
-                                        Produk ini sedang habis. Silakan hubungi kami untuk pre-order atau notifikasi stok
-                                        tersedia.
+                                        {{ __('cart.out_of_stock') }}.
                                     </div>
                                 @endif
                             @else
@@ -222,7 +223,7 @@
                                     pembelian hanya tersedia untuk Customer.
                                 </div>
                                 <a href="{{ route('catalog.index') }}" class="btn btn-secondary">
-                                    <i class="bx bx-arrow-back me-1"></i>Kembali ke Katalog
+                                    <i class="bx bx-arrow-back me-1"></i>{{ __('general.back') }} {{ __('cart.catalog') }}
                                 </a>
                             @endif
                         </div>
@@ -237,7 +238,7 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="mb-0">
-                    <i class="bx bx-package me-2"></i>Produk Terkait
+                    <i class="bx bx-package me-2"></i>{{ __('cart.related_products') }}
                 </h5>
             </div>
             <div class="card-body">
@@ -281,7 +282,8 @@
 
                                     <a href="{{ route('catalog.show', $related->slug) }}"
                                         class="btn btn-outline-primary btn-sm w-100">
-                                        <i class="bx bx-show me-1"></i>Lihat Detail
+                                        <i class="bx bx-show me-1"></i>{{ __('general.view') }}
+                                        {{ __('general.detail') }}
                                     </a>
                                 </div>
                             </div>

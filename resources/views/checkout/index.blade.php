@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Checkout')
+@section('title', __('cart.checkout'))
 
 @push('styles')
     <style>
@@ -32,17 +32,17 @@
     {{-- Breadcrumb --}}
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('catalog.index') }}">Katalog</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('customer.index') }}">Keranjang</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+            <li class="breadcrumb-item"><a href="{{ route('catalog.index') }}">{{ __('cart.catalog') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('customer.index') }}">{{ __('cart.cart') }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ __('cart.checkout') }}</li>
         </ol>
     </nav>
 
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4><i class="bx bx-credit-card me-2"></i>Checkout</h4>
+        <h4><i class="bx bx-credit-card me-2"></i>{{ __('cart.checkout') }}</h4>
         <a href="{{ route('customer.index') }}" class="btn btn-outline-secondary btn-sm">
-            <i class="bx bx-left-arrow-alt me-1"></i>Kembali ke Keranjang
+            <i class="bx bx-left-arrow-alt me-1"></i>{{ __('general.back') }} {{ __('cart.cart') }}
         </a>
     </div>
 
@@ -54,15 +54,15 @@
                 {{-- Informasi Pengiriman --}}
                 <div class="checkout-section">
                     <h5 class="mb-3">
-                        <i class="bx bx-map-pin me-2 text-primary"></i>Informasi Pengiriman
+                        <i class="bx bx-map-pin me-2 text-primary"></i>{{ __('cart.shipping_info') }}
                     </h5>
 
                     <div class="mb-3">
-                        <label for="customer_name" class="form-label">Nama Lengkap <span
+                        <label for="customer_name" class="form-label">{{ __('orders.customer_name') }} <span
                                 class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('customer_name') is-invalid @enderror"
-                            id="customer_name" name="customer_name" value="{{ old('customer_name', auth()->user()->name) }}"
-                            required>
+                            id="customer_name" name="customer_name"
+                            value="{{ old('customer_name', auth()->user()->name) }}" required>
                         @error('customer_name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -70,7 +70,8 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="customer_email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <label for="customer_email" class="form-label">{{ __('general.email') }} <span
+                                    class="text-danger">*</span></label>
                             <input type="email" class="form-control @error('customer_email') is-invalid @enderror"
                                 id="customer_email" name="customer_email"
                                 value="{{ old('customer_email', auth()->user()->email) }}" required>
@@ -80,7 +81,7 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="customer_phone" class="form-label">No. Telepon <span
+                            <label for="customer_phone" class="form-label">{{ __('general.phone') }} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('customer_phone') is-invalid @enderror"
                                 id="customer_phone" name="customer_phone"
@@ -92,21 +93,21 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="shipping_address" class="form-label">Alamat Lengkap <span
+                        <label for="shipping_address" class="form-label">{{ __('orders.shipping_address') }} <span
                                 class="text-danger">*</span></label>
                         <textarea class="form-control @error('shipping_address') is-invalid @enderror" id="shipping_address"
                             name="shipping_address" rows="3" required>{{ old('shipping_address', auth()->user()->address) }}</textarea>
                         @error('shipping_address')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <small class="text-muted">Masukkan alamat lengkap termasuk RT/RW, Kelurahan, Kecamatan, Kota, dan
-                            Kode Pos</small>
+                        <small class="text-muted">{{ __('cart.address_helper') }}</small>
                     </div>
 
                     <div class="mb-0">
-                        <label for="customer_notes" class="form-label">Catatan (Optional)</label>
+                        <label for="customer_notes" class="form-label">{{ __('general.notes') }}
+                            ({{ __('general.optional') }})</label>
                         <textarea class="form-control @error('customer_notes') is-invalid @enderror" id="customer_notes" name="customer_notes"
-                            rows="2" placeholder="Contoh: Kirim pagi hari, Hubungi sebelum kirim, dll.">{{ old('customer_notes') }}</textarea>
+                            rows="2" placeholder="{{ __('cart.notes_placeholder') }}">{{ old('customer_notes') }}</textarea>
                         @error('customer_notes')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror>
@@ -116,17 +117,18 @@
                 {{-- Review Items --}}
                 <div class="checkout-section">
                     <h5 class="mb-3">
-                        <i class="bx bx-package me-2 text-primary"></i>Review Pesanan ({{ $cartItems->count() }} item)
+                        <i class="bx bx-package me-2 text-primary"></i>{{ __('cart.order_review') }}
+                        ({{ $cartItems->count() }} item)
                     </h5>
 
                     <div class="table-responsive">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
-                                    <th>Produk</th>
-                                    <th class="text-end">Jumlah</th>
-                                    <th class="text-end">Harga</th>
-                                    <th class="text-end">Subtotal</th>
+                                    <th>{{ __('products.product') }}</th>
+                                    <th class="text-end">{{ __('general.quantity') }}</th>
+                                    <th class="text-end">{{ __('general.price') }}</th>
+                                    <th class="text-end">{{ __('general.subtotal') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -166,20 +168,20 @@
                 <div class="order-summary-card">
                     <div class="checkout-section">
                         <h5 class="mb-3">
-                            <i class="bx bx-receipt me-2 text-primary"></i>Ringkasan Pesanan
+                            <i class="bx bx-receipt me-2 text-primary"></i>{{ __('cart.order_summary') }}
                         </h5>
 
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Subtotal ({{ $cartItems->sum('quantity') }} item)</span>
+                            <span>{{ __('cart.subtotal') }} ({{ $cartItems->sum('quantity') }} item)</span>
                             <strong>Rp {{ number_format($subtotal, 0, ',', '.') }}</strong>
                         </div>
 
                         @if ($tax > 0)
                             <div class="d-flex justify-content-between mb-2">
                                 <span>
-                                    Pajak PPN ({{ number_format($taxRate, 1) }}%)
+                                    {{ __('cart.tax') }} PPN ({{ number_format($taxRate, 1) }}%)
                                     <i class="bx bx-info-circle text-muted" data-bs-toggle="tooltip"
-                                        title="Pajak akan dihitung berdasarkan setting sistem"></i>
+                                        title="{{ __('cart.tax_tooltip') }}"></i>
                                 </span>
                                 <strong>Rp {{ number_format($tax, 0, ',', '.') }}</strong>
                             </div>
@@ -187,7 +189,7 @@
 
                         @if ($shipping > 0)
                             <div class="d-flex justify-content-between mb-3">
-                                <span>Ongkos Kirim</span>
+                                <span>{{ __('cart.shipping_cost') }}</span>
                                 <strong>Rp {{ number_format($shipping, 0, ',', '.') }}</strong>
                             </div>
                         @endif
@@ -195,7 +197,7 @@
                         <hr>
 
                         <div class="d-flex justify-content-between mb-4">
-                            <h5>Total Pembayaran</h5>
+                            <h5>{{ __('cart.grand_total') }}</h5>
                             <h4 class="text-primary mb-0">Rp {{ number_format($total, 0, ',', '.') }}</h4>
                         </div>
 
@@ -203,32 +205,32 @@
                         <div class="alert alert-info py-2 mb-3">
                             <small>
                                 <i class="bx bx-info-circle me-1"></i>
-                                <strong>Catatan:</strong> Pesanan akan diproses setelah mendapat persetujuan dari Owner.
+                                <strong>{{ __('general.notes') }}:</strong> {{ __('cart.order_approval_note') }}
                             </small>
                         </div>
 
                         {{-- Submit Button --}}
                         <button type="submit" class="btn btn-primary w-100 btn-lg" id="submitBtn">
-                            <i class="bx bx-check-circle me-1"></i>Buat Pesanan
+                            <i class="bx bx-check-circle me-1"></i>{{ __('cart.place_order') }}
                         </button>
 
                         <a href="{{ route('customer.index') }}" class="btn btn-outline-secondary w-100 mt-2">
-                            <i class="bx bx-left-arrow-alt me-1"></i>Kembali ke Keranjang
+                            <i class="bx bx-left-arrow-alt me-1"></i>{{ __('general.back') }} {{ __('cart.cart') }}
                         </a>
 
                         {{-- Trust Indicators --}}
                         <div class="mt-4 pt-3 border-top">
                             <div class="d-flex align-items-center mb-2">
                                 <i class="bx bx-check-shield text-success me-2"></i>
-                                <small>Transaksi Aman & Terpercaya</small>
+                                <small>{{ __('cart.trust_secure') }}</small>
                             </div>
                             <div class="d-flex align-items-center mb-2">
                                 <i class="bx bx-package text-primary me-2"></i>
-                                <small>Kemasan Rapih & Berkualitas</small>
+                                <small>{{ __('cart.trust_packaging') }}</small>
                             </div>
                             <div class="d-flex align-items-center">
                                 <i class="bx bx-phone text-info me-2"></i>
-                                <small>Customer Service Siap Membantu</small>
+                                <small>{{ __('cart.trust_support') }}</small>
                             </div>
                         </div>
                     </div>
@@ -244,7 +246,8 @@
         document.getElementById('checkoutForm').addEventListener('submit', function(e) {
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+            submitBtn.innerHTML =
+                '<span class="spinner-border spinner-border-sm me-2"></span>{{ __('general.processing') }}';
         });
 
         // Initialize tooltips

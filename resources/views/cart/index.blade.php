@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Keranjang Belanja')
+@section('title', __('cart.shopping_cart'))
 
 @push('styles')
     <style>
@@ -96,16 +96,16 @@
     {{-- Breadcrumb --}}
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('catalog.index') }}">Katalog</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Keranjang Belanja</li>
+            <li class="breadcrumb-item"><a href="{{ route('catalog.index') }}">{{ __('cart.catalog') }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ __('cart.shopping_cart') }}</li>
         </ol>
     </nav>
 
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4><i class="bx bx-cart me-2"></i>Keranjang Belanja</h4>
+        <h4><i class="bx bx-cart me-2"></i>{{ __('cart.shopping_cart') }}</h4>
         <a href="{{ route('catalog.index') }}" class="btn btn-outline-primary">
-            <i class="bx bx-left-arrow-alt me-1"></i>Lanjut Belanja
+            <i class="bx bx-left-arrow-alt me-1"></i>{{ __('cart.continue_shopping') }}
         </a>
     </div>
 
@@ -114,10 +114,10 @@
         <div class="card">
             <div class="card-body text-center py-5">
                 <i class="bx bx-cart-alt bx-lg text-muted mb-3"></i>
-                <h4>Keranjang Belanja Kosong</h4>
-                <p class="text-muted mb-4">Anda belum menambahkan produk ke keranjang.</p>
+                <h4>{{ __('cart.cart_empty') }}</h4>
+                <p class="text-muted mb-4">{{ __('cart.no_items_message') }}</p>
                 <a href="{{ route('catalog.index') }}" class="btn btn-primary">
-                    <i class="bx bx-shopping-bag me-1"></i>Mulai Belanja
+                    <i class="bx bx-shopping-bag me-1"></i>{{ __('cart.start_shopping') }}
                 </a>
             </div>
         </div>
@@ -126,15 +126,15 @@
         @if ($unavailableItems->count() > 0)
             <div class="alert alert-danger alert-dismissible" role="alert">
                 <h6 class="alert-heading mb-2">
-                    <i class="bx bx-error-circle me-1"></i>Beberapa Produk Tidak Tersedia
+                    <i class="bx bx-error-circle me-1"></i>{{ __('cart.some_products_unavailable') }}
                 </h6>
-                <p class="mb-2">Produk berikut tidak tersedia atau stok habis:</p>
+                <p class="mb-2">{{ __('cart.products_unavailable_message') }}</p>
                 <ul class="mb-2">
                     @foreach ($unavailableItems as $item)
-                        <li>{{ $item->product->name }} - <strong>Stok Habis</strong></li>
+                        <li>{{ $item->product->name }} - <strong>{{ __('cart.out_of_stock') }}</strong></li>
                     @endforeach
                 </ul>
-                <small>Silakan hapus produk tersebut untuk melanjutkan checkout.</small>
+                <small>{{ __('cart.remove_unavailable_to_checkout') }}</small>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
@@ -142,9 +142,9 @@
         @if ($priceChangedItems->count() > 0)
             <div class="alert alert-warning alert-dismissible" role="alert">
                 <h6 class="alert-heading mb-2">
-                    <i class="bx bx-info-circle me-1"></i>Perubahan Harga
+                    <i class="bx bx-info-circle me-1"></i>{{ __('cart.price_change') }}
                 </h6>
-                <p class="mb-2">Harga beberapa produk telah berubah sejak ditambahkan ke keranjang:</p>
+                <p class="mb-2">{{ __('cart.price_changed_message') }}</p>
                 <ul class="mb-2">
                     @foreach ($priceChangedItems as $item)
                         <li>
@@ -158,7 +158,7 @@
                 <form action="{{ route('customer.updatePrices') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-warning btn-sm">
-                        <i class="bx bx-refresh me-1"></i>Update Semua Harga
+                        <i class="bx bx-refresh me-1"></i>{{ __('cart.update_all_prices') }}
                     </button>
                 </form>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -170,12 +170,13 @@
             <div class="col-lg-8 mb-4">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Produk di Keranjang ({{ $cartItems->count() }} item)</h5>
+                        <h5 class="mb-0">{{ __('cart.products_in_cart') }} ({{ $cartItems->count() }}
+                            {{ __('cart.items_in_cart') }})</h5>
                         <form action="{{ route('customer.clear') }}" method="POST"
-                            onsubmit="return confirm('Yakin ingin mengosongkan keranjang?')">
+                            onsubmit="return confirm('{{ __('cart.confirm_clear_cart') }}')">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-outline-danger">
-                                <i class="bx bx-trash me-1"></i>Kosongkan Keranjang
+                                <i class="bx bx-trash me-1"></i>{{ __('cart.clear_cart') }}
                             </button>
                         </form>
                     </div>
@@ -185,11 +186,11 @@
                             <table class="table table-hover mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Produk</th>
-                                        <th>Harga</th>
-                                        <th style="width: 150px">Jumlah</th>
-                                        <th>Subtotal</th>
-                                        <th style="width: 80px">Aksi</th>
+                                        <th>{{ __('products.product') }}</th>
+                                        <th>{{ __('cart.price') }}</th>
+                                        <th style="width: 150px">{{ __('cart.quantity') }}</th>
+                                        <th>{{ __('cart.subtotal') }}</th>
+                                        <th style="width: 80px">{{ __('general.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -223,11 +224,12 @@
                                                         <br>
                                                         @if (!$item->isAvailable())
                                                             <span class="badge bg-danger mt-1">
-                                                                <i class="bx bx-x-circle"></i> Stok Habis
+                                                                <i class="bx bx-x-circle"></i>
+                                                                {{ __('cart.out_of_stock') }}
                                                             </span>
                                                         @elseif($item->product->getAvailableStock() < $item->quantity)
                                                             <span class="badge bg-warning mt-1">
-                                                                <i class="bx bx-error"></i> Stok terbatas:
+                                                                <i class="bx bx-error"></i> {{ __('cart.limited_stock') }}:
                                                                 {{ $item->product->formatQuantity($item->product->getAvailableStock()) }}
                                                             </span>
                                                         @endif
@@ -288,11 +290,11 @@
                                             </td>
                                             <td>
                                                 <form action="{{ route('customer.remove', $item) }}" method="POST"
-                                                    onsubmit="return confirm('Hapus produk ini dari keranjang?')">
+                                                    onsubmit="return confirm('{{ __('cart.confirm_remove_item') }}')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                        title="Hapus">
+                                                        title="{{ __('general.delete') }}">
                                                         <i class="bx bx-trash"></i>
                                                     </button>
                                                 </form>
@@ -311,7 +313,7 @@
                 <div class="cart-summary">
                     <div class="card mb-3">
                         <div class="card-header">
-                            <h5 class="mb-0">Ringkasan Pesanan</h5>
+                            <h5 class="mb-0">{{ __('cart.order_summary') }}</h5>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-2">
@@ -322,14 +324,14 @@
                             {{-- TAX - TAMPILKAN JIKA ADA --}}
                             @if ($tax > 0)
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span>Pajak PPN ({{ number_format($taxRate, 1) }}%)</span>
+                                    <span>{{ __('cart.tax') }} ({{ number_format($taxRate, 1) }}%)</span>
                                     <strong>Rp {{ number_format($tax, 0, ',', '.') }}</strong>
                                 </div>
                             @endif
 
                             @if ($shipping > 0)
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span>Ongkir</span>
+                                    <span>{{ __('cart.shipping_cost') }}</span>
                                     <strong>Rp {{ number_format($shipping, 0, ',', '.') }}</strong>
                                 </div>
                             @endif
@@ -337,22 +339,22 @@
                             <hr>
 
                             <div class="d-flex justify-content-between mb-3">
-                                <h5>Total</h5>
+                                <h5>{{ __('cart.total') }}</h5>
                                 <h4 class="text-primary mb-0">Rp {{ number_format($total, 0, ',', '.') }}</h4>
                             </div>
 
                             @if ($unavailableItems->count() > 0)
                                 <button class="btn btn-danger w-100 disabled" disabled>
-                                    <i class="bx bx-x-circle me-1"></i>Ada Produk Tidak Tersedia
+                                    <i class="bx bx-x-circle me-1"></i>{{ __('cart.has_unavailable_products') }}
                                 </button>
                             @else
                                 <a href="{{ route('customer.checkout.index') }}" class="btn btn-primary w-100 mb-2">
-                                    <i class="bx bx-credit-card me-1"></i>Lanjut ke Checkout
+                                    <i class="bx bx-credit-card me-1"></i>{{ __('cart.proceed_to_checkout') }}
                                 </a>
                             @endif
 
                             <a href="{{ route('catalog.index') }}" class="btn btn-outline-secondary w-100">
-                                <i class="bx bx-left-arrow-alt me-1"></i>Lanjut Belanja
+                                <i class="bx bx-left-arrow-alt me-1"></i>{{ __('cart.continue_shopping') }}
                             </a>
                         </div>
                     </div>
@@ -360,12 +362,13 @@
                     {{-- Promo Code (Future) --}}
                     <div class="card">
                         <div class="card-body">
-                            <h6 class="mb-3">Kode Promo</h6>
+                            <h6 class="mb-3">{{ __('cart.promo_code') }}</h6>
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Masukkan kode promo">
-                                <button class="btn btn-outline-primary" type="button">Apply</button>
+                                <input type="text" class="form-control"
+                                    placeholder="{{ __('cart.enter_promo_code') }}">
+                                <button class="btn btn-outline-primary" type="button">{{ __('cart.apply') }}</button>
                             </div>
-                            <small class="text-muted">Fitur promo akan segera tersedia</small>
+                            <small class="text-muted">{{ __('cart.promo_coming_soon') }}</small>
                         </div>
                     </div>
                 </div>
@@ -384,7 +387,7 @@
                 input.value = newValue.toFixed(3).replace(/\.?0+$/, '');
                 input.form.submit();
             } else {
-                alert('Jumlah minimal: ' + minQty);
+                alert('{{ __('cart.minimum_quantity') }}: ' + minQty);
             }
         }
 
@@ -396,7 +399,7 @@
                 input.value = newValue.toFixed(3).replace(/\.?0+$/, '');
                 input.form.submit();
             } else {
-                alert('Stok maksimal: ' + maxQty + ' ' + unit);
+                alert('{{ __('cart.maximum_stock') }}: ' + maxQty + ' ' + unit);
             }
         }
     </script>

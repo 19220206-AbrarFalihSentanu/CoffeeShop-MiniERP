@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Katalog Produk Kopi')
+@section('title', __('cart.product_catalog'))
 
 @push('styles')
     <style>
@@ -86,14 +86,14 @@
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h2 class="text-white mb-2">
-                        <i class="bx bx-coffee me-2"></i>Katalog Produk Eureka Coffee
+                        <i class="bx bx-coffee me-2"></i>{{ __('cart.product_catalog') }} Eureka Coffee
                     </h2>
-                    <p class="mb-0">Temukan kopi pilihan terbaik untuk Anda</p>
+                    <p class="mb-0">{{ __('cart.browse_products') }}</p>
                 </div>
                 <div class="col-md-4 text-end">
                     @if (Auth::user()->isCustomer())
                         <a href="{{ route('customer.index') }}" class="btn btn-light">
-                            <i class="bx bx-cart me-1"></i>Lihat Keranjang
+                            <i class="bx bx-cart me-1"></i>{{ __('cart.shopping_cart') }}
                             @if (auth()->user()->cart_count > 0)
                                 <span class="badge bg-danger">{{ auth()->user()->cart_count }}</span>
                             @endif
@@ -115,26 +115,26 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <h6 class="mb-0">
-                            <i class="bx bx-filter me-1"></i>Filter Produk
+                            <i class="bx bx-filter me-1"></i>{{ __('general.filter') }} {{ __('products.product') }}
                         </h6>
                     </div>
                     <div class="card-body">
                         <form method="GET" id="filterForm">
                             {{-- Search --}}
                             <div class="mb-3">
-                                <label class="form-label small fw-bold">Cari Produk</label>
+                                <label class="form-label small fw-bold">{{ __('cart.search_products') }}</label>
                                 <input type="text" name="search" class="form-control form-control-sm"
-                                    placeholder="Nama produk..." value="{{ request('search') }}"
+                                    placeholder="{{ __('products.product_name') }}..." value="{{ request('search') }}"
                                     onchange="this.form.submit()">
                             </div>
 
                             {{-- Categories --}}
                             <div class="mb-3">
-                                <label class="form-label small fw-bold">Kategori</label>
+                                <label class="form-label small fw-bold">{{ __('general.category') }}</label>
                                 <div class="list-group list-group-flush">
                                     <a href="{{ route('catalog.index') }}"
                                         class="list-group-item list-group-item-action category-item {{ !request('category') ? 'active' : '' }}">
-                                        Semua Kategori
+                                        {{ __('products.all_categories') }}
                                         <span class="badge bg-primary float-end">{{ $products->total() }}</span>
                                     </a>
                                     @foreach ($categories as $cat)
@@ -152,9 +152,10 @@
 
                             {{-- Product Type --}}
                             <div class="mb-3">
-                                <label class="form-label small fw-bold">Tipe Produk</label>
+                                <label class="form-label small fw-bold">{{ __('general.type') }}
+                                    {{ __('products.product') }}</label>
                                 <select name="type" class="form-select form-select-sm" onchange="this.form.submit()">
-                                    <option value="">Semua Tipe</option>
+                                    <option value="">{{ __('general.all') }} {{ __('general.type') }}</option>
                                     <option value="whole_bean" {{ request('type') == 'whole_bean' ? 'selected' : '' }}>
                                         Whole Bean
                                     </option>
@@ -167,7 +168,7 @@
 
                             {{-- Price Range --}}
                             <div class="mb-3">
-                                <label class="form-label small fw-bold">Rentang Harga</label>
+                                <label class="form-label small fw-bold">{{ __('cart.price_range') }}</label>
                                 <div class="row g-2">
                                     <div class="col-6">
                                         <input type="number" name="min_price" class="form-control form-control-sm"
@@ -182,13 +183,13 @@
 
                             {{-- Special Filters --}}
                             <div class="mb-3">
-                                <label class="form-label small fw-bold">Filter Khusus</label>
+                                <label class="form-label small fw-bold">{{ __('general.filter') }}</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="sale" value="1"
                                         id="filterSale" {{ request('sale') == '1' ? 'checked' : '' }}
                                         onchange="this.form.submit()">
                                     <label class="form-check-label small" for="filterSale">
-                                        <i class="bx bx-purchase-tag text-danger"></i> Sedang Diskon
+                                        <i class="bx bx-purchase-tag text-danger"></i> {{ __('general.discount') }}
                                     </label>
                                 </div>
                                 <div class="form-check">
@@ -196,16 +197,16 @@
                                         id="filterFeatured" {{ request('featured') == '1' ? 'checked' : '' }}
                                         onchange="this.form.submit()">
                                     <label class="form-check-label small" for="filterFeatured">
-                                        <i class="bx bx-star text-warning"></i> Produk Unggulan
+                                        <i class="bx bx-star text-warning"></i> {{ __('products.is_featured') }}
                                     </label>
                                 </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-sm w-100">
-                                <i class="bx bx-search me-1"></i>Terapkan Filter
+                                <i class="bx bx-search me-1"></i>{{ __('cart.apply_filter') }}
                             </button>
                             <a href="{{ route('catalog.index') }}" class="btn btn-secondary btn-sm w-100 mt-2">
-                                <i class="bx bx-reset me-1"></i>Reset Filter
+                                <i class="bx bx-reset me-1"></i>{{ __('cart.clear_filter') }}
                             </a>
                         </form>
                     </div>
@@ -221,8 +222,9 @@
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <p class="mb-0">
-                                Menampilkan <strong>{{ $products->count() }}</strong> dari
-                                <strong>{{ $products->total() }}</strong> produk
+                                {{ __('general.showing') }} <strong>{{ $products->count() }}</strong>
+                                {{ __('general.of') }}
+                                <strong>{{ $products->total() }}</strong> {{ __('products.products') }}
                             </p>
                         </div>
                         <div class="col-md-6">
@@ -232,26 +234,26 @@
                                 @endforeach
 
                                 <div class="col-auto">
-                                    <label class="col-form-label col-form-label-sm">Urutkan:</label>
+                                    <label class="col-form-label col-form-label-sm">{{ __('cart.sort_by') }}:</label>
                                 </div>
                                 <div class="col">
                                     <select name="sort" class="form-select form-select-sm"
                                         onchange="this.form.submit()">
                                         <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>
-                                            Terbaru
+                                            {{ __('cart.sort_newest') }}
                                         </option>
                                         <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>
-                                            Harga Terendah
+                                            {{ __('cart.sort_price_low') }}
                                         </option>
                                         <option value="price_high"
                                             {{ request('sort') == 'price_high' ? 'selected' : '' }}>
-                                            Harga Tertinggi
+                                            {{ __('cart.sort_price_high') }}
                                         </option>
                                         <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>
-                                            A-Z
+                                            {{ __('cart.sort_name_asc') }}
                                         </option>
                                         <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>
-                                            Z-A
+                                            {{ __('cart.sort_name_desc') }}
                                         </option>
                                     </select>
                                 </div>
@@ -357,11 +359,12 @@
                                 <p class="mb-3">
                                     @if ($product->getAvailableStock() > 0)
                                         <span class="badge bg-success">
-                                            <i class="bx bx-check-circle"></i> Stok: {{ $product->getAvailableStock() }}
+                                            <i class="bx bx-check-circle"></i> {{ __('cart.stock') }}:
+                                            {{ $product->getAvailableStock() }}
                                         </span>
                                     @else
                                         <span class="badge bg-danger">
-                                            <i class="bx bx-x-circle"></i> Stok Habis
+                                            <i class="bx bx-x-circle"></i> {{ __('cart.out_of_stock') }}
                                         </span>
                                     @endif
                                 </p>
@@ -374,24 +377,25 @@
                                                 @csrf
                                                 <input type="hidden" name="quantity" value="1">
                                                 <button type="submit" class="btn btn-primary btn-sm w-100">
-                                                    <i class="bx bx-cart-add me-1"></i>Tambah ke Keranjang
+                                                    <i class="bx bx-cart-add me-1"></i>{{ __('cart.add_to_cart') }}
                                                 </button>
                                             </form>
                                         @else
                                             <button class="btn btn-secondary btn-sm" disabled>
-                                                <i class="bx bx-x-circle me-1"></i>Stok Habis
+                                                <i class="bx bx-x-circle me-1"></i>{{ __('cart.out_of_stock') }}
                                             </button>
                                         @endif
                                     @else
                                         <a href="{{ route('catalog.show', $product->slug) }}"
                                             class="btn btn-outline-primary btn-sm">
-                                            <i class="bx bx-show me-1"></i>Lihat Detail
+                                            <i class="bx bx-show me-1"></i>{{ __('general.view') }}
+                                            {{ __('general.detail') }}
                                         </a>
                                     @endif
 
                                     <a href="{{ route('catalog.show', $product->slug) }}"
                                         class="btn btn-outline-secondary btn-sm">
-                                        <i class="bx bx-info-circle me-1"></i>Detail Produk
+                                        <i class="bx bx-info-circle me-1"></i>{{ __('products.product_details') }}
                                     </a>
                                 </div>
                             </div>
@@ -402,10 +406,10 @@
                         <div class="card">
                             <div class="card-body text-center py-5">
                                 <i class="bx bx-search-alt bx-lg text-muted mb-3"></i>
-                                <h5>Produk Tidak Ditemukan</h5>
-                                <p class="text-muted">Coba ubah filter atau kata kunci pencarian Anda.</p>
+                                <h5>{{ __('products.product_not_found') }}</h5>
+                                <p class="text-muted">{{ __('cart.no_results') }}</p>
                                 <a href="{{ route('catalog.index') }}" class="btn btn-primary">
-                                    <i class="bx bx-reset me-1"></i>Reset Filter
+                                    <i class="bx bx-reset me-1"></i>{{ __('cart.clear_filter') }}
                                 </a>
                             </div>
                         </div>

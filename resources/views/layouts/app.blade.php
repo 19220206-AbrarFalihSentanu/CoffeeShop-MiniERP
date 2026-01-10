@@ -1,7 +1,7 @@
 {{-- File: resources/views/layouts/app.blade.php --}}
 <!DOCTYPE html>
-<html lang="id" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
-    data-assets-path="{{ asset('assets/') }}" data-template="vertical-menu-template-free">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light-style layout-menu-fixed" dir="ltr"
+    data-theme="theme-default" data-assets-path="{{ asset('assets/') }}" data-template="vertical-menu-template-free">>
 
 <head>
     <meta charset="utf-8" />
@@ -113,6 +113,9 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
+
+    <!-- Translations for JS -->
+    <x-translations />
 
     <!-- Core JS -->
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>

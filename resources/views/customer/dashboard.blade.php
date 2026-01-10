@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Dashboard Customer')
+@section('title', __('dashboard.customer_title'))
 
 @section('content')
     <div class="row">
@@ -11,13 +11,13 @@
                 <div class="d-flex align-items-end row">
                     <div class="col-sm-7">
                         <div class="card-body">
-                            <h5 class="card-title text-primary">Halo, {{ Auth::user()->name }}! ☕</h5>
+                            <h5 class="card-title text-primary">{{ __('dashboard.hello') }}, {{ Auth::user()->name }}! ☕</h5>
                             <p class="mb-4">
-                                Selamat berbelanja di <span class="fw-bold">Mini ERP Kopi</span>. Temukan kopi terbaik untuk
-                                Anda.
+                                {{ __('dashboard.customer_welcome') }} <span class="fw-bold">Mini ERP Kopi</span>.
+                                {{ __('dashboard.customer_subtitle') }}
                             </p>
                             <a href="{{ route('catalog.index') }}" class="btn btn-sm btn-outline-primary">
-                                <i class="bx bx-store me-1"></i>Lihat Katalog
+                                <i class="bx bx-store me-1"></i>{{ __('dashboard.view_catalog') }}
                             </a>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
         <div class="col-lg-3 col-md-6 col-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <span class="fw-semibold d-block mb-1">Total Pesanan</span>
+                    <span class="fw-semibold d-block mb-1">{{ __('dashboard.my_orders') }}</span>
                     <h3 class="card-title mb-2">{{ $stats['my_orders'] }}</h3>
                 </div>
             </div>
@@ -44,7 +44,7 @@
         <div class="col-lg-3 col-md-6 col-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <span class="fw-semibold d-block mb-1 text-warning">Pending</span>
+                    <span class="fw-semibold d-block mb-1 text-warning">{{ __('dashboard.pending') }}</span>
                     <h3 class="card-title mb-2">{{ $stats['pending_orders'] }}</h3>
                 </div>
             </div>
@@ -53,7 +53,7 @@
         <div class="col-lg-3 col-md-6 col-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <span class="fw-semibold d-block mb-1 text-success">Selesai</span>
+                    <span class="fw-semibold d-block mb-1 text-success">{{ __('dashboard.completed') }}</span>
                     <h3 class="card-title mb-2">{{ $stats['completed_orders'] }}</h3>
                 </div>
             </div>
@@ -62,7 +62,7 @@
         <div class="col-lg-3 col-md-6 col-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <span class="fw-semibold d-block mb-1">Total Belanja</span>
+                    <span class="fw-semibold d-block mb-1">{{ __('dashboard.total_spent') }}</span>
                     <h3 class="card-title text-nowrap mb-2">Rp {{ number_format($stats['total_spent'], 0, ',', '.') }}</h3>
                 </div>
             </div>

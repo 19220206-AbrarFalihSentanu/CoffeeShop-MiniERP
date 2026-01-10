@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Detail Produk')
+@section('title', __('products.product_details'))
 
 @section('content')
     <div class="row">
@@ -11,19 +11,19 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                     <a href="{{ route('admin.products.index') }}" class="btn btn-secondary btn-sm">
-                        <i class="bx bx-arrow-back me-1"></i>Kembali
+                        <i class="bx bx-arrow-back me-1"></i>{{ __('general.back') }}
                     </a>
                 </div>
                 <div>
                     <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-primary btn-sm">
-                        <i class="bx bx-edit me-1"></i>Edit Produk
+                        <i class="bx bx-edit me-1"></i>{{ __('products.edit_product') }}
                     </a>
                     <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="d-inline"
-                        onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                        onsubmit="return confirm('{{ __('products.confirm_delete_product') }}')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="bx bx-trash me-1"></i>Hapus
+                            <i class="bx bx-trash me-1"></i>{{ __('general.delete') }}
                         </button>
                     </form>
                 </div>
@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="text-end">
                                     <span class="badge {{ $product->is_active ? 'bg-success' : 'bg-danger' }} mb-2">
-                                        {{ $product->is_active ? 'Aktif' : 'Nonaktif' }}
+                                        {{ $product->is_active ? __('general.active') : __('general.inactive') }}
                                     </span>
                                     @if ($product->is_featured)
                                         <br>

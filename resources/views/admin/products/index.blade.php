@@ -2,14 +2,14 @@
 
 @extends('layouts.app')
 
-@section('title', 'Kelola Produk')
+@section('title', __('products.manage_products'))
 
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Daftar Produk</h5>
+            <h5 class="mb-0">{{ __('products.product_list') }}</h5>
             <a href="{{ route('admin.products.create') }}" class="btn btn-primary btn-sm">
-                <i class="bx bx-plus me-1"></i> Tambah Produk
+                <i class="bx bx-plus me-1"></i> {{ __('products.add_product') }}
             </a>
         </div>
 
@@ -19,7 +19,7 @@
                 <div class="row g-2">
                     <div class="col-md-3">
                         <select name="category" class="form-select form-select-sm" onchange="this.form.submit()">
-                            <option value="">Semua Kategori</option>
+                            <option value="">{{ __('products.all_categories') }}</option>
                             @foreach ($categories as $cat)
                                 <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
                                     {{ $cat->name }}
@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-2">
                         <select name="type" class="form-select form-select-sm" onchange="this.form.submit()">
-                            <option value="">Semua Tipe</option>
+                            <option value="">{{ __('general.all') }} {{ __('general.type') }}</option>
                             <option value="whole_bean" {{ request('type') == 'whole_bean' ? 'selected' : '' }}>Whole Bean
                             </option>
                             <option value="ground" {{ request('type') == 'ground' ? 'selected' : '' }}>Ground</option>
@@ -38,20 +38,22 @@
                     </div>
                     <div class="col-md-2">
                         <select name="stock_status" class="form-select form-select-sm" onchange="this.form.submit()">
-                            <option value="">Semua Stok</option>
-                            <option value="low" {{ request('stock_status') == 'low' ? 'selected' : '' }}>Stok Menipis
+                            <option value="">{{ __('general.all') }} {{ __('inventory.stock') }}</option>
+                            <option value="low" {{ request('stock_status') == 'low' ? 'selected' : '' }}>
+                                {{ __('products.low_stock') }}
                             </option>
-                            <option value="out" {{ request('stock_status') == 'out' ? 'selected' : '' }}>Stok Habis
+                            <option value="out" {{ request('stock_status') == 'out' ? 'selected' : '' }}>
+                                {{ __('products.out_of_stock') }}
                             </option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <input type="text" name="search" class="form-control form-control-sm"
-                            placeholder="Cari produk..." value="{{ request('search') }}">
+                            placeholder="{{ __('products.search_products') }}" value="{{ request('search') }}">
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary btn-sm w-100">
-                            <i class="bx bx-search"></i> Cari
+                            <i class="bx bx-search"></i> {{ __('general.search') }}
                         </button>
                     </div>
                 </div>
@@ -62,18 +64,18 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th style="width: 60px">Gambar</th>
+                            <th style="width: 60px">{{ __('general.image') }}</th>
                             <th>SKU</th>
-                            <th>Nama Produk</th>
-                            <th>Kategori</th>
-                            <th>Tipe</th>
-                            <th>Harga Modal</th>
-                            <th>Harga Jual</th>
+                            <th>{{ __('products.product_name') }}</th>
+                            <th>{{ __('general.category') }}</th>
+                            <th>{{ __('general.type') }}</th>
+                            <th>{{ __('products.cost_price') }}</th>
+                            <th>{{ __('products.selling_price') }}</th>
                             <th>Margin</th>
-                            <th>Diskon</th>
-                            <th>Stok</th>
-                            <th>Status</th>
-                            <th style="width: 100px">Aksi</th>
+                            <th>{{ __('general.discount') }}</th>
+                            <th>{{ __('inventory.stock') }}</th>
+                            <th>{{ __('general.status') }}</th>
+                            <th style="width: 100px">{{ __('general.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -160,13 +162,13 @@
                                 <td>
                                     @if ($product->inventory)
                                         @if ($product->inventory->available <= 0)
-                                            <span class="badge bg-danger">Habis</span>
+                                            <span class="badge bg-danger">{{ __('products.out_of_stock') }}</span>
                                         @elseif($product->isLowStock())
                                             <span class="badge bg-warning">
                                                 {{ $product->inventory->available }}
                                             </span>
                                             <br>
-                                            <small class="text-danger">Stok menipis!</small>
+                                            <small class="text-danger">{{ __('products.low_stock') }}!</small>
                                         @else
                                             <span class="badge bg-success">
                                                 {{ $product->inventory->available }}
@@ -182,7 +184,7 @@
                                         @csrf
                                         <button type="submit"
                                             class="badge border-0 {{ $product->is_active ? 'bg-success' : 'bg-danger' }}">
-                                            {{ $product->is_active ? 'Aktif' : 'Nonaktif' }}
+                                            {{ $product->is_active ? __('general.active') : __('general.inactive') }}
                                         </button>
                                     </form>
                                 </td>
@@ -194,26 +196,26 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="{{ route('admin.products.show', $product) }}">
-                                                <i class="bx bx-show me-1"></i> Lihat
+                                                <i class="bx bx-show me-1"></i> {{ __('general.view') }}
                                             </a>
                                             <a class="dropdown-item" href="{{ route('admin.products.edit', $product) }}">
-                                                <i class="bx bx-edit me-1"></i> Edit
+                                                <i class="bx bx-edit me-1"></i> {{ __('general.edit') }}
                                             </a>
                                             <form action="{{ route('admin.products.toggleFeatured', $product) }}"
                                                 method="POST">
                                                 @csrf
                                                 <button type="submit" class="dropdown-item">
                                                     <i class="bx bx-star me-1"></i>
-                                                    {{ $product->is_featured ? 'Hapus dari Featured' : 'Jadikan Featured' }}
+                                                    {{ $product->is_featured ? __('products.archive_product') : __('products.is_featured') }}
                                                 </button>
                                             </form>
                                             <div class="dropdown-divider"></div>
                                             <form action="{{ route('admin.products.destroy', $product) }}" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                                onsubmit="return confirm('{{ __('products.confirm_delete_product') }}')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
-                                                    <i class="bx bx-trash me-1"></i> Hapus
+                                                    <i class="bx bx-trash me-1"></i> {{ __('general.delete') }}
                                                 </button>
                                             </form>
                                         </div>
@@ -224,7 +226,7 @@
                             <tr>
                                 <td colspan="10" class="text-center py-4">
                                     <i class="bx bx-package bx-lg text-muted"></i>
-                                    <p class="text-muted mt-2">Tidak ada data produk</p>
+                                    <p class="text-muted mt-2">{{ __('products.no_products') }}</p>
                                 </td>
                             </tr>
                         @endforelse

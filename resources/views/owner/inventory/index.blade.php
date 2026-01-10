@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Kelola Inventory')
+@section('title', __('inventory.inventory_management'))
 
 @section('content')
     {{-- Statistics Cards --}}
@@ -15,9 +15,9 @@
                             <i class="bx bx-package rounded bx-md text-primary"></i>
                         </div>
                     </div>
-                    <span class="fw-semibold d-block mb-1">Total Produk</span>
+                    <span class="fw-semibold d-block mb-1">{{ __('products.products') }}</span>
                     <h3 class="card-title mb-2">{{ $stats['total_products'] }}</h3>
-                    <small class="text-muted">Produk dengan inventory</small>
+                    <small class="text-muted">{{ __('inventory.inventory') }}</small>
                 </div>
             </div>
         </div>
@@ -30,9 +30,9 @@
                             <i class="bx bx-error rounded bx-md text-warning"></i>
                         </div>
                     </div>
-                    <span class="fw-semibold d-block mb-1">Stok Menipis</span>
+                    <span class="fw-semibold d-block mb-1">{{ __('inventory.low_stock') }}</span>
                     <h3 class="card-title text-warning mb-2">{{ $stats['low_stock'] }}</h3>
-                    <small class="text-muted">Perlu restocking</small>
+                    <small class="text-muted">{{ __('inventory.low_stock_warning') }}</small>
                 </div>
             </div>
         </div>
@@ -45,9 +45,9 @@
                             <i class="bx bx-x-circle rounded bx-md text-danger"></i>
                         </div>
                     </div>
-                    <span class="fw-semibold d-block mb-1">Stok Habis</span>
+                    <span class="fw-semibold d-block mb-1">{{ __('inventory.out_of_stock') }}</span>
                     <h3 class="card-title text-danger mb-2">{{ $stats['out_of_stock'] }}</h3>
-                    <small class="text-muted">Segera restocking!</small>
+                    <small class="text-muted">{{ __('inventory.out_of_stock_warning') }}</small>
                 </div>
             </div>
         </div>
@@ -60,11 +60,11 @@
                             <i class="bx bx-dollar-circle rounded bx-md text-success"></i>
                         </div>
                     </div>
-                    <span class="fw-semibold d-block mb-1">Total Nilai Stok</span>
+                    <span class="fw-semibold d-block mb-1">{{ __('inventory.total_stock_value') }}</span>
                     <h3 class="card-title text-nowrap mb-2">
                         Rp {{ number_format($stats['total_value'], 0, ',', '.') }}
                     </h3>
-                    <small class="text-muted">Berdasarkan HPP</small>
+                    <small class="text-muted">{{ __('products.cost_price') }}</small>
                 </div>
             </div>
         </div>
@@ -74,20 +74,20 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">
-                <i class="bx bx-package me-2"></i>Inventory Management
+                <i class="bx bx-package me-2"></i>{{ __('inventory.inventory_management') }}
             </h5>
             <div>
                 <a href="{{ route('owner.inventory.alerts') }}" class="btn btn-warning btn-sm me-2">
-                    <i class="bx bx-bell me-1"></i>Stock Alerts
+                    <i class="bx bx-bell me-1"></i>{{ __('inventory.stock_alerts') }}
                     @if ($stats['low_stock'] + $stats['out_of_stock'] > 0)
                         <span class="badge bg-danger ms-1">{{ $stats['low_stock'] + $stats['out_of_stock'] }}</span>
                     @endif
                 </a>
                 <a href="{{ route('owner.inventory.bulkAdjust') }}" class="btn btn-info btn-sm me-2">
-                    <i class="bx bx-spreadsheet me-1"></i>Bulk Adjustment
+                    <i class="bx bx-spreadsheet me-1"></i>{{ __('inventory.bulk_adjustment') }}
                 </a>
                 <a href="{{ route('owner.inventory.logs') }}" class="btn btn-secondary btn-sm">
-                    <i class="bx bx-history me-1"></i>View History
+                    <i class="bx bx-history me-1"></i>{{ __('inventory.view_logs') }}
                 </a>
             </div>
         </div>
@@ -98,9 +98,10 @@
                 <div class="row g-2">
                     <div class="col-md-3">
                         <select name="category" class="form-select form-select-sm" onchange="this.form.submit()">
-                            <option value="">Semua Kategori</option>
+                            <option value="">{{ __('categories.all_categories') }}</option>
                             @foreach ($categories as $cat)
-                                <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
+                                <option value="{{ $cat->id }}"
+                                    {{ request('category') == $cat->id ? 'selected' : '' }}>
                                     {{ $cat->name }}
                                 </option>
                             @endforeach
@@ -108,25 +109,25 @@
                     </div>
                     <div class="col-md-3">
                         <select name="stock_status" class="form-select form-select-sm" onchange="this.form.submit()">
-                            <option value="">Semua Status Stok</option>
+                            <option value="">{{ __('inventory.all_status') }}</option>
                             <option value="available" {{ request('stock_status') == 'available' ? 'selected' : '' }}>
-                                Stok Aman
+                                {{ __('inventory.in_stock') }}
                             </option>
                             <option value="low" {{ request('stock_status') == 'low' ? 'selected' : '' }}>
-                                Stok Menipis
+                                {{ __('inventory.low_stock') }}
                             </option>
                             <option value="out" {{ request('stock_status') == 'out' ? 'selected' : '' }}>
-                                Stok Habis
+                                {{ __('inventory.out_of_stock') }}
                             </option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <input type="text" name="search" class="form-control form-control-sm"
-                            placeholder="Cari produk atau SKU..." value="{{ request('search') }}">
+                            placeholder="{{ __('inventory.search_inventory') }}" value="{{ request('search') }}">
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary btn-sm w-100">
-                            <i class="bx bx-search"></i> Cari
+                            <i class="bx bx-search"></i> {{ __('general.search') }}
                         </button>
                     </div>
                 </div>
@@ -137,17 +138,17 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th style="width: 60px">Gambar</th>
-                            <th>Produk</th>
-                            <th>SKU</th>
-                            <th>Kategori</th>
-                            <th>Stok Total</th>
-                            <th>Reserved</th>
-                            <th>Tersedia</th>
-                            <th>Min. Stok</th>
-                            <th>Nilai Stok</th>
-                            <th>Status</th>
-                            <th style="width: 120px">Aksi</th>
+                            <th style="width: 60px">{{ __('general.image') }}</th>
+                            <th>{{ __('products.product') }}</th>
+                            <th>{{ __('inventory.sku') }}</th>
+                            <th>{{ __('general.category') }}</th>
+                            <th>{{ __('inventory.stock') }}</th>
+                            <th>{{ __('inventory.reserved_stock') }}</th>
+                            <th>{{ __('inventory.available_stock') }}</th>
+                            <th>{{ __('inventory.minimum_stock') }}</th>
+                            <th>{{ __('inventory.stock_value') }}</th>
+                            <th>{{ __('general.status') }}</th>
+                            <th style="width: 120px">{{ __('general.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -242,7 +243,7 @@
                             <tr>
                                 <td colspan="11" class="text-center py-4">
                                     <i class="bx bx-package bx-lg text-muted"></i>
-                                    <p class="text-muted mt-2">Tidak ada data inventory</p>
+                                    <p class="text-muted mt-2">{{ __('inventory.no_inventory') }}</p>
                                 </td>
                             </tr>
                         @endforelse

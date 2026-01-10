@@ -45,7 +45,7 @@
             <li class="menu-item {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
                 <a href="{{ route('owner.dashboard') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                    <div data-i18n="Dashboard">Dashboard</div>
+                    <div>{{ __('menu.dashboard') }}</div>
                 </a>
             </li>
 
@@ -53,23 +53,24 @@
             <li class="menu-item {{ request()->routeIs('catalog.*') ? 'active' : '' }}">
                 <a href="{{ route('catalog.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-store"></i>
-                    <div data-i18n="Catalog">Katalog Produk</div>
+                    <div>{{ __('menu.product_catalog') }}</div>
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Manajemen</span></li>
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.management') }}</span></li>
 
             <li class="menu-item {{ request()->routeIs('owner.users.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.users.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-user"></i>
-                    <div>Kelola Users</div>
+                    <div>{{ __('menu.manage_users') }}</div>
                 </a>
             </li>
 
             <li class="menu-item {{ request()->routeIs('owner.categories.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.categories.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-category"></i>
-                    <div>Kelola Kategori</div>
+                    <div>{{ __('menu.manage_categories') }}</div>
                 </a>
             </li>
 
@@ -77,7 +78,7 @@
             <li class="menu-item {{ request()->routeIs('owner.products.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.products.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-coffee"></i>
-                    <div>Kelola Produk</div>
+                    <div>{{ __('menu.manage_products') }}</div>
                 </a>
             </li>
 
@@ -85,17 +86,26 @@
             <li class="menu-item {{ request()->routeIs('owner.inventory.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.inventory.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-box"></i>
-                    <div>Kelola Inventory</div>
+                    <div>{{ __('menu.manage_inventory') }}</div>
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Approval</span></li>
+            {{-- LINK SUPPLIER --}}
+            <li class="menu-item {{ request()->routeIs('owner.suppliers.*') ? 'active' : '' }}">
+                <a href="{{ route('owner.suppliers.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-store-alt"></i>
+                    <div>{{ __('menu.suppliers') }}</div>
+                </a>
+            </li>
+
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.approval') }}</span></li>
 
             {{-- OWNER MENU - Ubah menu Approval Order --}}
             <li class="menu-item {{ request()->routeIs('owner.orders.approval.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.orders.approval.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-check-circle"></i>
-                    <div>Approval Order</div>
+                    <div>{{ __('menu.order_approval') }}</div>
                     @php
                         $pendingOrderCount = \App\Models\Order::where('status', 'pending')->count();
                     @endphp
@@ -108,7 +118,7 @@
             <li class="menu-item {{ request()->routeIs('owner.purchase-orders.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.purchase-orders.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-cart"></i>
-                    <div data-i18n="PO Approval">Purchase Order Approval</div>
+                    <div>{{ __('menu.purchase_order_approval') }}</div>
                     @php
                         $pendingCount = \App\Models\PurchaseOrder::where('status', 'pending')->count();
                     @endphp
@@ -118,12 +128,13 @@
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Transaksi</span></li>
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.transactions') }}</span></li>
 
             <li class="menu-item {{ request()->routeIs('owner.payments.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.payments.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-credit-card"></i>
-                    <div data-i18n="Payment Verification">Verifikasi Pembayaran</div>
+                    <div>{{ __('menu.payment_verification') }}</div>
                     @php
                         $pendingPaymentsCount = \App\Models\Payment::where('status', 'pending')->count();
                     @endphp
@@ -134,12 +145,13 @@
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Financial</span></li>
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.financial') }}</span></li>
 
             <li class="menu-item {{ request()->routeIs('owner.financial.dashboard') ? 'active' : '' }}">
                 <a href="{{ route('owner.financial.dashboard') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-line-chart"></i>
-                    <div data-i18n="Financial Dashboard">Financial Dashboard</div>
+                    <div>{{ __('menu.financial_dashboard') }}</div>
                 </a>
             </li>
 
@@ -147,33 +159,41 @@
                 class="menu-item {{ request()->routeIs('owner.financial.index') || request()->routeIs('owner.financial.expense.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.financial.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-wallet"></i>
-                    <div data-i18n="Financial Logs">Financial Logs</div>
+                    <div>{{ __('menu.financial_logs') }}</div>
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Laporan</span></li>
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">{{ __('menu.reports') }}</span>
+            </li>
 
             <li class="menu-item {{ request()->routeIs('owner.reports.financial') ? 'active' : '' }}">
                 <a href="{{ route('owner.reports.financial') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
-                    <div>Laporan Keuangan</div>
+                    <div>{{ __('menu.financial_report') }}</div>
                 </a>
             </li>
 
             <li class="menu-item {{ request()->routeIs('owner.reports.inventory') ? 'active' : '' }}">
                 <a href="{{ route('owner.reports.inventory') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-package"></i>
-                    <div>Laporan Stok</div>
+                    <div>{{ __('menu.inventory_report') }}</div>
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Pengaturan</span></li>
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.settings') }}</span></li>
 
-            {{-- <li class="menu-header small text-uppercase"><span class="menu-header-text">Konfigurasi</span></li> --}}
             <li class="menu-item {{ request()->routeIs('owner.settings.*') ? 'active' : '' }}">
                 <a href="{{ route('owner.settings.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-cog"></i>
-                    <div data-i18n="Settings">Pengaturan Sistem</div>
+                    <div>{{ __('menu.system_settings') }}</div>
+                </a>
+            </li>
+
+            <li class="menu-item {{ request()->routeIs('owner.landing-settings.*') ? 'active' : '' }}">
+                <a href="{{ route('owner.landing-settings.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-layout"></i>
+                    <div>{{ __('menu.landing_page') }}</div>
                 </a>
             </li>
         @elseif(Auth::user()->isAdmin())
@@ -183,7 +203,7 @@
             <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <a href="{{ route('admin.dashboard') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                    <div data-i18n="Dashboard">Dashboard</div>
+                    <div>{{ __('menu.dashboard') }}</div>
                 </a>
             </li>
 
@@ -191,23 +211,24 @@
             <li class="menu-item {{ request()->routeIs('catalog.*') ? 'active' : '' }}">
                 <a href="{{ route('catalog.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-store"></i>
-                    <div data-i18n="Catalog">Katalog Produk</div>
+                    <div>{{ __('menu.product_catalog') }}</div>
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Manajemen</span></li>
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.management') }}</span></li>
 
             <li class="menu-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.users.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-user"></i>
-                    <div>Kelola Users</div>
+                    <div>{{ __('menu.manage_users') }}</div>
                 </a>
             </li>
 
             <li class="menu-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.categories.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-category"></i>
-                    <div>Kelola Kategori</div>
+                    <div>{{ __('menu.manage_categories') }}</div>
                 </a>
             </li>
 
@@ -215,7 +236,7 @@
             <li class="menu-item {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.products.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-coffee"></i>
-                    <div>Kelola Produk</div>
+                    <div>{{ __('menu.manage_products') }}</div>
                 </a>
             </li>
 
@@ -223,34 +244,44 @@
             <li class="menu-item {{ request()->routeIs('admin.inventory.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.inventory.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-box"></i>
-                    <div>Kelola Inventory</div>
+                    <div>{{ __('menu.manage_inventory') }}</div>
+                </a>
+            </li>
+
+            {{-- LINK SUPPLIER --}}
+            <li class="menu-item {{ request()->routeIs('admin.suppliers.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.suppliers.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-store-alt"></i>
+                    <div>{{ __('menu.suppliers') }}</div>
                 </a>
             </li>
 
             {{-- NEW: Purchase Order Menu --}}
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Procurement</span></li>
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.procurement') }}</span></li>
 
             <li
                 class="menu-item {{ request()->routeIs('admin.purchase-orders.*') && !request()->routeIs('admin.purchase-orders.receive.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.purchase-orders.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-purchase-tag"></i>
-                    <div data-i18n="Purchase Orders">Purchase Orders</div>
+                    <div>{{ __('menu.purchase_orders') }}</div>
                 </a>
             </li>
 
             <li class="menu-item {{ request()->routeIs('admin.purchase-orders.receive.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.purchase-orders.receive.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-package"></i>
-                    <div data-i18n="Receive Stock">Receive Stock</div>
+                    <div>{{ __('menu.receive_stock') }}</div>
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Transaksi</span></li>
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.transactions') }}</span></li>
 
             <li class="menu-item {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.payments.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-credit-card"></i>
-                    <div data-i18n="Payment Verification">Verifikasi Pembayaran</div>
+                    <div>{{ __('menu.payment_verification') }}</div>
                     @php
                         $pendingPaymentsCount = \App\Models\Payment::where('status', 'pending')->count();
                     @endphp
@@ -267,17 +298,18 @@
             <li class="menu-item {{ request()->routeIs('customer.dashboard') ? 'active' : '' }}">
                 <a href="{{ route('customer.dashboard') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                    <div data-i18n="Dashboard">Dashboard</div>
+                    <div>{{ __('menu.dashboard') }}</div>
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Belanja</span></li>
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.shopping') }}</span></li>
 
             {{-- NEW: Katalog Produk --}}
             <li class="menu-item {{ request()->routeIs('catalog.*') ? 'active' : '' }}">
                 <a href="{{ route('catalog.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-store"></i>
-                    <div data-i18n="Catalog">Katalog Produk</div>
+                    <div>{{ __('menu.product_catalog') }}</div>
                 </a>
             </li>
 
@@ -286,22 +318,24 @@
             <li class="menu-item {{ request()->routeIs('customer.index') ? 'active' : '' }}">
                 <a href="{{ route('customer.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-cart"></i>
-                    <div data-i18n="Cart">
-                        Keranjang Belanja
+                    <div>
+                        {{ __('menu.shopping_cart') }}
                         @if (auth()->user()->cart_count > 0)
-                            <span class="badge bg-danger rounded-pill ms-auto">{{ auth()->user()->cart_count }}</span>
+                            <span
+                                class="badge bg-danger rounded-pill ms-auto">{{ auth()->user()->cart_count }}</span>
                         @endif
                     </div>
                 </a>
             </li>
 
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Pesanan</span></li>
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.orders') }}</span></li>
 
             {{-- CUSTOMER MENU - Ubah menu Pesanan Saya --}}
             <li class="menu-item {{ request()->routeIs('customer.orders.*') ? 'active' : '' }}">
                 <a href="{{ route('customer.orders.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-shopping-bag"></i>
-                    <div>Pesanan Saya</div>
+                    <div>{{ __('menu.my_orders') }}</div>
                     @php
                         // Count only active orders (not completed or rejected)
                         $myOrderCount = \App\Models\Order::forCustomer(auth()->id())
@@ -318,12 +352,13 @@
         {{-- ============================================================ --}}
         {{-- MENU UNTUK SEMUA ROLE --}}
         {{-- ============================================================ --}}
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Akun</span></li>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">{{ __('menu.account') }}</span>
+        </li>
 
         <li class="menu-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
             <a href="{{ route('profile.edit') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-circle"></i>
-                <div>Profile Saya</div>
+                <div>{{ __('menu.my_profile') }}</div>
             </a>
         </li>
 
@@ -333,7 +368,7 @@
                 <a href="{{ route('logout') }}" class="menu-link"
                     onclick="event.preventDefault(); this.closest('form').submit();">
                     <i class="menu-icon tf-icons bx bx-log-out"></i>
-                    <div>Logout</div>
+                    <div>{{ __('menu.logout') }}</div>
                 </a>
             </form>
         </li>
