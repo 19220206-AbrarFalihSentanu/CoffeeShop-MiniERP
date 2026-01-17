@@ -19,7 +19,8 @@
                         <i class="bx bx-edit me-1"></i>{{ __('products.edit_product') }}
                     </a>
                     <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="d-inline"
-                        onsubmit="return confirm('{{ __('products.confirm_delete_product') }}')">
+                        data-confirm="{{ __('products.confirm_delete_product') }}" data-confirm-title="Hapus Produk?"
+                        data-confirm-icon="warning" data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">

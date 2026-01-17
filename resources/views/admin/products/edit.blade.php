@@ -20,7 +20,7 @@
         }
 
         .image-preview:hover {
-            border-color: #696cff;
+            border-color: #8B5A2B;
             background-color: #f8f9fa;
         }
 

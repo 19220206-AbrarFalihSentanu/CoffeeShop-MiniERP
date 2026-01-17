@@ -100,7 +100,7 @@ class OrderController extends Controller
             })->get();
 
             foreach ($admins as $admin) {
-                Mail::to($admin->email)->send(new PaymentProofUploaded($payment));
+                Mail::to($admin->email)->queue(new PaymentProofUploaded($payment));
             }
 
             DB::commit();

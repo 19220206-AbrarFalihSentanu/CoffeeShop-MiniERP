@@ -1,0 +1,526 @@
+/* =====================================================
+   LIGHT COFFEE THEME - eUREKA Coffee ERP
+   Tema Coklat dengan Background Putih
+   ===================================================== */
+
+:root {
+  /* Primary Colors - Coffee Brown */
+  --coffee-brown: #8B5A2B;
+  --coffee-brown-dark: #6D4C41;
+  --coffee-brown-light: #A67C52;
+  
+  /* Accent Colors - Gold/Copper */
+  --coffee-accent: #C9A66B;
+  --coffee-accent-dark: #B8956A;
+  --coffee-accent-light: #D4B896;
+  
+  /* Background Colors */
+  --coffee-bg-white: #FFFFFF;
+  --coffee-bg-light: #F8F5F2;
+  --coffee-bg-cream: #FDF8F3;
+  
+  /* Text Colors */
+  --coffee-text-dark: #3D2914;
+  --coffee-text-muted: #6D6777;
+  
+  /* Success/Warning/Danger */
+  --coffee-success: #56ca00;
+  --coffee-warning: #ffb400;
+  --coffee-danger: #ff4c51;
+  --coffee-info: #16b1ff;
+}
+
+/* Override Bootstrap Primary Color */
+[data-bs-theme=light],
+:root {
+  --bs-primary: #8B5A2B !important;
+  --bs-primary-rgb: 139, 90, 43 !important;
+  --bs-link-color: #8B5A2B !important;
+  --bs-link-hover-color: #6D4C41 !important;
+}
+
+/* =====================================================
+   BASE LAYOUT
+   ===================================================== */
+
+body.light-style {
+  background-color: var(--coffee-bg-light) !important;
+}
+
+.layout-wrapper,
+.layout-container {
+  background-color: var(--coffee-bg-light) !important;
+}
+
+.content-wrapper {
+  background-color: var(--coffee-bg-light) !important;
+}
+
+/* =====================================================
+   SIDEBAR MENU
+   ===================================================== */
+
+.bg-menu-theme {
+  background: linear-gradient(180deg, #3D2914 0%, #5D4037 100%) !important;
+}
+
+/* Hide the white scroll shadow */
+.menu-inner-shadow {
+  display: none !important;
+  background: transparent !important;
+}
+
+.bg-menu-theme .menu-inner > .menu-item.active > .menu-link {
+  background: linear-gradient(90deg, var(--coffee-accent) 0%, var(--coffee-accent-dark) 100%) !important;
+  color: #fff !important;
+  border-radius: 6px;
+  margin: 4px 12px;
+}
+
+.bg-menu-theme .menu-inner > .menu-item > .menu-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.bg-menu-theme .menu-inner > .menu-item > .menu-link:hover {
+  background-color: rgba(201, 166, 107, 0.2) !important;
+  color: var(--coffee-accent) !important;
+  border-radius: 6px;
+  margin: 4px 12px;
+}
+
+.bg-menu-theme .menu-inner > .menu-item > .menu-link .menu-icon {
+  color: var(--coffee-accent) !important;
+}
+
+.bg-menu-theme .menu-header {
+  color: var(--coffee-accent) !important;
+}
+
+.bg-menu-theme .menu-inner .menu-sub > .menu-item > .menu-link::before {
+  background-color: var(--coffee-accent) !important;
+}
+
+.app-brand-text {
+  color: var(--coffee-accent) !important;
+}
+
+.layout-menu-toggle {
+  color: var(--coffee-accent) !important;
+}
+
+/* =====================================================
+   NAVBAR
+   ===================================================== */
+
+.layout-navbar {
+  background-color: var(--coffee-bg-white) !important;
+  box-shadow: 0 1px 3px rgba(61, 41, 20, 0.1) !important;
+}
+
+.navbar-nav .nav-link {
+  color: var(--coffee-text-dark) !important;
+}
+
+/* =====================================================
+   CARDS
+   ===================================================== */
+
+.card {
+  background-color: var(--coffee-bg-white) !important;
+  border: 1px solid rgba(139, 90, 43, 0.1) !important;
+  box-shadow: 0 2px 6px rgba(61, 41, 20, 0.08) !important;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(139, 90, 43, 0.12) !important;
+}
+
+.card-header {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(139, 90, 43, 0.1) !important;
+}
+
+/* =====================================================
+   BUTTONS - PRIMARY
+   ===================================================== */
+
+.btn-primary {
+  background-color: var(--coffee-brown) !important;
+  border-color: var(--coffee-brown) !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--coffee-brown-dark) !important;
+  border-color: var(--coffee-brown-dark) !important;
+  box-shadow: 0 4px 12px rgba(139, 90, 43, 0.3) !important;
+}
+
+.btn-primary:active,
+.btn-primary.active {
+  background-color: var(--coffee-brown-dark) !important;
+  border-color: var(--coffee-brown-dark) !important;
+}
+
+.btn-outline-primary {
+  color: var(--coffee-brown) !important;
+  border-color: var(--coffee-brown) !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--coffee-brown) !important;
+  border-color: var(--coffee-brown) !important;
+  color: #fff !important;
+}
+
+.btn-label-primary {
+  background-color: rgba(139, 90, 43, 0.15) !important;
+  color: var(--coffee-brown) !important;
+}
+
+.btn-label-primary:hover {
+  background-color: var(--coffee-brown) !important;
+  color: #fff !important;
+}
+
+/* =====================================================
+   BADGES
+   ===================================================== */
+
+.badge.bg-primary {
+  background-color: var(--coffee-brown) !important;
+}
+
+.badge.bg-label-primary {
+  background-color: rgba(139, 90, 43, 0.15) !important;
+  color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   TEXT COLORS
+   ===================================================== */
+
+.text-primary {
+  color: var(--coffee-brown) !important;
+}
+
+a {
+  color: var(--coffee-brown);
+}
+
+a:hover {
+  color: var(--coffee-brown-dark);
+}
+
+/* =====================================================
+   FORMS
+   ===================================================== */
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--coffee-brown) !important;
+  box-shadow: 0 0 0 0.2rem rgba(139, 90, 43, 0.25) !important;
+}
+
+.form-check-input:checked {
+  background-color: var(--coffee-brown) !important;
+  border-color: var(--coffee-brown) !important;
+}
+
+.form-switch .form-check-input:checked {
+  background-color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   PAGINATION
+   ===================================================== */
+
+.page-item.active .page-link {
+  background-color: var(--coffee-brown) !important;
+  border-color: var(--coffee-brown) !important;
+}
+
+.page-link {
+  color: var(--coffee-brown) !important;
+}
+
+.page-link:hover {
+  color: var(--coffee-brown-dark) !important;
+  background-color: rgba(139, 90, 43, 0.1) !important;
+}
+
+/* =====================================================
+   TABLES
+   ===================================================== */
+
+.table {
+  color: var(--coffee-text-dark);
+}
+
+.table thead th {
+  background-color: var(--coffee-bg-cream) !important;
+  color: var(--coffee-brown-dark) !important;
+  border-bottom: 2px solid rgba(139, 90, 43, 0.2) !important;
+  font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(139, 90, 43, 0.05) !important;
+}
+
+/* =====================================================
+   DROPDOWNS
+   ===================================================== */
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: rgba(139, 90, 43, 0.1) !important;
+  color: var(--coffee-brown) !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: var(--coffee-brown) !important;
+  color: #fff !important;
+}
+
+/* =====================================================
+   PROGRESS BARS
+   ===================================================== */
+
+.progress-bar {
+  background-color: var(--coffee-brown) !important;
+}
+
+.bg-primary {
+  background-color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   ALERTS
+   ===================================================== */
+
+.alert-primary {
+  background-color: rgba(139, 90, 43, 0.1) !important;
+  border-color: rgba(139, 90, 43, 0.2) !important;
+  color: var(--coffee-brown-dark) !important;
+}
+
+/* =====================================================
+   NAV TABS & PILLS
+   ===================================================== */
+
+.nav-pills .nav-link.active {
+  background-color: var(--coffee-brown) !important;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--coffee-brown) !important;
+  border-bottom-color: var(--coffee-brown) !important;
+}
+
+.nav-link {
+  color: var(--coffee-text-muted);
+}
+
+.nav-link:hover {
+  color: var(--coffee-brown);
+}
+
+/* =====================================================
+   LIST GROUP
+   ===================================================== */
+
+.list-group-item.active {
+  background-color: var(--coffee-brown) !important;
+  border-color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   BORDERS
+   ===================================================== */
+
+.border-primary {
+  border-color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   AVATAR INITIALS
+   ===================================================== */
+
+.avatar-initial.bg-label-primary {
+  background-color: rgba(139, 90, 43, 0.15) !important;
+  color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   SPINNER
+   ===================================================== */
+
+.spinner-border.text-primary {
+  color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   MENU BADGE
+   ===================================================== */
+
+.bg-menu-theme .menu-inner > .menu-item > .menu-link .badge {
+  background-color: var(--coffee-accent) !important;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.footer {
+  background-color: var(--coffee-bg-white) !important;
+}
+
+/* =====================================================
+   SPECIAL DASHBOARD WIDGETS
+   ===================================================== */
+
+.card .card-border-shadow-primary {
+  border-bottom: 2px solid var(--coffee-brown) !important;
+}
+
+/* Stats Cards Icons */
+.avatar.bg-label-primary {
+  background-color: rgba(139, 90, 43, 0.15) !important;
+  color: var(--coffee-brown) !important;
+}
+
+.avatar.bg-label-primary i,
+.avatar.bg-label-primary .bx {
+  color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   ICON COLORS IN MENUS
+   ===================================================== */
+
+.bx.text-primary,
+.menu-icon.text-primary {
+  color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   CHART COLORS (for ApexCharts/Chart.js)
+   ===================================================== */
+
+.apexcharts-bar-area[fill="#696cff"],
+.apexcharts-bar-area[fill="#8c57ff"] {
+  fill: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   SELECT2 & OTHER PLUGINS
+   ===================================================== */
+
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default.select2-container--focus .select2-selection--single {
+  border-color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   MODAL
+   ===================================================== */
+
+.modal-content {
+  background-color: var(--coffee-bg-white) !important;
+}
+
+/* =====================================================
+   BREADCRUMB
+   ===================================================== */
+
+.breadcrumb-item.active {
+  color: var(--coffee-brown) !important;
+}
+
+.breadcrumb-item a {
+  color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   TOASTS
+   ===================================================== */
+
+.toast-primary {
+  background-color: var(--coffee-brown) !important;
+}
+
+/* =====================================================
+   SIDEBAR MENU SCROLL FIX
+   ===================================================== */
+
+/* Fix sidebar scroll - ensure proper height constraints */
+.layout-menu-fixed .layout-menu,
+.layout-menu-fixed-offcanvas .layout-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: 100vh !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Menu inner must be scrollable */
+.menu-inner {
+  flex: 1 1 auto;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: calc(100vh - 64px) !important; /* 64px is app-brand height */
+}
+
+/* For Perfect Scrollbar */
+.menu-inner.ps {
+  overflow: hidden !important;
+}
+
+/* Ensure the menu container allows scroll */
+.menu-vertical {
+  overflow: visible !important;
+}
+
+/* App brand fixed height */
+.app-brand.demo {
+  flex: 0 0 auto;
+}
+
+/* Perfect scrollbar styling for sidebar */
+.menu-inner > .ps__rail-y {
+  background-color: transparent !important;
+}
+
+.menu-inner > .ps__rail-y > .ps__thumb-y {
+  background-color: rgba(201, 166, 107, 0.4) !important;
+  width: 4px !important;
+}
+
+.menu-inner > .ps__rail-y:hover > .ps__thumb-y,
+.menu-inner > .ps__rail-y:focus > .ps__thumb-y {
+  background-color: rgba(201, 166, 107, 0.6) !important;
+  width: 6px !important;
+}
+
+/* =====================================================
+   SCROLLBAR
+   ===================================================== */
+
+::-webkit-scrollbar-thumb {
+  background: var(--coffee-brown-light);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--coffee-brown);
+}

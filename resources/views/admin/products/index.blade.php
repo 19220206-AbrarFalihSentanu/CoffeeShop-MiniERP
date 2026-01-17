@@ -211,7 +211,9 @@
                                             </form>
                                             <div class="dropdown-divider"></div>
                                             <form action="{{ route('admin.products.destroy', $product) }}" method="POST"
-                                                onsubmit="return confirm('{{ __('products.confirm_delete_product') }}')">
+                                                data-confirm="{{ __('products.confirm_delete_product') }}"
+                                                data-confirm-title="Hapus Produk?" data-confirm-icon="warning"
+                                                data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">

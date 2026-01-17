@@ -18,15 +18,15 @@
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #696cff;
-            box-shadow: 0 4px 15px rgba(105, 108, 255, 0.3);
+            border: 4px solid #8B5A2B;
+            box-shadow: 0 4px 15px rgba(139, 90, 43, 0.3);
         }
 
         .profile-photo-upload {
             position: absolute;
             bottom: 5px;
             right: 5px;
-            background: #696cff;
+            background: #8B5A2B;
             color: white;
             width: 40px;
             height: 40px;
@@ -40,7 +40,7 @@
         }
 
         .profile-photo-upload:hover {
-            background: #5f61e6;
+            background: #6D4C41;
             transform: scale(1.1);
         }
 
@@ -64,7 +64,7 @@
         .stat-value {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #696cff;
+            color: #8B5A2B;
         }
 
         .stat-label {
@@ -138,11 +138,12 @@
 
                     {{-- Delete Photo Button --}}
                     @if ($user->profile_photo)
-                        <form action="{{ route('profile.delete-photo') }}" method="POST" class="mt-3">
+                        <form action="{{ route('profile.delete-photo') }}" method="POST" class="mt-3"
+                            data-confirm="{{ __('settings.confirm_delete_photo') }}" data-confirm-title="Hapus Foto?"
+                            data-confirm-icon="warning" data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                onclick="return confirm('{{ __('settings.confirm_delete_photo') }}')">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
                                 <i class="bx bx-trash me-1"></i>{{ __('settings.delete_photo') }}
                             </button>
                         </form>

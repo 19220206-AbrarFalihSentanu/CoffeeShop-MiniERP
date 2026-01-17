@@ -10,7 +10,11 @@
     <meta name="description" content="{{ $settings['landing_hero_subtitle'] ?? 'Supplier kopi berkualitas premium' }}">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+    @if (!empty($settings['company_logo']))
+        <link rel="icon" type="image/png" href="{{ asset('storage/' . $settings['company_logo']) }}" />
+    @else
+        <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+    @endif
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,7 +98,10 @@
 
         .navbar-landing .navbar-brand img {
             height: 45px;
-            width: auto;
+            width: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-color);
         }
 
         .navbar-landing .nav-link {
@@ -534,59 +541,152 @@
         }
 
         /* =============================================
-           PARTNERS SECTION
+           PROMO SECTION
         ============================================= */
-        #partner {
-            background: var(--cream-color);
-        }
-
-        .partner-card {
-            background: #fff;
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            height: 100%;
-        }
-
-        .partner-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .partner-logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--light-color);
-            border-radius: 50%;
+        #promo {
+            background: linear-gradient(135deg, #fff5f5 0%, #fef3cd 100%);
+            position: relative;
             overflow: hidden;
         }
 
-        .partner-logo img {
+        #promo::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(201, 166, 107, 0.1);
+            border-radius: 50%;
+        }
+
+        #promo::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 50%;
+        }
+
+        .promo-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            height: 100%;
+            position: relative;
+        }
+
+        .promo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #dc3545, #ffc107, #28a745);
+        }
+
+        .promo-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .promo-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .promo-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.4s ease;
         }
 
-        .partner-card h4 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
+        .promo-card:hover .promo-image img {
+            transform: scale(1.1);
         }
 
-        .partner-card p {
+        .promo-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
             font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .promo-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .promo-card h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .promo-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .promo-code {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffc107, #ffdb4d);
+            color: var(--dark-color);
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            border: 2px dashed var(--primary-color);
+        }
+
+        .promo-validity {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
             color: var(--text-light);
         }
 
-        /* Partners Swiper */
-        .partners-swiper {
+        .promo-validity i {
+            color: var(--accent-color);
+        }
+
+        /* Promo Swiper */
+        .promo-swiper {
             padding: 20px 0 60px !important;
         }
 
@@ -709,10 +809,51 @@
         /* =============================================
            WHATSAPP FLOATING BUTTON
         ============================================= */
-        .whatsapp-float {
+        .whatsapp-float-container {
             position: fixed;
             bottom: 30px;
             right: 30px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .whatsapp-float-label {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+            animation: bounce 2s infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-8px);
+            }
+
+            60% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .whatsapp-float {
             width: 60px;
             height: 60px;
             background: #25D366;
@@ -723,7 +864,6 @@
             color: #fff;
             font-size: 2rem;
             box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
-            z-index: 999;
             transition: all 0.3s ease;
             text-decoration: none;
         }
@@ -731,6 +871,7 @@
         .whatsapp-float:hover {
             transform: scale(1.1);
             color: #fff;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
         }
 
         /* =============================================
@@ -907,7 +1048,11 @@
                         <a class="nav-link" href="#tentang">{{ __('landing.about') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#partner">Partner</a>
+                        <a class="nav-link" href="#promo"><i class='bx bxs-discount me-1'></i>Promo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('tracking.jne') }}" target="_blank"><i
+                                class='bx bx-package me-1'></i>Lacak Pengiriman</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#kontak">{{ __('landing.contact') }}</a>
@@ -970,7 +1115,8 @@
 
             <!-- Category Filters -->
             <div class="category-filters" data-aos="fade-up" data-aos-delay="100">
-                <button class="category-btn active" data-category="all">{{ __('landing.view_all_products') }}</button>
+                <button class="category-btn active"
+                    data-category="all">{{ __('landing.view_all_products') }}</button>
                 @foreach ($categories as $category)
                     <button class="category-btn" data-category="{{ $category->id }}">
                         {{ $category->name }}
@@ -1045,39 +1191,62 @@
         </div>
     </section>
 
-    <!-- Partners Section -->
-    <section id="partner">
+    <!-- Promo Section -->
+    <section id="promo">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
-                <h2>{{ $settings['landing_partner_title'] ?? __('landing.partners_title') }}</h2>
-                <p>{{ $settings['landing_partner_subtitle'] ?? __('landing.partners_subtitle') }}
-                </p>
+                <h2>{{ $settings['landing_promo_title'] ?? 'Promo Spesial' }}</h2>
+                <p>{{ $settings['landing_promo_subtitle'] ?? 'Dapatkan penawaran terbaik dari kami!' }}</p>
             </div>
 
-            <div class="swiper partners-swiper" data-aos="fade-up" data-aos-delay="100">
+            <div class="swiper promo-swiper" data-aos="fade-up" data-aos-delay="100">
                 <div class="swiper-wrapper">
-                    @forelse($partners as $partner)
+                    @forelse($promos as $promo)
                         <div class="swiper-slide">
-                            <div class="partner-card">
-                                <div class="partner-logo">
-                                    <img src="{{ $partner->logo ? asset('storage/' . $partner->logo) : asset('assets/img/placeholder-partner.png') }}"
-                                        alt="{{ $partner->name }}">
+                            <div class="promo-card">
+                                <div class="promo-image">
+                                    <img src="{{ $promo->image ? asset('storage/' . $promo->image) : asset('assets/img/placeholder-promo.png') }}"
+                                        alt="{{ $promo->title }}">
+                                    @if ($promo->discount_value > 0)
+                                        <span class="promo-badge">
+                                            @if ($promo->discount_type === 'percentage')
+                                                {{ number_format($promo->discount_value, 0) }}% OFF
+                                            @else
+                                                Hemat Rp {{ number_format($promo->discount_value, 0, ',', '.') }}
+                                            @endif
+                                        </span>
+                                    @endif
                                 </div>
-                                <h4>{{ $partner->name }}</h4>
-                                @if ($partner->description)
-                                    <p>{{ $partner->description }}</p>
-                                @endif
+                                <div class="promo-content">
+                                    <h4>{{ $promo->title }}</h4>
+                                    @if ($promo->description)
+                                        <p>{{ Str::limit($promo->description, 100) }}</p>
+                                    @endif
+                                    @if ($promo->promo_code)
+                                        <div class="promo-code">
+                                            <i class='bx bxs-coupon me-1'></i>{{ $promo->promo_code }}
+                                        </div>
+                                    @endif
+                                    @if ($promo->end_date)
+                                        <div class="promo-validity">
+                                            <i class='bx bx-time-five'></i>
+                                            <span>Berlaku s/d {{ $promo->end_date->format('d M Y') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     @empty
                         <div class="swiper-slide">
-                            <div class="partner-card">
-                                <div class="partner-logo">
-                                    <i class='bx bx-buildings'
-                                        style="font-size: 4rem; color: var(--secondary-color);"></i>
+                            <div class="promo-card">
+                                <div class="promo-image"
+                                    style="background: linear-gradient(135deg, var(--accent-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center;">
+                                    <i class='bx bxs-discount' style="font-size: 4rem; color: #fff;"></i>
                                 </div>
-                                <h4>{{ __('landing.partners_title') }}</h4>
-                                <p>{{ __('landing.partners_join') }}</p>
+                                <div class="promo-content">
+                                    <h4>Promo Segera Hadir!</h4>
+                                    <p>Nantikan berbagai penawaran menarik dari kami. Pantau terus halaman ini!</p>
+                                </div>
                             </div>
                         </div>
                     @endforelse
@@ -1160,10 +1329,13 @@
 
     <!-- WhatsApp Floating Button -->
     @if (!empty($settings['landing_whatsapp']))
-        <a href="https://wa.me/{{ $settings['landing_whatsapp'] }}" target="_blank" class="whatsapp-float"
-            title="Chat via WhatsApp">
-            <i class='bx bxl-whatsapp'></i>
-        </a>
+        <div class="whatsapp-float-container">
+            <span class="whatsapp-float-label">🔥 Special Price</span>
+            <a href="https://wa.me/{{ $settings['landing_whatsapp'] }}?text={{ urlencode('Halo, saya tertarik dengan promo Special Price!') }}"
+                target="_blank" class="whatsapp-float" title="Chat via WhatsApp untuk Special Price">
+                <i class='bx bxl-whatsapp'></i>
+            </a>
+        </div>
     @endif
 
     <!-- Product Detail Modal -->
@@ -1224,8 +1396,46 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // SweetAlert2 Coffee Theme Configuration
+        const swalCoffee = Swal.mixin({
+            confirmButtonColor: '#8B5A2B',
+            cancelButtonColor: '#6c757d',
+            iconColor: '#8B5A2B',
+        });
+
+        // Auto-show SweetAlert for session messages
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#8B5A2B',
+                timer: 3000,
+                timerProgressBar: true
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#8B5A2B'
+            });
+        @endif
+
+        @if (session('warning'))
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian!',
+                text: '{{ session('warning') }}',
+                confirmButtonColor: '#8B5A2B'
+            });
+        @endif
+
         // Initialize AOS
         AOS.init({
             duration: 800,
@@ -1335,13 +1545,17 @@
             }
         });
 
-        // Initialize Partners Swiper
-        const partnersSwiper = new Swiper('.partners-swiper', {
+        // Initialize Promo Swiper
+        const promoSwiper = new Swiper('.promo-swiper', {
             slidesPerView: 1,
             spaceBetween: 20,
             pagination: {
-                el: '.partners-swiper .swiper-pagination',
+                el: '.promo-swiper .swiper-pagination',
                 clickable: true,
+            },
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
             },
             breakpoints: {
                 576: {
@@ -1412,7 +1626,12 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Gagal memuat detail produk');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Gagal memuat detail produk',
+                        confirmButtonColor: '#8B5A2B'
+                    });
                 });
         }
     </script>

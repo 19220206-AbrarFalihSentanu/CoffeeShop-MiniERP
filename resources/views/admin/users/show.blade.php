@@ -164,7 +164,8 @@
                                 </form>
 
                                 <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline"
-                                    onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                                    data-confirm="Data user akan dihapus permanen!" data-confirm-title="Hapus User?"
+                                    data-confirm-icon="warning" data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">

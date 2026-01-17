@@ -246,10 +246,10 @@
                     <select class="form-select product-select" name="items[${index}][product_id]" required>
                         <option value="">Pilih Produk</option>
                         ${products.map(p => `
-                                        <option value="${p.id}" data-price="${p.cost_price || p.price}">
-                                            ${p.name} - ${p.category.name}
-                                        </option>
-                                    `).join('')}
+                                            <option value="${p.id}" data-price="${p.cost_price || p.price}">
+                                                ${p.name} - ${p.category.name}
+                                            </option>
+                                        `).join('')}
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -348,7 +348,12 @@
             const itemCount = document.querySelectorAll('.item-row').length;
             if (itemCount === 0) {
                 e.preventDefault();
-                alert('Minimal harus ada 1 item produk!');
+                swalCoffee.fire({
+                    title: 'Tambah Item',
+                    text: 'Minimal harus ada 1 item produk!',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
                 return false;
             }
         });

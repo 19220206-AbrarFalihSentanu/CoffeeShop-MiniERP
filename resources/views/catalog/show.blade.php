@@ -310,7 +310,12 @@
             if (newQty <= maxQty) {
                 qtyInput.value = newQty.toFixed(3).replace(/\.?0+$/, '');
             } else {
-                alert(`Stok maksimal: ${maxQty} ${unit}`);
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Stok Terbatas',
+                    text: `Stok maksimal: ${maxQty} ${unit}`,
+                    confirmButtonColor: '#8B5A2B'
+                });
             }
         }
 
@@ -322,7 +327,12 @@
             if (newQty >= minQty) {
                 qtyInput.value = newQty.toFixed(3).replace(/\.?0+$/, '');
             } else {
-                alert(`Minimum order: ${minQty} ${unit}`);
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Minimum Order',
+                    text: `Minimum order: ${minQty} ${unit}`,
+                    confirmButtonColor: '#8B5A2B'
+                });
             }
         }
     </script>

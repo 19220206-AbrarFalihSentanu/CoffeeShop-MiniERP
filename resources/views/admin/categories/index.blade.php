@@ -94,7 +94,9 @@
                                             </a>
                                             <form action="{{ route('admin.categories.destroy', $category) }}"
                                                 method="POST"
-                                                onsubmit="return confirm('{{ __('categories.confirm_delete_category') }}')">
+                                                data-confirm="{{ __('categories.confirm_delete_category') }}"
+                                                data-confirm-title="Hapus Kategori?" data-confirm-icon="warning"
+                                                data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">

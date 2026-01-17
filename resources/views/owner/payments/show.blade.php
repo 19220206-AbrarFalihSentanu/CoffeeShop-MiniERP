@@ -200,7 +200,9 @@
                     </div>
                     <div class="card-body">
                         <form action="{{ route('owner.payments.verify', $payment) }}" method="POST"
-                            onsubmit="return confirm('Yakin ingin memverifikasi pembayaran ini?')">
+                            data-confirm="Pembayaran akan diverifikasi dan pesanan akan dilanjutkan."
+                            data-confirm-title="Verifikasi Pembayaran?" data-confirm-icon="question"
+                            data-confirm-button="Ya, Verifikasi!">
                             @csrf
                             <button type="submit" class="btn btn-success w-100 mb-2">
                                 <i class="bx bx-check-circle me-1"></i>Verifikasi Pembayaran
@@ -233,7 +235,9 @@
                         {{-- Step 1: Process Order (paid -> processing) --}}
                         @if ($payment->order->canProcess())
                             <form action="{{ route('owner.payments.processOrder', $payment) }}" method="POST"
-                                onsubmit="return confirm('Mulai proses/kemas pesanan ini?')">
+                                data-confirm="Pesanan akan ditandai sedang diproses/dikemas."
+                                data-confirm-title="Proses Pesanan?" data-confirm-icon="question"
+                                data-confirm-button="Ya, Proses!">
                                 @csrf
                                 <button type="submit" class="btn btn-info w-100 mb-2">
                                     <i class="bx bx-box me-1"></i>Proses Pesanan (Kemas)
@@ -258,7 +262,8 @@
                         {{-- Step 3: Complete Order (shipped -> completed) --}}
                         @if ($payment->order->canComplete())
                             <form action="{{ route('owner.payments.completeOrder', $payment) }}" method="POST"
-                                onsubmit="return confirm('Tandai pesanan ini selesai?')">
+                                data-confirm="Pesanan akan ditandai selesai." data-confirm-title="Pesanan Selesai?"
+                                data-confirm-icon="question" data-confirm-button="Ya, Selesai!">
                                 @csrf
                                 <button type="submit" class="btn btn-success w-100">
                                     <i class="bx bx-check-double me-1"></i>Pesanan Selesai (Diterima)

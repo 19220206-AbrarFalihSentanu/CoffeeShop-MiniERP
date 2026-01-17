@@ -18,7 +18,7 @@
         }
 
         .stock-type-card.active {
-            border-color: #696cff;
+            border-color: #8B5A2B;
             background-color: #f8f9fa;
         }
 
@@ -325,22 +325,44 @@
 
         // Form validation
         document.getElementById('adjustForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
             const type = document.querySelector('input[name="type"]:checked');
             const quantity = parseInt(document.getElementById('quantity').value) || 0;
 
             if (!type) {
-                e.preventDefault();
-                alert('Silakan pilih tipe transaksi terlebih dahulu!');
+                swalCoffee.fire({
+                    title: 'Pilih Tipe Transaksi',
+                    text: 'Silakan pilih tipe transaksi terlebih dahulu!',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
                 return false;
             }
 
             if (type.value === 'out' && quantity > availableStock) {
-                e.preventDefault();
-                alert(`Stok tidak mencukupi! Stok tersedia: ${availableStock} unit`);
+                swalCoffee.fire({
+                    title: 'Stok Tidak Mencukupi',
+                    text: `Stok tersedia: ${availableStock} unit`,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
                 return false;
             }
 
-            return confirm('Apakah Anda yakin ingin memproses adjustment ini?');
+            swalCoffee.fire({
+                title: 'Proses Adjustment?',
+                text: 'Apakah Anda yakin ingin memproses adjustment ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Proses!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
         });
     </script>
 @endpush

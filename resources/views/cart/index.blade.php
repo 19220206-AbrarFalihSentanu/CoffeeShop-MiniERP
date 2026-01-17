@@ -173,7 +173,8 @@
                         <h5 class="mb-0">{{ __('cart.products_in_cart') }} ({{ $cartItems->count() }}
                             {{ __('cart.items_in_cart') }})</h5>
                         <form action="{{ route('customer.clear') }}" method="POST"
-                            onsubmit="return confirm('{{ __('cart.confirm_clear_cart') }}')">
+                            data-confirm="{{ __('cart.confirm_clear_cart') }}" data-confirm-title="Kosongkan Keranjang?"
+                            data-confirm-icon="warning" data-confirm-button="Ya, Kosongkan!" data-confirm-danger="true">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-outline-danger">
                                 <i class="bx bx-trash me-1"></i>{{ __('cart.clear_cart') }}
@@ -290,7 +291,9 @@
                                             </td>
                                             <td>
                                                 <form action="{{ route('customer.remove', $item) }}" method="POST"
-                                                    onsubmit="return confirm('{{ __('cart.confirm_remove_item') }}')">
+                                                    data-confirm="{{ __('cart.confirm_remove_item') }}"
+                                                    data-confirm-title="Hapus Item?" data-confirm-icon="question"
+                                                    data-confirm-button="Ya, Hapus!">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger"
@@ -387,7 +390,7 @@
                 input.value = newValue.toFixed(3).replace(/\.?0+$/, '');
                 input.form.submit();
             } else {
-                alert('{{ __('cart.minimum_quantity') }}: ' + minQty);
+                showWarning('{{ __('cart.minimum_quantity') }}: ' + minQty);
             }
         }
 
@@ -399,7 +402,7 @@
                 input.value = newValue.toFixed(3).replace(/\.?0+$/, '');
                 input.form.submit();
             } else {
-                alert('{{ __('cart.maximum_stock') }}: ' + maxQty + ' ' + unit);
+                showWarning('{{ __('cart.maximum_stock') }}: ' + maxQty + ' ' + unit);
             }
         }
     </script>

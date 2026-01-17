@@ -32,6 +32,7 @@ Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('l
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/landing/product/{id}', [LandingController::class, 'getProductDetail'])->name('landing.product.detail');
 Route::get('/landing/products', [LandingController::class, 'getProductsByCategory'])->name('landing.products.category');
+Route::get('/tracking', [LandingController::class, 'tracking'])->name('tracking.jne');
 
 // Authentication Routes (dari Breeze)
 require __DIR__ . '/auth.php';
@@ -150,6 +151,11 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(fun
         Route::post('/partners', [OwnerLandingSettingController::class, 'storePartner'])->name('partners.store');
         Route::put('/partners/{partner}', [OwnerLandingSettingController::class, 'updatePartner'])->name('partners.update');
         Route::delete('/partners/{partner}', [OwnerLandingSettingController::class, 'destroyPartner'])->name('partners.destroy');
+
+        // Promos Management
+        Route::post('/promos', [OwnerLandingSettingController::class, 'storePromo'])->name('promos.store');
+        Route::put('/promos/{promo}', [OwnerLandingSettingController::class, 'updatePromo'])->name('promos.update');
+        Route::delete('/promos/{promo}', [OwnerLandingSettingController::class, 'destroyPromo'])->name('promos.destroy');
 
         // Section Settings
         Route::post('/sections', [OwnerLandingSettingController::class, 'updateSections'])->name('sections.update');

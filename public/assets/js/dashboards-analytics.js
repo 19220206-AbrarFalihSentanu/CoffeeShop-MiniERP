@@ -15,10 +15,10 @@
     bodyColor,
     currentTheme,
     chartBgColor;
-  heatMap2 = '#d5d6ff';
-  heatMap3 = '#b7b9ff';
-  heatMap4 = '#696cff';
-  chartBgColor = '#F0F2F8';
+  heatMap2 = '#D4B896';
+  heatMap3 = '#C9A66B';
+  heatMap4 = '#8B5A2B';
+  chartBgColor = '#F8F5F2';
   currentTheme = 'light';
 
   cardColor = config.colors.cardColor;

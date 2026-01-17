@@ -239,8 +239,8 @@
                         {
                             label: 'Profit',
                             data: {!! json_encode(array_column($monthlyData, 'profit')) !!},
-                            borderColor: '#696cff',
-                            backgroundColor: 'rgba(105, 108, 255, 0.1)',
+                            borderColor: '#8B5A2B',
+                            backgroundColor: 'rgba(139, 90, 43, 0.1)',
                             tension: 0.4
                         }
                     ]
@@ -275,7 +275,7 @@
                     labels: {!! json_encode($incomeByCategory->pluck('category')->toArray()) !!},
                     datasets: [{
                         data: {!! json_encode($incomeByCategory->pluck('total')->toArray()) !!},
-                        backgroundColor: ['#696cff', '#28c76f', '#00cfe8', '#ff9f43', '#ea5455']
+                        backgroundColor: ['#8B5A2B', '#28c76f', '#00cfe8', '#ff9f43', '#C9A66B']
                     }]
                 },
                 options: {
@@ -296,7 +296,7 @@
                     labels: {!! json_encode($expenseByCategory->pluck('category')->toArray()) !!},
                     datasets: [{
                         data: {!! json_encode($expenseByCategory->pluck('total')->toArray()) !!},
-                        backgroundColor: ['#ea5455', '#ff9f43', '#00cfe8', '#28c76f', '#696cff']
+                        backgroundColor: ['#ea5455', '#ff9f43', '#00cfe8', '#28c76f', '#8B5A2B']
                     }]
                 },
                 options: {

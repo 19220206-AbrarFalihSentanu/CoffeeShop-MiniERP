@@ -4,11 +4,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderCreated;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -129,9 +132,19 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            // TODO: Send email notifications
-            // Mail::to($order->customer_email)->send(new OrderCreatedMail($order));
-            // Mail::to(owner email)->send(new NewOrderNotification($order));
+            // Send email notification to customer
+            if ($order->customer_email) {
+                Mail::to($order->customer_email)->queue(new OrderCreated($order, 'customer'));
+            }
+
+            // Send email notification to owner/admin
+            $adminUsers = User::whereHas('role', function ($query) {
+                $query->whereIn('slug', ['owner', 'admin']);
+            })->get();
+
+            foreach ($adminUsers as $admin) {
+                Mail::to($admin->email)->queue(new OrderCreated($order, 'admin'));
+            }
 
             return redirect()->route('customer.orders.show', $order)
                 ->with('success', 'Pesanan berhasil dibuat! Order Number: ' . $order->order_number);

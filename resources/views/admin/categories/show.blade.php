@@ -19,7 +19,8 @@
                         <i class="bx bx-edit me-1"></i>{{ __('general.edit') }}
                     </a>
                     <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline"
-                        onsubmit="return confirm('{{ __('categories.confirm_delete_category') }}')">
+                        data-confirm="{{ __('categories.confirm_delete_category') }}" data-confirm-title="Hapus Kategori?"
+                        data-confirm-icon="warning" data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">

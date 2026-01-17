@@ -94,7 +94,9 @@
                                             </a>
                                             @if ($user->id !== auth()->id())
                                                 <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
-                                                    onsubmit="return confirm('{{ __('users.confirm_delete_user') }}')">
+                                                    data-confirm="{{ __('users.confirm_delete_user') }}"
+                                                    data-confirm-title="Hapus User?" data-confirm-icon="warning"
+                                                    data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="dropdown-item text-danger">

@@ -44,8 +44,8 @@
         }
 
         .timeline-item.active::before {
-            background-color: #696cff;
-            box-shadow: 0 0 0 2px #696cff33;
+            background-color: #8B5A2B;
+            box-shadow: 0 0 0 2px #8B5A2B33;
         }
 
         .timeline-item.completed::before {
@@ -586,7 +586,9 @@
 
                     @if ($order->isPending())
                         <form action="{{ route('customer.orders.cancel', $order) }}" method="POST"
-                            onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?')">
+                            data-confirm="Pesanan akan dibatalkan dan tidak dapat dikembalikan."
+                            data-confirm-title="Batalkan Pesanan?" data-confirm-icon="warning"
+                            data-confirm-button="Ya, Batalkan!" data-confirm-danger="true">
                             @csrf
                             <button type="submit" class="btn btn-outline-danger w-100 mb-2">
                                 <i class="bx bx-x-circle me-1"></i>Batalkan Pesanan

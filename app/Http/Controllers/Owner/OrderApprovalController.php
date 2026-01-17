@@ -5,10 +5,13 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderApproved;
+use App\Mail\OrderRejected;
 use App\Models\Order;
 use App\Models\FinancialLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderApprovalController extends Controller
 {
@@ -48,6 +51,14 @@ class OrderApprovalController extends Controller
      */
     public function approve(Request $request, Order $order)
     {
+        $request->validate([
+            'due_date' => 'required|date|after_or_equal:today',
+        ], [
+            'due_date.required' => 'Tanggal jatuh tempo harus diisi.',
+            'due_date.date' => 'Format tanggal tidak valid.',
+            'due_date.after_or_equal' => 'Tanggal jatuh tempo tidak boleh sebelum hari ini.',
+        ]);
+
         if (!$order->canApprove()) {
             return back()->with('error', 'Order tidak dapat diapprove. Status: ' . $order->status_display);
         }
@@ -87,6 +98,7 @@ class OrderApprovalController extends Controller
                 'status' => 'approved',
                 'approved_by' => auth()->id(),
                 'approved_at' => now(),
+                'due_date' => $request->due_date,
             ]);
 
             // Create Financial Log
@@ -107,7 +119,10 @@ class OrderApprovalController extends Controller
 
             DB::commit();
 
-            // TODO: Send email to customer with invoice attachment
+            // Send email to customer with invoice attachment
+            if ($order->customer_email) {
+                Mail::to($order->customer_email)->queue(new OrderApproved($order));
+            }
 
             return redirect()->route('owner.orders.approval.show', $order)
                 ->with('success', 'Order berhasil disetujui! Stok telah dikurangi. Invoice telah dibuat.');
@@ -149,7 +164,10 @@ class OrderApprovalController extends Controller
 
             DB::commit();
 
-            // TODO: Send email to customer
+            // Send email to customer
+            if ($order->customer_email) {
+                Mail::to($order->customer_email)->queue(new OrderRejected($order));
+            }
 
             return redirect()->route('owner.orders.approval.show', $order)
                 ->with('success', 'Order berhasil ditolak. Stok reserved telah dilepas. Email notifikasi telah dikirim ke customer.');

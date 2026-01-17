@@ -6,10 +6,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Register Customer | Mini ERP Kopi</title>
+    <title>Register Customer | {{ setting('company_name') ?? 'Mini ERP Kopi' }}</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+    @if (setting('company_logo'))
+        <link rel="icon" type="image/png" href="{{ asset('storage/' . setting('company_logo')) }}" />
+    @else
+        <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+    @endif
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,6 +28,44 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/theme-default.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #8B5A2B 0%, #6F4E37 50%, #5D4037 100%);
+            min-height: 100vh;
+        }
+
+        .btn-primary {
+            background-color: #8B5A2B !important;
+            border-color: #8B5A2B !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #6F4E37 !important;
+            border-color: #6F4E37 !important;
+        }
+
+        .form-control:focus {
+            border-color: #8B5A2B !important;
+            box-shadow: 0 0 0 0.2rem rgba(139, 90, 43, 0.25) !important;
+        }
+
+        a {
+            color: #8B5A2B;
+        }
+
+        a:hover {
+            color: #6F4E37;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 
 <body>
@@ -35,21 +77,22 @@
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center mb-4">
-                            <span class="app-brand-text demo text-body fw-bolder fs-3">☕ ERP Kopi</span>
+                            @if (setting('company_logo'))
+                                <img src="{{ asset('storage/' . setting('company_logo')) }}"
+                                    alt="{{ setting('company_name') ?? 'Logo' }}"
+                                    style="width: 80px; height: 80px; object-fit: contain; border-radius: 50%; background: #f5f5f5; padding: 5px;">
+                            @else
+                                <span style="font-size: 60px;">☕</span>
+                            @endif
+                        </div>
+                        <div class="text-center mb-4">
+                            <span class="app-brand-text demo text-body fw-bolder fs-4" style="color: #8B5A2B;">
+                                {{ setting('company_name') ?? 'Mini ERP Kopi' }}
+                            </span>
                         </div>
 
-                        <h4 class="mb-2">Registrasi Customer</h4>
-                        <p class="mb-4">Daftar untuk mulai berbelanja kopi terbaik</p>
-
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+                        <h4 class="mb-2 text-center" style="color: #8B5A2B;">Registrasi Customer</h4>
+                        <p class="mb-4 text-center text-muted">Daftar untuk mulai berbelanja kopi terbaik</p>
 
                         <form action="{{ route('register.customer') }}" method="POST">
                             @csrf
@@ -105,7 +148,9 @@
                                         class="form-control @error('password') is-invalid @enderror" name="password"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                         required />
-                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                    <span class="input-group-text cursor-pointer"
+                                        onclick="togglePassword('password')"><i class="bx bx-hide"
+                                            id="password-icon"></i></span>
                                 </div>
                                 @error('password')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -116,10 +161,15 @@
                             <div class="mb-3">
                                 <label class="form-label" for="password_confirmation">Konfirmasi Password <span
                                         class="text-danger">*</span></label>
-                                <input type="password" id="password_confirmation" class="form-control"
-                                    name="password_confirmation"
-                                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                    required />
+                                <div class="input-group input-group-merge">
+                                    <input type="password" id="password_confirmation" class="form-control"
+                                        name="password_confirmation"
+                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                        required />
+                                    <span class="input-group-text cursor-pointer"
+                                        onclick="togglePassword('password_confirmation')"><i class="bx bx-hide"
+                                            id="password_confirmation-icon"></i></span>
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary d-grid w-100 mb-3">
@@ -127,14 +177,18 @@
                             </button>
                         </form>
 
-                        <p class="text-center">
-                            <span>Sudah punya akun?</span>
-                            <a href="{{ route('login') }}">
-                                <span>Login di sini</span>
+                        <p class="text-center mt-4">
+                            <span class="text-muted">Sudah punya akun?</span>
+                            <a href="{{ route('login') }}" class="fw-semibold">
+                                Login di sini
                             </a>
                         </p>
                     </div>
                 </div>
+
+                <p class="text-center mt-4 text-white" style="opacity: 0.8;">
+                    &copy; {{ date('Y') }} {{ setting('company_name') ?? 'Mini ERP Kopi' }}. All rights reserved.
+                </p>
             </div>
         </div>
     </div>
@@ -144,6 +198,58 @@
     <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(inputId + '-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bx-hide');
+                icon.classList.add('bx-show');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bx-show');
+                icon.classList.add('bx-hide');
+            }
+        }
+
+        // SweetAlert2 Coffee Theme
+        const swalCoffee = Swal.mixin({
+            confirmButtonColor: '#8B5A2B',
+            cancelButtonColor: '#6c757d',
+            iconColor: '#8B5A2B',
+        });
+
+        @if (session('success'))
+            swalCoffee.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+            });
+        @endif
+
+        @if (session('error'))
+            swalCoffee.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: '{{ session('error') }}',
+            });
+        @endif
+
+        @if ($errors->any())
+            let errorList = '';
+            @foreach ($errors->all() as $error)
+                errorList += '• {{ $error }}\n';
+            @endforeach
+            swalCoffee.fire({
+                icon: 'error',
+                title: 'Validasi Gagal!',
+                html: '<div style="text-align:left;white-space:pre-line;">' + errorList + '</div>',
+            });
+        @endif
+    </script>
 </body>
 
 </html>

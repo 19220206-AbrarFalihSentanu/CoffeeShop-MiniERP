@@ -1,5 +1,7 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+    <h4 class="text-xl font-bold text-center text-[#8B5A2B] mb-2">Konfirmasi Password</h4>
+
+    <div class="mb-4 text-sm text-gray-600 text-center">
         {{ __('auth.confirm_password_text') }}
     </div>
 
@@ -16,8 +18,8 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
+        <div class="mt-6">
+            <x-primary-button class="w-full justify-center py-3">
                 {{ __('general.confirm') }}
             </x-primary-button>
         </div>

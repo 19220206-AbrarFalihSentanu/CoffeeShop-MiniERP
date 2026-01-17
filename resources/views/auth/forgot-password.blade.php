@@ -1,5 +1,7 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+    <h4 class="text-xl font-bold text-center text-[#8B5A2B] mb-2">{{ __('auth.forgot_password') }}</h4>
+
+    <div class="mb-4 text-sm text-gray-600 text-center">
         {{ __('auth.forgot_password_text') }}
     </div>
 
@@ -17,10 +19,16 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
+        <div class="mt-6">
+            <x-primary-button class="w-full justify-center py-3">
                 {{ __('auth.email_reset_link') }}
             </x-primary-button>
+        </div>
+
+        <div class="mt-4 text-center">
+            <a href="{{ route('login') }}" class="text-sm text-[#8B5A2B] hover:text-[#6F4E37] hover:underline">
+                &larr; Kembali ke halaman login
+            </a>
         </div>
     </form>
 </x-guest-layout>

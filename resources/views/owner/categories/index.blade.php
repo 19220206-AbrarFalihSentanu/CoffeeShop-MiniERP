@@ -91,8 +91,9 @@
                                                 <i class="bx bx-edit me-1"></i> Edit
                                             </a>
                                             <form action="{{ route('owner.categories.destroy', $category) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
+                                                method="POST" data-confirm="Kategori akan dihapus permanen!"
+                                                data-confirm-title="Hapus Kategori?" data-confirm-icon="warning"
+                                                data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">

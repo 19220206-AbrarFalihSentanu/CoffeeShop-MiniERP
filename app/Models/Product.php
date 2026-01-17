@@ -106,6 +106,11 @@ class Product extends Model
         return $this->hasMany(InventoryLog::class);
     }
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     // Accessor untuk harga setelah diskon
     public function getFinalPriceAttribute()
     {

@@ -203,7 +203,12 @@
 
                 if (value > max) {
                     this.value = max;
-                    alert(`Jumlah tidak boleh melebihi ${max} kg`);
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Jumlah Melebihi Batas',
+                        text: `Jumlah tidak boleh melebihi ${max} kg`,
+                        confirmButtonColor: '#8B5A2B'
+                    });
                 }
 
                 if (value < 0) {
@@ -214,6 +219,8 @@
 
         // Form validation
         document.getElementById('receiveForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
             const inputs = document.querySelectorAll('.quantity-receive-input');
             let totalReceived = 0;
 
@@ -222,12 +229,28 @@
             });
 
             if (totalReceived === 0) {
-                e.preventDefault();
-                alert('Minimal harus ada 1 item yang diterima! Silakan input jumlah yang diterima.');
+                swalCoffee.fire({
+                    title: 'Input Jumlah',
+                    text: 'Minimal harus ada 1 item yang diterima! Silakan input jumlah yang diterima.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
                 return false;
             }
 
-            return confirm(`Anda akan menerima stock untuk item yang diinput. Lanjutkan?`);
+            swalCoffee.fire({
+                title: 'Terima Stock?',
+                text: 'Anda akan menerima stock untuk item yang diinput.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Terima!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
         });
     </script>
 @endpush

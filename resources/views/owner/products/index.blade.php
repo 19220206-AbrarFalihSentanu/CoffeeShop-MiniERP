@@ -211,7 +211,9 @@
                                             </form>
                                             <div class="dropdown-divider"></div>
                                             <form action="{{ route('owner.products.destroy', $product) }}" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                                data-confirm="Data produk akan dihapus permanen!"
+                                                data-confirm-title="Hapus Produk?" data-confirm-icon="warning"
+                                                data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">

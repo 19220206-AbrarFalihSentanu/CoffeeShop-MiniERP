@@ -71,7 +71,9 @@ class PaymentVerificationController extends Controller
             ]);
 
             // Send email to customer
-            Mail::to($payment->order->customer_email)->send(new PaymentVerified($payment));
+            if ($payment->order->customer_email) {
+                Mail::to($payment->order->customer_email)->queue(new PaymentVerified($payment));
+            }
 
             DB::commit();
 
@@ -103,7 +105,9 @@ class PaymentVerificationController extends Controller
             ]);
 
             // Send email to customer
-            Mail::to($payment->order->customer_email)->send(new PaymentRejected($payment));
+            if ($payment->order->customer_email) {
+                Mail::to($payment->order->customer_email)->queue(new PaymentRejected($payment));
+            }
 
             DB::commit();
 
@@ -158,7 +162,9 @@ class PaymentVerificationController extends Controller
             ]);
 
             // Send shipping email to customer
-            Mail::to($payment->order->customer_email)->send(new \App\Mail\OrderShipped($payment->order));
+            if ($payment->order->customer_email) {
+                Mail::to($payment->order->customer_email)->queue(new \App\Mail\OrderShipped($payment->order));
+            }
 
             DB::commit();
 
@@ -185,7 +191,9 @@ class PaymentVerificationController extends Controller
             ]);
 
             // Send email to customer
-            Mail::to($payment->order->customer_email)->send(new OrderCompleted($payment->order));
+            if ($payment->order->customer_email) {
+                Mail::to($payment->order->customer_email)->queue(new OrderCompleted($payment->order));
+            }
 
             DB::commit();
 

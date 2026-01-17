@@ -101,7 +101,8 @@
                             </small>
                         </div>
                         <form action="{{ route('customer.orders.cancel', $order) }}" method="POST" class="d-inline"
-                            onsubmit="return confirm('{{ __('orders.confirm_cancel') }}')">
+                            data-confirm="{{ __('orders.confirm_cancel') }}" data-confirm-title="Batalkan Pesanan?"
+                            data-confirm-icon="warning" data-confirm-button="Ya, Batalkan!" data-confirm-danger="true">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-outline-danger">
                                 <i class="bx bx-x-circle me-1"></i>{{ __('orders.cancel_order') }}

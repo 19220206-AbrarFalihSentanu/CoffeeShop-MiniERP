@@ -222,7 +222,7 @@ class PurchaseOrderController extends Controller
 
             // Send email to all owners
             foreach ($owners as $owner) {
-                Mail::to($owner->email)->send(new PurchaseOrderSubmitted($purchaseOrder));
+                Mail::to($owner->email)->queue(new PurchaseOrderSubmitted($purchaseOrder));
             }
 
             DB::commit();

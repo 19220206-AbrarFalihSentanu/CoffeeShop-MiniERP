@@ -68,7 +68,9 @@ class PurchaseOrderApprovalController extends Controller
             ]);
 
             // Send email to admin who created the PO
-            Mail::to($purchaseOrder->creator->email)->send(new PurchaseOrderApproved($purchaseOrder));
+            if ($purchaseOrder->creator && $purchaseOrder->creator->email) {
+                Mail::to($purchaseOrder->creator->email)->queue(new PurchaseOrderApproved($purchaseOrder));
+            }
 
             DB::commit();
 
@@ -101,7 +103,9 @@ class PurchaseOrderApprovalController extends Controller
             ]);
 
             // Send email to admin who created the PO
-            Mail::to($purchaseOrder->creator->email)->send(new PurchaseOrderRejected($purchaseOrder));
+            if ($purchaseOrder->creator && $purchaseOrder->creator->email) {
+                Mail::to($purchaseOrder->creator->email)->queue(new PurchaseOrderRejected($purchaseOrder));
+            }
 
             DB::commit();
 

@@ -329,25 +329,15 @@
                         <span>Approved:</span> <strong>{{ $order->approved_at->format('d M Y H:i') }}</strong>
                     </div>
                 @endif
+                @if ($order->due_date)
+                    <div class="detail-row" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd;">
+                        <span style="color: #dc3545;">Due Date:</span>
+                        <strong style="color: #dc3545;">{{ $order->due_date->format('d M Y') }}</strong>
+                    </div>
+                @endif
             </td>
         </tr>
     </table>
-    <div class="detail-row">
-        <span>Invoice Date:</span> <strong>{{ $invoice_date->format('d M Y') }}</strong>
-    </div>
-    <div class="detail-row">
-        <span>Order Date:</span> <strong>{{ $order->created_at->format('d M Y') }}</strong>
-    </div>
-    <div class="detail-row">
-        <span>Payment Method:</span> <strong>{{ ucfirst($order->payment_method ?? 'Transfer') }}</strong>
-    </div>
-    @if ($order->approved_at)
-        <div class="detail-row">
-            <span>Approved:</span> <strong>{{ $order->approved_at->format('d M Y H:i') }}</strong>
-        </div>
-    @endif
-    </div>
-    </div>
 
     <!-- Items Table -->
     <table class="items-table">
@@ -394,9 +384,40 @@
 
                 <div class="payment-info" style="margin-top: 15px;">
                     <h4>Payment Information</h4>
-                    <p><strong>Bank Transfer:</strong> Bank BCA</p>
-                    <p><strong>Account Number:</strong> 1234567890</p>
-                    <p><strong>Account Name:</strong> {{ $company['name'] }}</p>
+
+                    @php
+                        $hasBank = false;
+                        $banks = [];
+                        for ($i = 1; $i <= 3; $i++) {
+                            $bankName = setting("bank_name_{$i}");
+                            $bankAccount = setting("bank_account_number_{$i}");
+                            $bankHolder = setting("bank_account_name_{$i}");
+                            if ($bankName && $bankAccount) {
+                                $banks[] = [
+                                    'name' => $bankName,
+                                    'account' => $bankAccount,
+                                    'holder' => $bankHolder ?: $company['name'],
+                                ];
+                                $hasBank = true;
+                            }
+                        }
+                    @endphp
+
+                    @if ($hasBank)
+                        @foreach ($banks as $index => $bank)
+                            <div
+                                style="{{ $index > 0 ? 'margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ddd;' : '' }}">
+                                <p style="margin-bottom: 3px;"><strong>{{ $bank['name'] }}</strong></p>
+                                <p style="margin-bottom: 3px;">Account: <strong>{{ $bank['account'] }}</strong></p>
+                                <p style="margin-bottom: 0;">a/n: {{ $bank['holder'] }}</p>
+                            </div>
+                        @endforeach
+                    @else
+                        <p><strong>Bank Transfer:</strong> Bank BCA</p>
+                        <p><strong>Account Number:</strong> 1234567890</p>
+                        <p><strong>Account Name:</strong> {{ $company['name'] }}</p>
+                    @endif
+
                     <p style="margin-top: 10px;"><em>Please include invoice number in transfer description</em></p>
                 </div>
             </td>
@@ -436,13 +457,6 @@
         <p>{{ $company['name'] }}</p>
         <p>{{ $company['address'] }}</p>
         <p>{{ $company['email'] }} | {{ $company['phone'] }}</p>
-
-        <div class="terms">
-            <strong>Terms & Conditions:</strong><br>
-            1. Payment is due within 7 days from the invoice date.<br>
-            2. Goods once sold will not be taken back or exchanged.<br>
-            3. All disputes are subject to {{ $company['name'] }} jurisdiction.
-        </div>
     </div>
 </body>
 

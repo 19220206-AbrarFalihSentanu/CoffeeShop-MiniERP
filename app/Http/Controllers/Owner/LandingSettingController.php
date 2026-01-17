@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Owner;
 use App\Http\Controllers\Controller;
 use App\Models\LandingSlide;
 use App\Models\Partner;
+use App\Models\Promo;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +27,9 @@ class LandingSettingController extends Controller
         // Get partners
         $partners = Partner::ordered()->get();
 
+        // Get promos
+        $promos = Promo::ordered()->get();
+
         // Get landing page settings
         $landingSettings = Setting::where('group', 'landing_page')->get()->keyBy('key');
 
@@ -33,6 +37,7 @@ class LandingSettingController extends Controller
             'activeTab',
             'slides',
             'partners',
+            'promos',
             'landingSettings'
         ));
     }
@@ -252,7 +257,7 @@ class LandingSettingController extends Controller
     // =============================================
 
     /**
-     * Update section settings (About, Contact, Partner, Product titles)
+     * Update section settings (About, Contact, Promo, Product titles)
      */
     public function updateSections(Request $request)
     {
@@ -262,8 +267,8 @@ class LandingSettingController extends Controller
             'landing_about_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],
             'landing_contact_title' => ['required', 'string', 'max:255'],
             'landing_contact_subtitle' => ['nullable', 'string'],
-            'landing_partner_title' => ['required', 'string', 'max:255'],
-            'landing_partner_subtitle' => ['nullable', 'string'],
+            'landing_promo_title' => ['required', 'string', 'max:255'],
+            'landing_promo_subtitle' => ['nullable', 'string'],
             'landing_product_title' => ['required', 'string', 'max:255'],
             'landing_product_subtitle' => ['nullable', 'string'],
             'landing_whatsapp' => ['nullable', 'string', 'max:20'],
@@ -282,8 +287,8 @@ class LandingSettingController extends Controller
             Setting::set('landing_about_content', $request->landing_about_content);
             Setting::set('landing_contact_title', $request->landing_contact_title);
             Setting::set('landing_contact_subtitle', $request->landing_contact_subtitle);
-            Setting::set('landing_partner_title', $request->landing_partner_title);
-            Setting::set('landing_partner_subtitle', $request->landing_partner_subtitle);
+            Setting::set('landing_promo_title', $request->landing_promo_title);
+            Setting::set('landing_promo_subtitle', $request->landing_promo_subtitle);
             Setting::set('landing_product_title', $request->landing_product_title);
             Setting::set('landing_product_subtitle', $request->landing_product_subtitle);
             Setting::set('landing_whatsapp', $request->landing_whatsapp);
@@ -334,6 +339,118 @@ class LandingSettingController extends Controller
                 'success' => false,
                 'message' => 'Gagal menghapus gambar: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    // =============================================
+    // PROMO MANAGEMENT
+    // =============================================
+
+    /**
+     * Store a new promo
+     */
+    public function storePromo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],
+            'discount_type' => ['required', 'in:percentage,fixed'],
+            'discount_value' => ['required', 'numeric', 'min:0'],
+            'promo_code' => ['nullable', 'string', 'max:50'],
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
+            'order' => ['required', 'integer', 'min:1'],
+            'is_active' => ['boolean'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput()->with('activeTab', 'promos');
+        }
+
+        try {
+            $data = $validator->validated();
+
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $data['image'] = $request->file('image')->store('landing/promos', 'public');
+            }
+
+            $data['is_active'] = $request->has('is_active');
+
+            Promo::create($data);
+
+            return redirect()->route('owner.landing-settings.index', ['tab' => 'promos'])
+                ->with('success', 'Promo berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menambahkan promo: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    /**
+     * Update a promo
+     */
+    public function updatePromo(Request $request, Promo $promo)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],
+            'discount_type' => ['required', 'in:percentage,fixed'],
+            'discount_value' => ['required', 'numeric', 'min:0'],
+            'promo_code' => ['nullable', 'string', 'max:50'],
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
+            'order' => ['required', 'integer', 'min:1'],
+            'is_active' => ['boolean'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput()->with('activeTab', 'promos');
+        }
+
+        try {
+            $data = $validator->validated();
+
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                // Delete old image
+                if ($promo->image && Storage::disk('public')->exists($promo->image)) {
+                    Storage::disk('public')->delete($promo->image);
+                }
+                $data['image'] = $request->file('image')->store('landing/promos', 'public');
+            }
+
+            $data['is_active'] = $request->has('is_active');
+
+            $promo->update($data);
+
+            return redirect()->route('owner.landing-settings.index', ['tab' => 'promos'])
+                ->with('success', 'Promo berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal memperbarui promo: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    /**
+     * Delete a promo
+     */
+    public function destroyPromo(Promo $promo)
+    {
+        try {
+            // Delete image
+            if ($promo->image && Storage::disk('public')->exists($promo->image)) {
+                Storage::disk('public')->delete($promo->image);
+            }
+
+            $promo->delete();
+
+            return redirect()->route('owner.landing-settings.index', ['tab' => 'promos'])
+                ->with('success', 'Promo berhasil dihapus!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menghapus promo: ' . $e->getMessage());
         }
     }
 }

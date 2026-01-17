@@ -19,7 +19,8 @@
                         <i class="bx bx-edit me-1"></i>{{ __('general.edit') }}
                     </a>
                     <form action="{{ route('owner.suppliers.destroy', $supplier) }}" method="POST" class="d-inline"
-                        onsubmit="return confirm('{{ __('suppliers.confirm_delete_supplier') }}')">
+                        data-confirm="{{ __('suppliers.confirm_delete_supplier') }}" data-confirm-title="Hapus Supplier?"
+                        data-confirm-icon="warning" data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">

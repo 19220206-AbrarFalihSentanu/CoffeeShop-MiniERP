@@ -152,7 +152,9 @@
                                 <td>
                                     @if (!$log->reference_type)
                                         <form action="{{ route('owner.financial.destroy', $log) }}" method="POST"
-                                            onsubmit="return confirm('Delete this log?');" class="d-inline">
+                                            data-confirm="Log keuangan akan dihapus permanen."
+                                            data-confirm-title="Hapus Log?" data-confirm-icon="warning"
+                                            data-confirm-button="Ya, Hapus!" data-confirm-danger="true" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger">

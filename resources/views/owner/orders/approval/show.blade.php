@@ -278,12 +278,29 @@
                     </h5>
 
                     <div class="row g-3">
-                        {{-- Approve Button --}}
+                        {{-- Approve Form --}}
                         <div class="col-md-6">
                             <form action="{{ route('owner.orders.approval.approve', $order) }}" method="POST"
-                                onsubmit="return confirm('⚠️ KONFIRMASI APPROVE\n\n✅ Stok akan dikurangi otomatis\n💰 Transaksi akan tercatat di financial log\n📧 Customer akan menerima email notifikasi\n\nLanjutkan approve order ini?')">
+                                id="approveForm">
                                 @csrf
-                                <button type="submit" class="btn btn-success w-100 btn-lg"
+                                <div class="mb-3">
+                                    <label for="due_date" class="form-label">
+                                        <i class="bx bx-calendar me-1"></i>Tanggal Jatuh Tempo
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="date" class="form-control @error('due_date') is-invalid @enderror"
+                                        id="due_date" name="due_date"
+                                        value="{{ old('due_date', now()->addDays(7)->format('Y-m-d')) }}"
+                                        min="{{ now()->format('Y-m-d') }}" required
+                                        {{ count($stockIssues) > 0 ? 'disabled' : '' }}>
+                                    @error('due_date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">
+                                        <i class="bx bx-info-circle me-1"></i>Batas waktu pembayaran untuk customer
+                                    </small>
+                                </div>
+                                <button type="button" class="btn btn-success w-100 btn-lg" onclick="confirmApprove()"
                                     {{ count($stockIssues) > 0 ? 'disabled' : '' }}>
                                     <i class="bx bx-check-circle me-2"></i>
                                     Setujui Order
@@ -299,6 +316,9 @@
 
                         {{-- Reject Button --}}
                         <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label text-white">.</label>
+                            </div>
                             <button type="button" class="btn btn-danger w-100 btn-lg" data-bs-toggle="modal"
                                 data-bs-target="#rejectModal">
                                 <i class="bx bx-x-circle me-2"></i>
@@ -457,3 +477,48 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function confirmApprove() {
+            const dueDate = document.getElementById('due_date').value;
+            if (!dueDate) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tanggal Jatuh Tempo Kosong',
+                    text: 'Silakan pilih tanggal jatuh tempo terlebih dahulu.',
+                    confirmButtonColor: '#8B5A2B'
+                });
+                return;
+            }
+
+            // Format date for display
+            const formattedDate = new Date(dueDate).toLocaleDateString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            Swal.fire({
+                title: 'Approve Order?',
+                html: `
+                    <p>Stok akan dikurangi otomatis, transaksi akan tercatat di financial log, dan customer akan menerima email notifikasi.</p>
+                    <hr>
+                    <p><strong>Tanggal Jatuh Tempo:</strong><br>${formattedDate}</p>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Approve!',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('approveForm').submit();
+                }
+            });
+        }
+    </script>
+@endpush

@@ -22,8 +22,8 @@
         }
 
         .image-preview-box:hover {
-            border-color: #696cff;
-            background-color: #f0f0ff;
+            border-color: #8B5A2B;
+            background-color: #FDF8F3;
         }
 
         .image-preview-box img {
@@ -51,14 +51,15 @@
         }
 
         .nav-tabs .nav-link.active {
-            color: #696cff;
+            color: #8B5A2B;
             font-weight: 600;
-            border-bottom: 3px solid #696cff;
+            border-bottom: 3px solid #8B5A2B;
             background: transparent;
         }
 
         .slide-card,
-        .partner-card-item {
+        .partner-card-item,
+        .promo-card-item {
             border: 1px solid #e9ecef;
             border-radius: 12px;
             padding: 1rem;
@@ -68,7 +69,8 @@
         }
 
         .slide-card:hover,
-        .partner-card-item:hover {
+        .partner-card-item:hover,
+        .promo-card-item:hover {
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
 
@@ -93,8 +95,8 @@
         }
 
         .accordion-button:not(.collapsed) {
-            background-color: #f0f0ff;
-            color: #696cff;
+            background-color: #FDF8F3;
+            color: #8B5A2B;
         }
 
         .form-section {
@@ -105,7 +107,7 @@
         }
 
         .form-section h6 {
-            color: #696cff;
+            color: #8B5A2B;
             margin-bottom: 1rem;
             font-weight: 600;
         }
@@ -139,6 +141,12 @@
                     <a class="nav-link {{ $activeTab === 'sections' ? 'active' : '' }}"
                         href="{{ route('owner.landing-settings.index', ['tab' => 'sections']) }}">
                         <i class="bx bx-layout me-1"></i>Section Content
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $activeTab === 'promos' ? 'active' : '' }}"
+                        href="{{ route('owner.landing-settings.index', ['tab' => 'promos']) }}">
+                        <i class="bx bxs-discount me-1"></i>Promo
                     </a>
                 </li>
                 <li class="nav-item">
@@ -197,8 +205,9 @@
                                                 <i class="bx bx-edit-alt"></i> Edit
                                             </button>
                                             <form action="{{ route('owner.landing-settings.slides.destroy', $slide) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus slide ini?')">
+                                                method="POST" data-confirm="Slide akan dihapus permanen."
+                                                data-confirm-title="Hapus Slide?" data-confirm-icon="warning"
+                                                data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -392,23 +401,23 @@
                             </div>
                         </div>
 
-                        {{-- Partner Section --}}
+                        {{-- Promo Section --}}
                         <div class="form-section">
-                            <h6><i class="bx bx-buildings me-2"></i>Section Partner</h6>
+                            <h6><i class="bx bx-gift me-2"></i>Section Promo</h6>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Judul Section <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="landing_partner_title"
-                                            value="{{ $landingSettings['landing_partner_title']->value ?? 'Partner Kami' }}"
+                                        <input type="text" class="form-control" name="landing_promo_title"
+                                            value="{{ $landingSettings['landing_promo_title']->value ?? 'Promo Spesial' }}"
                                             required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Subtitle</label>
-                                        <input type="text" class="form-control" name="landing_partner_subtitle"
-                                            value="{{ $landingSettings['landing_partner_subtitle']->value ?? '' }}">
+                                        <input type="text" class="form-control" name="landing_promo_subtitle"
+                                            value="{{ $landingSettings['landing_promo_subtitle']->value ?? 'Jangan lewatkan penawaran menarik dari kami!' }}">
                                     </div>
                                 </div>
                             </div>
@@ -488,6 +497,232 @@
                 </div>
 
                 {{-- =============================================
+                    PROMOS TAB
+                ============================================= --}}
+                <div class="tab-pane fade {{ $activeTab === 'promos' ? 'show active' : '' }}">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h5 class="mb-1">Daftar Promo</h5>
+                            <p class="text-muted small mb-0">Kelola promo yang ditampilkan di landing page</p>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPromoModal">
+                            <i class="bx bx-plus me-1"></i>Tambah Promo
+                        </button>
+                    </div>
+
+                    @if ($promos->count() > 0)
+                        <div class="row">
+                            @foreach ($promos as $promo)
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="slide-card">
+                                        @if ($promo->image)
+                                            <img src="{{ asset('storage/' . $promo->image) }}" alt="{{ $promo->title }}"
+                                                class="slide-image mb-3">
+                                        @else
+                                            <div class="slide-image mb-3 d-flex align-items-center justify-content-center"
+                                                style="background: linear-gradient(135deg, #ffc107, #ff6b6b);">
+                                                <i class="bx bxs-discount text-white" style="font-size: 3rem;"></i>
+                                            </div>
+                                        @endif
+
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="mb-0">{{ Str::limit($promo->title, 25) }}</h6>
+                                            <span
+                                                class="badge {{ $promo->is_active ? 'bg-success' : 'bg-secondary' }} status-badge">
+                                                {{ $promo->is_active ? 'Aktif' : 'Nonaktif' }}
+                                            </span>
+                                        </div>
+
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="badge bg-danger">
+                                                @if ($promo->discount_type === 'percentage')
+                                                    {{ number_format($promo->discount_value, 0) }}% OFF
+                                                @else
+                                                    Rp {{ number_format($promo->discount_value, 0, ',', '.') }}
+                                                @endif
+                                            </span>
+                                            @if ($promo->promo_code)
+                                                <span class="badge bg-warning text-dark">{{ $promo->promo_code }}</span>
+                                            @endif
+                                        </div>
+
+                                        <p class="text-muted small mb-2">{{ Str::limit($promo->description, 50) }}</p>
+
+                                        @if ($promo->end_date)
+                                            <small class="text-muted">
+                                                <i class="bx bx-time-five"></i> s/d
+                                                {{ $promo->end_date->format('d M Y') }}
+                                            </small>
+                                        @endif
+
+                                        <div class="d-flex gap-2 mt-3">
+                                            <button class="btn btn-sm btn-outline-primary flex-grow-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editPromoModal{{ $promo->id }}">
+                                                <i class="bx bx-edit-alt"></i> Edit
+                                            </button>
+                                            <form action="{{ route('owner.landing-settings.promos.destroy', $promo) }}"
+                                                method="POST" data-confirm="Promo akan dihapus permanen."
+                                                data-confirm-title="Hapus Promo?" data-confirm-icon="warning"
+                                                data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bx bx-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Edit Promo Modal --}}
+                                <div class="modal fade" id="editPromoModal{{ $promo->id }}" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <form action="{{ route('owner.landing-settings.promos.update', $promo) }}"
+                                                method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Edit Promo</h5>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label class="form-label">Gambar Promo</label>
+                                                            <div class="image-preview-box mb-2"
+                                                                onclick="document.getElementById('edit_promo_image_{{ $promo->id }}').click()">
+                                                                @if ($promo->image)
+                                                                    <img src="{{ asset('storage/' . $promo->image) }}"
+                                                                        alt="Preview"
+                                                                        id="editPromoPreview{{ $promo->id }}">
+                                                                @else
+                                                                    <div class="image-preview-placeholder"
+                                                                        id="editPromoPlaceholder{{ $promo->id }}">
+                                                                        <i class="bx bx-image-add bx-lg"></i>
+                                                                        <p class="mb-0 mt-2 small">Upload gambar</p>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                            <input type="file" class="form-control d-none"
+                                                                id="edit_promo_image_{{ $promo->id }}" name="image"
+                                                                accept="image/*"
+                                                                onchange="previewEditPromoImage(event, {{ $promo->id }})">
+                                                            <small class="text-muted">Max 5MB. JPG, PNG, WEBP</small>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Judul Promo <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" name="title"
+                                                                    value="{{ $promo->title }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Deskripsi</label>
+                                                                <textarea class="form-control" name="description" rows="2">{{ $promo->description }}</textarea>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Tipe Diskon <span
+                                                                                class="text-danger">*</span></label>
+                                                                        <select class="form-select" name="discount_type"
+                                                                            required>
+                                                                            <option value="percentage"
+                                                                                {{ $promo->discount_type === 'percentage' ? 'selected' : '' }}>
+                                                                                Persentase (%)</option>
+                                                                            <option value="fixed"
+                                                                                {{ $promo->discount_type === 'fixed' ? 'selected' : '' }}>
+                                                                                Nominal (Rp)</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Nilai Diskon <span
+                                                                                class="text-danger">*</span></label>
+                                                                        <input type="number" class="form-control"
+                                                                            name="discount_value"
+                                                                            value="{{ $promo->discount_value }}"
+                                                                            min="0" step="0.01" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Kode Promo</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="promo_code" value="{{ $promo->promo_code }}"
+                                                                    placeholder="PROMO2026"
+                                                                    style="text-transform: uppercase;">
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Tanggal Mulai</label>
+                                                                        <input type="date" class="form-control"
+                                                                            name="start_date"
+                                                                            value="{{ $promo->start_date ? $promo->start_date->format('Y-m-d') : '' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Tanggal Berakhir</label>
+                                                                        <input type="date" class="form-control"
+                                                                            name="end_date"
+                                                                            value="{{ $promo->end_date ? $promo->end_date->format('Y-m-d') : '' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Urutan <span
+                                                                                class="text-danger">*</span></label>
+                                                                        <input type="number" class="form-control"
+                                                                            name="order" value="{{ $promo->order }}"
+                                                                            min="1" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Status</label>
+                                                                        <div class="form-check form-switch mt-2">
+                                                                            <input class="form-check-input"
+                                                                                type="checkbox" name="is_active"
+                                                                                value="1"
+                                                                                {{ $promo->is_active ? 'checked' : '' }}>
+                                                                            <label class="form-check-label">Aktif</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="bx bx-save me-1"></i>Simpan
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-5">
+                            <i class="bx bxs-discount text-muted" style="font-size: 4rem;"></i>
+                            <p class="text-muted mt-3">Belum ada promo. Tambahkan promo pertama!</p>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- =============================================
                     PARTNERS TAB
                 ============================================= --}}
                 <div class="tab-pane fade {{ $activeTab === 'partners' ? 'show active' : '' }}">
@@ -536,8 +771,9 @@
                                             </button>
                                             <form
                                                 action="{{ route('owner.landing-settings.partners.destroy', $partner) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus partner ini?')">
+                                                method="POST" data-confirm="Partner akan dihapus permanen."
+                                                data-confirm-title="Hapus Partner?" data-confirm-icon="warning"
+                                                data-confirm-button="Ya, Hapus!" data-confirm-danger="true">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -804,6 +1040,118 @@
             </div>
         </div>
     </div>
+
+    {{-- =============================================
+        ADD PROMO MODAL
+    ============================================= --}}
+    <div class="modal fade" id="addPromoModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('owner.landing-settings.promos.store') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Promo Baru</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label class="form-label">Gambar Promo</label>
+                                <div class="image-preview-box mb-2"
+                                    onclick="document.getElementById('new_promo_image').click()">
+                                    <div class="image-preview-placeholder" id="newPromoPreviewPlaceholder">
+                                        <i class="bx bx-image-add bx-lg"></i>
+                                        <p class="mb-0 mt-2 small">Upload gambar</p>
+                                    </div>
+                                    <img src="" alt="Preview" id="newPromoPreview" style="display: none;">
+                                </div>
+                                <input type="file" class="form-control d-none" id="new_promo_image" name="image"
+                                    accept="image/*" onchange="previewNewPromoImage(event)">
+                                <small class="text-muted">Max 5MB. JPG, PNG, WEBP</small>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="mb-3">
+                                    <label class="form-label">Judul Promo <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="title" required
+                                        placeholder="Diskon Awal Tahun">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Deskripsi</label>
+                                    <textarea class="form-control" name="description" rows="2" placeholder="Dapatkan diskon spesial..."></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Tipe Diskon <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" name="discount_type" required>
+                                                <option value="percentage">Persentase (%)</option>
+                                                <option value="fixed">Nominal (Rp)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Nilai Diskon <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" name="discount_value"
+                                                value="0" min="0" step="0.01" required placeholder="10">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Kode Promo</label>
+                                    <input type="text" class="form-control" name="promo_code" placeholder="PROMO2026"
+                                        style="text-transform: uppercase;">
+                                    <small class="text-muted">Kode yang dapat digunakan customer</small>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Tanggal Mulai</label>
+                                            <input type="date" class="form-control" name="start_date">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Tanggal Berakhir</label>
+                                            <input type="date" class="form-control" name="end_date">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Urutan <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" name="order"
+                                                value="{{ $promos->count() + 1 }}" min="1" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Status</label>
+                                            <div class="form-check form-switch mt-2">
+                                                <input class="form-check-input" type="checkbox" name="is_active"
+                                                    value="1" checked>
+                                                <label class="form-check-label">Aktif</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bx bx-plus me-1"></i>Tambah Promo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -864,6 +1212,34 @@
             }
         }
 
+        // Preview new promo image
+        function previewNewPromoImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('newPromoPreview').src = e.target.result;
+                    document.getElementById('newPromoPreview').style.display = 'block';
+                    document.getElementById('newPromoPreviewPlaceholder').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Preview edit promo image
+        function previewEditPromoImage(event, promoId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewBox = document.querySelector(`#editPromoModal${promoId} .image-preview-box`);
+                    previewBox.innerHTML =
+                        `<img src="${e.target.result}" alt="Preview" id="editPromoPreview${promoId}">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         // Preview section image
         function previewSectionImage(event, imgId, placeholderId) {
             const file = event.target.files[0];
@@ -889,27 +1265,39 @@
 
         // Delete section image
         function deleteSectionImage(key) {
-            if (!confirm('Yakin ingin menghapus gambar ini?')) return;
-
-            fetch("{{ route('owner.landing-settings.sections.delete-image') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        key: key
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('Gagal menghapus gambar');
-                    }
-                })
-                .catch(error => alert('Terjadi kesalahan'));
+            swalCoffee.fire({
+                title: 'Hapus Gambar?',
+                text: 'Gambar akan dihapus permanen.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#dc3545',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{{ route('owner.landing-settings.sections.delete-image') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({
+                                key: key
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showSuccess('Gambar berhasil dihapus!');
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showError('Gagal menghapus gambar');
+                            }
+                        })
+                        .catch(error => showError('Terjadi kesalahan'));
+                }
+            });
         }
     </script>
 @endpush

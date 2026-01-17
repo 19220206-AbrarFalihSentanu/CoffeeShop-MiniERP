@@ -46,7 +46,7 @@
         .price-final {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #696cff;
+            color: #8B5A2B;
         }
 
         .price-discount {
@@ -71,7 +71,7 @@
         }
 
         .category-item.active {
-            background-color: #696cff;
+            background-color: #8B5A2B;
             color: white;
             padding-left: 1rem;
             border-radius: 8px;

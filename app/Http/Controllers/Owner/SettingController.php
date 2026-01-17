@@ -87,7 +87,19 @@ class SettingController extends Controller
             'tax_rate' => ['required', 'numeric', 'min:0', 'max:100'],
             'shipping_cost' => ['required', 'numeric', 'min:0'],
             'min_order_amount' => ['required', 'numeric', 'min:0'],
-            'currency' => ['required', 'string', 'max:10']
+            'currency' => ['required', 'string', 'max:10'],
+            // Bank 1
+            'bank_name_1' => ['nullable', 'string', 'max:100'],
+            'bank_account_number_1' => ['nullable', 'string', 'max:50'],
+            'bank_account_name_1' => ['nullable', 'string', 'max:100'],
+            // Bank 2
+            'bank_name_2' => ['nullable', 'string', 'max:100'],
+            'bank_account_number_2' => ['nullable', 'string', 'max:50'],
+            'bank_account_name_2' => ['nullable', 'string', 'max:100'],
+            // Bank 3
+            'bank_name_3' => ['nullable', 'string', 'max:100'],
+            'bank_account_number_3' => ['nullable', 'string', 'max:50'],
+            'bank_account_name_3' => ['nullable', 'string', 'max:100'],
         ]);
 
         if ($validator->fails()) {
@@ -99,6 +111,19 @@ class SettingController extends Controller
             Setting::set('shipping_cost', $request->shipping_cost);
             Setting::set('min_order_amount', $request->min_order_amount);
             Setting::set('currency', $request->currency);
+
+            // Save bank settings
+            Setting::set('bank_name_1', $request->bank_name_1);
+            Setting::set('bank_account_number_1', $request->bank_account_number_1);
+            Setting::set('bank_account_name_1', $request->bank_account_name_1);
+
+            Setting::set('bank_name_2', $request->bank_name_2);
+            Setting::set('bank_account_number_2', $request->bank_account_number_2);
+            Setting::set('bank_account_name_2', $request->bank_account_name_2);
+
+            Setting::set('bank_name_3', $request->bank_name_3);
+            Setting::set('bank_account_number_3', $request->bank_account_number_3);
+            Setting::set('bank_account_name_3', $request->bank_account_name_3);
 
             return redirect()->route('owner.settings.index', ['tab' => 'system'])
                 ->with('success', 'Pengaturan sistem berhasil diperbarui!');

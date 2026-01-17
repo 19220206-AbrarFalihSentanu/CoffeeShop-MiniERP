@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\LandingSlide;
 use App\Models\Partner;
 use App\Models\Product;
+use App\Models\Promo;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
@@ -28,8 +29,11 @@ class LandingController extends Controller
             ->where('is_active', true)
             ->get();
 
-        // Get active partners
+        // Get active partners (kept for backward compatibility)
         $partners = Partner::active()->ordered()->get();
+
+        // Get active promos
+        $promos = Promo::active()->ordered()->get();
 
         // Get all landing page settings
         $settings = Setting::where('group', 'landing_page')
@@ -42,6 +46,7 @@ class LandingController extends Controller
             'categories',
             'products',
             'partners',
+            'promos',
             'settings'
         ));
     }
@@ -106,5 +111,19 @@ class LandingController extends Controller
                 'stock' => $product->inventory->available_stock ?? 0,
             ]
         ]);
+    }
+
+    /**
+     * Show shipping tracking page
+     */
+    public function tracking()
+    {
+        // Get settings for the page
+        $settings = Setting::where('group', 'landing_page')
+            ->orWhere('group', 'general')
+            ->pluck('value', 'key')
+            ->toArray();
+
+        return view('landing.tracking', compact('settings'));
     }
 }

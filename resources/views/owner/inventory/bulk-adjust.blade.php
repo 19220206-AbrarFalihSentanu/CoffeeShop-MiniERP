@@ -292,11 +292,17 @@
 
         // Form validation
         document.getElementById('bulkAdjustForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
             const checkboxes = document.querySelectorAll('.product-checkbox:checked');
 
             if (checkboxes.length === 0) {
-                e.preventDefault();
-                alert('Silakan pilih minimal satu produk untuk di-adjust!');
+                swalCoffee.fire({
+                    title: 'Pilih Produk',
+                    text: 'Silakan pilih minimal satu produk untuk di-adjust!',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
                 return false;
             }
 
@@ -311,18 +317,30 @@
                 quantityInput.type = 'hidden';
                 quantityInput.name = `adjustments[${adjustmentIndex}][quantity]`;
                 quantityInput.value = quantity;
-                this.appendChild(quantityInput);
+                form.appendChild(quantityInput);
 
                 const productIdInput = document.createElement('input');
                 productIdInput.type = 'hidden';
                 productIdInput.name = `adjustments[${adjustmentIndex}][product_id]`;
                 productIdInput.value = productId;
-                this.appendChild(productIdInput);
+                form.appendChild(productIdInput);
 
                 adjustmentIndex++;
             });
 
-            return confirm(`Apakah Anda yakin ingin memproses bulk adjustment untuk ${checkboxes.length} produk?`);
+            swalCoffee.fire({
+                title: 'Proses Bulk Adjustment?',
+                text: `Anda akan memproses bulk adjustment untuk ${checkboxes.length} produk.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Proses!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
         });
 
         // Initialize summary on load

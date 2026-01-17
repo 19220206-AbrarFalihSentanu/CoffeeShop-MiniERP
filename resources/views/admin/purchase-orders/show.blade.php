@@ -28,7 +28,9 @@
                                     <i class='bx bx-edit'></i> Edit
                                 </a>
                                 <form action="{{ route('admin.purchase-orders.submit', $purchaseOrder) }}" method="POST"
-                                    class="d-inline" onsubmit="return confirm('Submit PO ini untuk approval Owner?')">
+                                    class="d-inline" data-confirm="PO akan dikirim ke Owner untuk approval."
+                                    data-confirm-title="Submit PO?" data-confirm-icon="question"
+                                    data-confirm-button="Ya, Submit!">
                                     @csrf
                                     <button type="submit" class="btn btn-success btn-sm">
                                         <i class='bx bx-send'></i> Submit untuk Approval
@@ -45,7 +47,9 @@
 
                                 {{-- Optional: Direct submit jika tidak perlu edit --}}
                                 <form action="{{ route('admin.purchase-orders.submit', $purchaseOrder) }}" method="POST"
-                                    class="d-inline" onsubmit="return confirm('Submit ulang PO ini tanpa perubahan?')">
+                                    class="d-inline" data-confirm="PO akan dikirim ulang untuk approval."
+                                    data-confirm-title="Submit Ulang PO?" data-confirm-icon="question"
+                                    data-confirm-button="Ya, Submit!">
                                     @csrf
                                     <button type="submit" class="btn btn-success btn-sm">
                                         <i class='bx bx-send'></i> Submit Ulang
@@ -77,7 +81,8 @@
                                 <div class="col-md-6">
                                     <p class="mb-2"><strong>Nama:</strong><br>{{ $purchaseOrder->supplier->name }}</p>
                                     <p class="mb-2">
-                                        <strong>Tipe:</strong><br>{{ $purchaseOrder->supplier->type_display }}</p>
+                                        <strong>Tipe:</strong><br>{{ $purchaseOrder->supplier->type_display }}
+                                    </p>
                                     <p class="mb-2"><strong>Contact
                                             Person:</strong><br>{{ $purchaseOrder->supplier->contact_person }}</p>
                                 </div>
@@ -85,7 +90,8 @@
                                     <p class="mb-2"><strong>Email:</strong><br>{{ $purchaseOrder->supplier->email }}</p>
                                     <p class="mb-2"><strong>Phone:</strong><br>{{ $purchaseOrder->supplier->phone }}</p>
                                     <p class="mb-2">
-                                        <strong>Alamat:</strong><br>{{ $purchaseOrder->supplier->full_address }}</p>
+                                        <strong>Alamat:</strong><br>{{ $purchaseOrder->supplier->full_address }}
+                                    </p>
                                 </div>
                             </div>
                         </div>

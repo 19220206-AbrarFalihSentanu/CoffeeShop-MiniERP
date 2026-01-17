@@ -1,4 +1,7 @@
 <x-guest-layout>
+    <h4 class="text-xl font-bold text-center text-[#8B5A2B] mb-2">{{ __('auth.reset_password') }}</h4>
+    <p class="text-center text-gray-500 text-sm mb-6">Masukkan password baru Anda</p>
+
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
@@ -8,8 +11,8 @@
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('auth.email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required
-                autofocus autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)"
+                required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -31,8 +34,8 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
+        <div class="mt-6">
+            <x-primary-button class="w-full justify-center py-3">
                 {{ __('auth.reset_password') }}
             </x-primary-button>
         </div>

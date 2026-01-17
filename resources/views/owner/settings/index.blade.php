@@ -22,7 +22,7 @@
         }
 
         .image-preview-box:hover {
-            border-color: #696cff;
+            border-color: #8B5A2B;
             background-color: #f8f9fa;
         }
 
@@ -49,7 +49,7 @@
         }
 
         .nav-tabs .nav-link.active {
-            color: #696cff;
+            color: #8B5A2B;
             font-weight: 600;
         }
     </style>
@@ -291,6 +291,139 @@
                         <div class="alert alert-info">
                             <i class="bx bx-info-circle me-1"></i>
                             <strong>Catatan:</strong> Pengaturan sistem akan langsung diterapkan pada semua transaksi baru.
+                        </div>
+
+                        <hr class="my-4">
+
+                        {{-- Bank Information Section --}}
+                        <h5 class="text-primary mb-3">
+                            <i class="bx bx-credit-card me-1"></i>Informasi Bank untuk Pembayaran
+                        </h5>
+                        <p class="text-muted mb-3">Konfigurasi rekening bank yang akan ditampilkan pada invoice (maksimal 3
+                            bank)</p>
+
+                        {{-- Bank 1 --}}
+                        <div class="card mb-3 border">
+                            <div class="card-header bg-light py-2">
+                                <strong><i class="bx bx-bank me-1"></i>Bank 1 (Utama)</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="bank_name_1" class="form-label">Nama Bank</label>
+                                            <input type="text" class="form-control" id="bank_name_1"
+                                                name="bank_name_1"
+                                                value="{{ old('bank_name_1', $systemSettings['bank_name_1']->value ?? 'Bank BCA') }}"
+                                                placeholder="Contoh: Bank BCA">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="bank_account_number_1" class="form-label">No. Rekening</label>
+                                            <input type="text" class="form-control" id="bank_account_number_1"
+                                                name="bank_account_number_1"
+                                                value="{{ old('bank_account_number_1', $systemSettings['bank_account_number_1']->value ?? '') }}"
+                                                placeholder="Contoh: 1234567890">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="bank_account_name_1" class="form-label">Nama Pemilik
+                                                Rekening</label>
+                                            <input type="text" class="form-control" id="bank_account_name_1"
+                                                name="bank_account_name_1"
+                                                value="{{ old('bank_account_name_1', $systemSettings['bank_account_name_1']->value ?? '') }}"
+                                                placeholder="Contoh: PT Eureka Kopi">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Bank 2 --}}
+                        <div class="card mb-3 border">
+                            <div class="card-header bg-light py-2">
+                                <strong><i class="bx bx-bank me-1"></i>Bank 2 (Opsional)</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="bank_name_2" class="form-label">Nama Bank</label>
+                                            <input type="text" class="form-control" id="bank_name_2"
+                                                name="bank_name_2"
+                                                value="{{ old('bank_name_2', $systemSettings['bank_name_2']->value ?? '') }}"
+                                                placeholder="Contoh: Bank Mandiri">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="bank_account_number_2" class="form-label">No. Rekening</label>
+                                            <input type="text" class="form-control" id="bank_account_number_2"
+                                                name="bank_account_number_2"
+                                                value="{{ old('bank_account_number_2', $systemSettings['bank_account_number_2']->value ?? '') }}"
+                                                placeholder="Contoh: 0987654321">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="bank_account_name_2" class="form-label">Nama Pemilik
+                                                Rekening</label>
+                                            <input type="text" class="form-control" id="bank_account_name_2"
+                                                name="bank_account_name_2"
+                                                value="{{ old('bank_account_name_2', $systemSettings['bank_account_name_2']->value ?? '') }}"
+                                                placeholder="Contoh: PT Eureka Kopi">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Bank 3 --}}
+                        <div class="card mb-3 border">
+                            <div class="card-header bg-light py-2">
+                                <strong><i class="bx bx-bank me-1"></i>Bank 3 (Opsional)</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="bank_name_3" class="form-label">Nama Bank</label>
+                                            <input type="text" class="form-control" id="bank_name_3"
+                                                name="bank_name_3"
+                                                value="{{ old('bank_name_3', $systemSettings['bank_name_3']->value ?? '') }}"
+                                                placeholder="Contoh: Bank BRI">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="bank_account_number_3" class="form-label">No. Rekening</label>
+                                            <input type="text" class="form-control" id="bank_account_number_3"
+                                                name="bank_account_number_3"
+                                                value="{{ old('bank_account_number_3', $systemSettings['bank_account_number_3']->value ?? '') }}"
+                                                placeholder="Contoh: 1122334455">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="bank_account_name_3" class="form-label">Nama Pemilik
+                                                Rekening</label>
+                                            <input type="text" class="form-control" id="bank_account_name_3"
+                                                name="bank_account_name_3"
+                                                value="{{ old('bank_account_name_3', $systemSettings['bank_account_name_3']->value ?? '') }}"
+                                                placeholder="Contoh: PT Eureka Kopi">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <i class="bx bx-info-circle me-1"></i>
+                            <strong>Info:</strong> Informasi bank akan ditampilkan pada invoice sebagai opsi pembayaran
+                            untuk customer.
+                            Kosongkan jika tidak ingin menampilkan bank tertentu.
                         </div>
 
                         <hr class="my-4">
@@ -543,41 +676,48 @@
 
         // Delete image from server
         function deleteImage(key, previewBoxId) {
-            if (!confirm('Yakin ingin menghapus gambar ini?')) {
-                return;
-            }
-
-            fetch("{{ route('owner.settings.deleteImage') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        key: key
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const previewBox = document.getElementById(previewBoxId);
-                        previewBox.innerHTML = `
-                        <div class="image-preview-placeholder">
-                            <i class="bx bx-image-add bx-lg"></i>
-                            <p class="mb-0 mt-2 small">Klik untuk upload</p>
-                        </div>
-                    `;
-
-                        // Show success message
-                        alert('Gambar berhasil dihapus!');
-                        location.reload();
-                    } else {
-                        alert('Gagal menghapus gambar: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    alert('Terjadi kesalahan: ' + error);
-                });
+            swalCoffee.fire({
+                title: 'Hapus Gambar?',
+                text: 'Gambar akan dihapus permanen.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#dc3545',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{{ route('owner.settings.deleteImage') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({
+                                key: key
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                const previewBox = document.getElementById(previewBoxId);
+                                previewBox.innerHTML = `
+                                <div class="image-preview-placeholder">
+                                    <i class="bx bx-image-add bx-lg"></i>
+                                    <p class="mb-0 mt-2 small">Klik untuk upload</p>
+                                </div>
+                            `;
+                                showSuccess('Gambar berhasil dihapus!');
+                                setTimeout(() => location.reload(), 1000);
+                            } else {
+                                showError('Gagal menghapus gambar: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            showError('Terjadi kesalahan: ' + error);
+                        });
+                }
+            });
         }
 
         // Set active tab from session/query
