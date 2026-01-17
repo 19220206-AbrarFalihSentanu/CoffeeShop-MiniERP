@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             SupplierSeeder::class,
             PartnerSeeder::class,
             LandingSlideSeeder::class,
+            PromoSeeder::class,
         ]);
     }
 }

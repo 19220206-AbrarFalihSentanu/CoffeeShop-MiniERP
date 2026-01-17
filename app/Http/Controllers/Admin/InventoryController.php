@@ -271,12 +271,17 @@ class InventoryController extends Controller
     }
 
     /**
-     * Export inventory report (placeholder untuk future)
+     * Export inventory report to Excel
      */
-    public function export()
+    public function export(Request $request)
     {
-        // TODO: Implement export to Excel/PDF
-        return back()->with('info', 'Fitur export akan segera tersedia.');
+        $category = $request->get('category');
+        $stockStatus = $request->get('stock_status');
+
+        $export = new \App\Exports\InventoryReportExport($category, $stockStatus);
+        $filename = 'Inventory_Report_' . now()->format('Y-m-d_His') . '.xlsx';
+
+        return (new \Rap2hpoutre\FastExcel\FastExcel($export->export()))->download($filename);
     }
 
     /**
