@@ -418,9 +418,7 @@
             </div>
 
             {{-- Pagination --}}
-            <div class="mt-4">
-                {{ $products->appends(request()->query())->links() }}
-            </div>
+            <x-pagination-with-info :paginator="$products" />
         </div>
     </div>
 @endsection
@@ -428,3 +426,5 @@
 @push('scripts')
     {{-- No custom scripts needed, forms will submit directly --}}
 @endpush
+
+

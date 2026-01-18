@@ -245,11 +245,10 @@
             </div>
 
             <!-- Pagination -->
-            @if ($products->hasPages())
-                <div class="card-footer">
-                    {{ $products->withQueryString()->links() }}
-                </div>
-            @endif
+            <div class="card-footer">
+                <x-pagination-with-info :paginator="$products" />
+            </div>
         </div>
     </div>
 @endsection
+

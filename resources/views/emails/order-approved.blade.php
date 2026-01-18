@@ -221,9 +221,9 @@
 
             @foreach ($bankSettings as $bank)
                 @php
-                    $bankName = \App\Helpers\SettingHelper::get($bank['bank']);
-                    $bankAccount = \App\Helpers\SettingHelper::get($bank['account']);
-                    $bankHolder = \App\Helpers\SettingHelper::get($bank['holder']);
+                    $bankName = setting($bank['bank']);
+                    $bankAccount = setting($bank['account']);
+                    $bankHolder = setting($bank['holder']);
                 @endphp
 
                 @if ($bankName && $bankAccount)

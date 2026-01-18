@@ -33,7 +33,8 @@ class ReportController extends Controller
             $query->where('category', $category);
         }
 
-        $logs = $query->orderBy('transaction_date', 'desc')->paginate(20);
+        $perPage = $request->input('per_page', 10);
+        $logs = $query->orderBy('transaction_date', 'desc')->paginate($perPage)->withQueryString();
 
         // Totals
         $totals = [
@@ -153,7 +154,8 @@ class ReportController extends Controller
             }
         }
 
-        $products = $query->orderBy('name')->paginate(20);
+        $perPage = $request->input('per_page', 10);
+        $products = $query->orderBy('name')->paginate($perPage)->withQueryString();
         $categories = \App\Models\Category::where('is_active', true)->get();
 
         // Statistics
@@ -237,3 +239,4 @@ class ReportController extends Controller
         ]);
     }
 }
+

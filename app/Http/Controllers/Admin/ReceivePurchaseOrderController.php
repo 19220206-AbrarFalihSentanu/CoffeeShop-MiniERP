@@ -13,12 +13,13 @@ use Illuminate\Support\Facades\DB;
 
 class ReceivePurchaseOrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->input('per_page', 10);
         $purchaseOrders = PurchaseOrder::with(['supplier', 'creator', 'items'])
             ->approved()
             ->orderBy('approved_at', 'desc')
-            ->paginate(10);
+            ->paginate($perPage)->withQueryString();
 
         return view('admin.purchase-orders.receive.index', compact('purchaseOrders'));
     }
@@ -128,3 +129,4 @@ class ReceivePurchaseOrderController extends Controller
         }
     }
 }
+

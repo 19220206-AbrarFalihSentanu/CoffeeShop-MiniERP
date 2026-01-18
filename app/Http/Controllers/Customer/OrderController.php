@@ -26,7 +26,8 @@ class OrderController extends Controller
             $query->where('status', $request->status);
         }
 
-        $orders = $query->paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $orders = $query->paginate($perPage)->withQueryString();
 
         return view('customer.orders.index', compact('orders'));
     }
@@ -100,7 +101,7 @@ class OrderController extends Controller
             })->get();
 
             foreach ($admins as $admin) {
-                Mail::to($admin->email)->queue(new PaymentProofUploaded($payment));
+                Mail::to($admin->email)->send(new PaymentProofUploaded($payment));
             }
 
             DB::commit();
@@ -159,3 +160,4 @@ class OrderController extends Controller
         }
     }
 }
+

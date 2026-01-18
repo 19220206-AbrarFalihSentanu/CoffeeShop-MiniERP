@@ -56,7 +56,8 @@ class InventoryController extends Controller
             });
         }
 
-        $products = $query->latest()->paginate(15);
+        $perPage = $request->input('per_page', 10);
+        $products = $query->latest()->paginate($perPage)->withQueryString();
         $categories = \App\Models\Category::where('is_active', true)->get();
 
         // Statistics
@@ -194,7 +195,8 @@ class InventoryController extends Controller
             });
         }
 
-        $logs = $query->latest()->paginate(20);
+        $perPage = $request->input('per_page', 10);
+        $logs = $query->latest()->paginate($perPage)->withQueryString();
         $products = Product::orderBy('name')->get();
 
         return view('admin.inventory.logs', compact('logs', 'products'));
@@ -309,3 +311,4 @@ class InventoryController extends Controller
         return view('admin.inventory.alerts', compact('lowStockProducts', 'outOfStockProducts'));
     }
 }
+

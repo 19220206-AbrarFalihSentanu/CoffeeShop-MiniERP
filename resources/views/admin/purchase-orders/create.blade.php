@@ -274,3 +274,4 @@
         updateNoItemsAlert();
     </script>
 @endpush
+

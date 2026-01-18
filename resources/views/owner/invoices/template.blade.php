@@ -32,7 +32,7 @@
         .company-name {
             font-size: 24px;
             font-weight: bold;
-            color: #6f4e37;
+            color: #6F4E37;
             margin-bottom: 5px;
         }
 
@@ -45,7 +45,7 @@
         .invoice-title {
             font-size: 28px;
             font-weight: bold;
-            color: #6f4e37;
+            color: #6F4E37;
             margin-bottom: 10px;
         }
 
@@ -55,19 +55,19 @@
         }
 
         .invoice-number strong {
-            color: #6f4e37;
+            color: #6F4E37;
         }
 
         /* Divider */
         .divider {
-            border-bottom: 2px solid #6f4e37;
+            border-bottom: 2px solid #6F4E37;
             margin: 20px 0;
         }
 
         .section-title {
             font-size: 12px;
             font-weight: bold;
-            color: #6f4e37;
+            color: #6F4E37;
             text-transform: uppercase;
             margin-bottom: 10px;
             padding-bottom: 5px;
@@ -95,7 +95,7 @@
         }
 
         .items-table th {
-            background-color: #6f4e37;
+            background-color: #6F4E37;
             color: white;
             padding: 12px 10px;
             text-align: left;
@@ -149,7 +149,7 @@
         }
 
         .totals-table .total-row {
-            background-color: #6f4e37;
+            background-color: #6F4E37;
             color: white;
             font-weight: bold;
             font-size: 14px;
@@ -169,12 +169,12 @@
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 5px;
-            border-left: 4px solid #6f4e37;
+            border-left: 4px solid #6F4E37;
         }
 
         .notes-title {
             font-weight: bold;
-            color: #6f4e37;
+            color: #6F4E37;
             margin-bottom: 8px;
         }
 
@@ -207,7 +207,7 @@
         .footer {
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 2px solid #6f4e37;
+            border-top: 2px solid #6F4E37;
             text-align: center;
         }
 
@@ -220,7 +220,7 @@
         .footer .thank-you {
             font-size: 14px;
             font-weight: bold;
-            color: #6f4e37;
+            color: #6F4E37;
             margin-bottom: 10px;
         }
 
@@ -461,3 +461,5 @@
 </body>
 
 </html>
+
+

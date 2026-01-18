@@ -20,9 +20,11 @@
         </div>
 
         <div class="mt-6">
-            <x-primary-button class="w-full justify-center py-3">
+            <button type="submit"
+                style="width: 100%; display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1rem; background-color: #8B5A2B; border: none; border-radius: 0.375rem; font-weight: 600; font-size: 0.875rem; color: white; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: background-color 0.15s ease-in-out;"
+                onmouseover="this.style.backgroundColor='#6F4E37'" onmouseout="this.style.backgroundColor='#8B5A2B'">
                 {{ __('auth.email_reset_link') }}
-            </x-primary-button>
+            </button>
         </div>
 
         <div class="mt-4 text-center">
@@ -32,3 +34,4 @@
         </div>
     </form>
 </x-guest-layout>
+

@@ -139,7 +139,8 @@ class FinancialController extends Controller
             $query->where('description', 'like', '%' . $request->search . '%');
         }
 
-        $logs = $query->paginate(20);
+        $perPage = $request->input('per_page', 10);
+        $logs = $query->paginate($perPage)->withQueryString();
 
         // Calculate totals for current filter
         $totals = [
@@ -217,3 +218,4 @@ class FinancialController extends Controller
         }
     }
 }
+

@@ -103,10 +103,9 @@
             </div>
         </div>
 
-        @if ($payments->hasPages())
-            <div class="card-footer">
-                {{ $payments->links() }}
-            </div>
-        @endif
+        <div class="card-footer">
+            <x-pagination-with-info :paginator="$payments" />
+        </div>
     </div>
 @endsection
+

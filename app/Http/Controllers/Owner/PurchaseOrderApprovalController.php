@@ -28,7 +28,8 @@ class PurchaseOrderApprovalController extends Controller
             $query->whereIn('status', ['pending', 'approved']);
         }
 
-        $purchaseOrders = $query->paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $purchaseOrders = $query->paginate($perPage)->withQueryString();
 
         return view('owner.purchase-orders.index', compact('purchaseOrders'));
     }
@@ -69,7 +70,7 @@ class PurchaseOrderApprovalController extends Controller
 
             // Send email to admin who created the PO
             if ($purchaseOrder->creator && $purchaseOrder->creator->email) {
-                Mail::to($purchaseOrder->creator->email)->queue(new PurchaseOrderApproved($purchaseOrder));
+                Mail::to($purchaseOrder->creator->email)->send(new PurchaseOrderApproved($purchaseOrder));
             }
 
             DB::commit();
@@ -104,7 +105,7 @@ class PurchaseOrderApprovalController extends Controller
 
             // Send email to admin who created the PO
             if ($purchaseOrder->creator && $purchaseOrder->creator->email) {
-                Mail::to($purchaseOrder->creator->email)->queue(new PurchaseOrderRejected($purchaseOrder));
+                Mail::to($purchaseOrder->creator->email)->send(new PurchaseOrderRejected($purchaseOrder));
             }
 
             DB::commit();
@@ -117,3 +118,4 @@ class PurchaseOrderApprovalController extends Controller
         }
     }
 }
+

@@ -169,18 +169,8 @@
             </div>
 
             {{-- Pagination --}}
-            <div class="mt-3">
-                {{ $logs->appends(request()->query())->links() }}
-            </div>
-
-            {{-- Summary Info --}}
-            @if ($logs->count() > 0)
-                <div class="alert alert-info mt-3">
-                    <i class="bx bx-info-circle me-1"></i>
-                    Menampilkan <strong>{{ $logs->count() }}</strong> dari <strong>{{ $logs->total() }}</strong>
-                    riwayat transaksi
-                </div>
-            @endif
+            <x-pagination-with-info :paginator="$logs" />
         </div>
     </div>
 @endsection
+

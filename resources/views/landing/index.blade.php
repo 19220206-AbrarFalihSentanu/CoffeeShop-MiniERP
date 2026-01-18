@@ -34,17 +34,18 @@
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <!-- Custom CSS - Coffee Theme -->
     <style>
         :root {
-            --primary-color: #4a3728;
-            --secondary-color: #8b6f4e;
-            --accent-color: #c9a66b;
-            --dark-color: #2d1f14;
-            --light-color: #f8f5f0;
-            --cream-color: #faf6f1;
-            --text-color: #333333;
-            --text-light: #666666;
+            /* Primary Coffee Colors */
+            --primary-color: #8B5A2B;
+            --secondary-color: #6F4E37;
+            --accent-color: #C9A66B;
+            --dark-color: #3D2914;
+            --light-color: #FDF8F3;
+            --cream-color: #FAF1E6;
+            --text-color: #5D4037;
+            --text-light: #8D6E63;
         }
 
         * {
@@ -64,7 +65,7 @@
         }
 
         /* =============================================
-           NAVBAR STYLES
+           NAVBAR STYLES - Coffee Theme
         ============================================= */
         .navbar-landing {
             position: fixed;
@@ -74,16 +75,16 @@
             z-index: 1000;
             padding: 1rem 0;
             transition: all 0.3s ease;
-            background: rgba(45, 31, 20, 0.85);
+            background: rgba(61, 41, 20, 0.92);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
         }
 
         .navbar-landing.scrolled {
-            background: rgba(45, 31, 20, 0.98);
+            background: rgba(61, 41, 20, 0.98);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 30px rgba(61, 41, 20, 0.15);
             padding: 0.5rem 0;
         }
 
@@ -135,7 +136,7 @@
         }
 
         .navbar-landing .btn-login {
-            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: #fff !important;
             border: none;
             padding: 0.5rem 1.5rem !important;
@@ -146,7 +147,7 @@
 
         .navbar-landing .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(201, 166, 107, 0.4);
+            box-shadow: 0 5px 20px rgba(139, 90, 43, 0.4);
         }
 
         .navbar-toggler {
@@ -197,7 +198,7 @@
         }
 
         .hero-slide-bg.no-image {
-            background: linear-gradient(135deg, #2d1f14 0%, #4a3728 50%, #6b4f3a 100%);
+            background: linear-gradient(135deg, #3D2914 0%, #5D4037 50%, #8D6E63 100%);
         }
 
         .hero-slide-bg::before {

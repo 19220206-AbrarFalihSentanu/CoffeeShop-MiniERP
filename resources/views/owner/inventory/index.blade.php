@@ -252,9 +252,8 @@
             </div>
 
             {{-- Pagination --}}
-            <div class="mt-3">
-                {{ $products->links() }}
-            </div>
+            <x-pagination-with-info :paginator="$products" />
         </div>
     </div>
 @endsection
+

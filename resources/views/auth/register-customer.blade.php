@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Register Customer | {{ setting('company_name') ?? 'Mini ERP Kopi' }}</title>
+    <title>Register Customer | {{ setting('company_name') ?? 'Eureka Kopi' }}</title>
 
     <!-- Favicon -->
     @if (setting('company_logo'))
@@ -87,7 +87,7 @@
                         </div>
                         <div class="text-center mb-4">
                             <span class="app-brand-text demo text-body fw-bolder fs-4" style="color: #8B5A2B;">
-                                {{ setting('company_name') ?? 'Mini ERP Kopi' }}
+                                {{ setting('company_name') ?? 'Eureka Kopi' }}
                             </span>
                         </div>
 
@@ -187,7 +187,7 @@
                 </div>
 
                 <p class="text-center mt-4 text-white" style="opacity: 0.8;">
-                    &copy; {{ date('Y') }} {{ setting('company_name') ?? 'Mini ERP Kopi' }}. All rights reserved.
+                    &copy; {{ date('Y') }} {{ setting('company_name') ?? 'Eureka Kopi' }}. All rights reserved.
                 </p>
             </div>
         </div>
@@ -253,3 +253,5 @@
 </body>
 
 </html>
+
+

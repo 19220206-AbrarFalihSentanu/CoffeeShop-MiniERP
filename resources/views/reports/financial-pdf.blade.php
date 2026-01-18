@@ -22,12 +22,12 @@
             text-align: center;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #6f4e37;
+            border-bottom: 2px solid #6F4E37;
         }
 
         .header h1 {
             font-size: 18px;
-            color: #6f4e37;
+            color: #6F4E37;
             margin-bottom: 5px;
         }
 
@@ -92,7 +92,7 @@
         }
 
         th {
-            background-color: #6f4e37;
+            background-color: #6F4E37;
             color: white;
             font-weight: bold;
             font-size: 9px;
@@ -235,3 +235,5 @@
 </body>
 
 </html>
+
+

@@ -178,13 +178,15 @@
             Jika ada kendala dalam pengiriman, silakan hubungi kami segera.
         </p>
 
-        <p>Salam hangat,<br><strong>Tim Mini ERP Kopi</strong></p>
+        <p>Salam hangat,<br><strong>Tim Eureka Kopi</strong></p>
     </div>
 
     <div class="footer">
         <p>Email ini dikirim secara otomatis. Mohon tidak membalas email ini.</p>
-        <p>&copy; {{ date('Y') }} Mini ERP Kopi. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} Eureka Kopi. All rights reserved.</p>
     </div>
 </body>
 
 </html>
+
+

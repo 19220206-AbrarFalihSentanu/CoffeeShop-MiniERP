@@ -34,7 +34,8 @@ class SupplierController extends Controller
             $query->byType($request->type);
         }
 
-        $suppliers = $query->latest()->paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $suppliers = $query->latest()->paginate($perPage)->withQueryString();
 
         return view('admin.suppliers.index', compact('suppliers'));
     }
@@ -149,3 +150,4 @@ class SupplierController extends Controller
         return back()->with('success', __('suppliers.supplier_status_changed', ['status' => $status]));
     }
 }
+

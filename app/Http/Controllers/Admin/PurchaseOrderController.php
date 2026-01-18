@@ -32,7 +32,8 @@ class PurchaseOrderController extends Controller
             $query->search($request->search);
         }
 
-        $purchaseOrders = $query->paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $purchaseOrders = $query->paginate($perPage)->withQueryString();
 
         return view('admin.purchase-orders.index', compact('purchaseOrders'));
     }
@@ -222,7 +223,7 @@ class PurchaseOrderController extends Controller
 
             // Send email to all owners
             foreach ($owners as $owner) {
-                Mail::to($owner->email)->queue(new PurchaseOrderSubmitted($purchaseOrder));
+                Mail::to($owner->email)->send(new PurchaseOrderSubmitted($purchaseOrder));
             }
 
             DB::commit();
@@ -240,3 +241,4 @@ class PurchaseOrderController extends Controller
         }
     }
 }
+

@@ -31,7 +31,8 @@ class CategoryController extends Controller
             $query->where('is_active', $request->status);
         }
 
-        $categories = $query->latest()->paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $categories = $query->latest()->paginate($perPage)->withQueryString();
 
         return view('owner.categories.index', compact('categories'));
     }
@@ -104,3 +105,4 @@ class CategoryController extends Controller
         return back()->with('success', "Kategori berhasil {$status}!");
     }
 }
+

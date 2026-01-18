@@ -37,7 +37,8 @@ class UserController extends Controller
             });
         }
 
-        $users = $query->latest()->paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $users = $query->latest()->paginate($perPage)->withQueryString();
         $roles = Role::all();
 
         return view('admin.users.index', compact('users', 'roles'));
@@ -151,3 +152,4 @@ class UserController extends Controller
         return back()->with('success', "User berhasil {$status}!");
     }
 }
+

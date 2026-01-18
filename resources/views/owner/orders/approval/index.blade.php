@@ -238,9 +238,6 @@
     @endforelse
 
     {{-- Pagination --}}
-    @if ($orders->hasPages())
-        <div class="mt-4">
-            {{ $orders->appends(request()->query())->links() }}
-        </div>
-    @endif
+    <x-pagination-with-info :paginator="$orders" />
 @endsection
+

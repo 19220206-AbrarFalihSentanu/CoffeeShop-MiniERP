@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
             margin: 0 auto;
             padding: 20px;
         }
+
         .header {
             background-color: #ff3e1d;
             color: white;
@@ -22,11 +24,13 @@
             text-align: center;
             border-radius: 8px 8px 0 0;
         }
+
         .content {
             background-color: #f8f9fa;
             padding: 30px;
             border: 1px solid #dee2e6;
         }
+
         .order-info {
             background-color: white;
             padding: 20px;
@@ -34,12 +38,15 @@
             border-radius: 8px;
             border-left: 4px solid #ff3e1d;
         }
+
         .order-info p {
             margin: 10px 0;
         }
+
         .order-info strong {
             color: #ff3e1d;
         }
+
         .btn {
             display: inline-block;
             padding: 12px 30px;
@@ -49,6 +56,7 @@
             border-radius: 5px;
             margin: 20px 0;
         }
+
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -57,6 +65,7 @@
             color: #6c757d;
             font-size: 14px;
         }
+
         .alert-danger {
             background-color: #f8d7da;
             border-left: 4px solid #ff3e1d;
@@ -64,6 +73,7 @@
             margin: 20px 0;
             border-radius: 4px;
         }
+
         .reason-box {
             background-color: #fff3cd;
             border: 1px solid #ffc107;
@@ -73,6 +83,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1 style="margin: 0;">⚠️ Pembayaran Ditolak</h1>
@@ -82,7 +93,8 @@
         <p>Halo <strong>{{ $payment->order->customer_name }}</strong>,</p>
 
         <div class="alert-danger">
-            <strong>Pembayaran Anda untuk order <span style="color: #ff3e1d;">{{ $payment->order->order_number }}</span> tidak dapat diverifikasi.</strong>
+            <strong>Pembayaran Anda untuk order <span style="color: #ff3e1d;">{{ $payment->order->order_number }}</span>
+                tidak dapat diverifikasi.</strong>
         </div>
 
         <div class="reason-box">
@@ -119,13 +131,16 @@
 
         <p style="margin-top: 30px;">Jika Anda memiliki pertanyaan atau butuh bantuan, silakan hubungi kami.</p>
 
-        <p style="margin-top: 20px;">Terima kasih atas pengertian Anda,<br><strong>Tim Mini ERP Kopi</strong></p>
+        <p style="margin-top: 20px;">Terima kasih atas pengertian Anda,<br><strong>Tim Eureka Kopi</strong></p>
     </div>
 
     <div class="footer">
         <p>Email ini dikirim secara otomatis. Mohon tidak membalas email ini.</p>
-        <p>Untuk pertanyaan, hubungi: <a href="mailto:info@mini-erp-kopi.com">info@mini-erp-kopi.com</a></p>
-        <p>&copy; {{ date('Y') }} Mini ERP Kopi. All rights reserved.</p>
+        <p>Untuk pertanyaan, hubungi: <a href="mailto:info@eurekakopi.com">info@eurekakopi.com</a></p>
+        <p>&copy; {{ date('Y') }} Eureka Kopi. All rights reserved.</p>
     </div>
 </body>
+
 </html>
+
+

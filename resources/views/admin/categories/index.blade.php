@@ -117,9 +117,8 @@
             </div>
 
             <!-- Pagination -->
-            <div class="mt-3">
-                {{ $categories->links() }}
-            </div>
+            <x-pagination-with-info :paginator="$categories" />
         </div>
     </div>
 @endsection
+

@@ -5,13 +5,12 @@ namespace App\Mail;
 
 use App\Models\PurchaseOrder;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PurchaseOrderSubmitted extends Mailable implements ShouldQueue
+class PurchaseOrderSubmitted extends Mailable 
 {
     use Queueable, SerializesModels;
 
@@ -55,3 +54,4 @@ class PurchaseOrderSubmitted extends Mailable implements ShouldQueue
         return [];
     }
 }
+

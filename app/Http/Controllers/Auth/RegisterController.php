@@ -53,6 +53,7 @@ class RegisterController extends Controller
         auth()->login($user);
 
         return redirect()->route('customer.dashboard')
-            ->with('success', 'Registrasi berhasil! Selamat berbelanja di Mini ERP Kopi.');
+            ->with('success', 'Registrasi berhasil! Selamat berbelanja di Eureka Kopi.');
     }
 }
+

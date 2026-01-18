@@ -35,7 +35,7 @@
         class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
 
-    <!-- Light Coffee Theme CSS (Brown Theme) -->
+    <!-- Soft Blue Coffee Theme CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/light-coffee-theme.css') }}" />
 
     <!-- Vendors CSS -->
@@ -362,3 +362,4 @@
 </body>
 
 </html>
+

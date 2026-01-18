@@ -70,3 +70,4 @@ class LanguageController extends Controller
         ]);
     }
 }
+

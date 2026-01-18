@@ -138,9 +138,8 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="mt-3">
-                    {{ $suppliers->links() }}
-                </div>
+                <x-pagination-with-info :paginator="$suppliers" />
             </div>
         </div>
     @endsection
+

@@ -416,3 +416,5 @@
     sessionsColumnChart.render();
   }
 })();
+
+

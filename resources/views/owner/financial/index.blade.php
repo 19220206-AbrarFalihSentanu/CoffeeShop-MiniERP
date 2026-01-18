@@ -181,11 +181,10 @@
             </div>
 
             <!-- Pagination -->
-            @if ($logs->hasPages())
-                <div class="card-footer">
-                    {{ $logs->links() }}
-                </div>
-            @endif
+            <div class="card-footer">
+                <x-pagination-with-info :paginator="$logs" />
+            </div>
         </div>
     </div>
 @endsection
+

@@ -31,7 +31,8 @@ class OrderApprovalController extends Controller
             $query->pending();
         }
 
-        $orders = $query->paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $orders = $query->paginate($perPage)->withQueryString();
 
         return view('owner.orders.approval.index', compact('orders'));
     }
@@ -121,7 +122,7 @@ class OrderApprovalController extends Controller
 
             // Send email to customer with invoice attachment
             if ($order->customer_email) {
-                Mail::to($order->customer_email)->queue(new OrderApproved($order));
+                Mail::to($order->customer_email)->send(new OrderApproved($order));
             }
 
             return redirect()->route('owner.orders.approval.show', $order)
@@ -166,7 +167,7 @@ class OrderApprovalController extends Controller
 
             // Send email to customer
             if ($order->customer_email) {
-                Mail::to($order->customer_email)->queue(new OrderRejected($order));
+                Mail::to($order->customer_email)->send(new OrderRejected($order));
             }
 
             return redirect()->route('owner.orders.approval.show', $order)
@@ -177,3 +178,4 @@ class OrderApprovalController extends Controller
         }
     }
 }
+

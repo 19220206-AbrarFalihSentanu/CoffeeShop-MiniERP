@@ -162,3 +162,4 @@
         document.getElementById('charCount').textContent = document.getElementById('description').value.length;
     </script>
 @endpush
+

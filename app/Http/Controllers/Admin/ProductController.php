@@ -57,7 +57,8 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->latest()->paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $products = $query->latest()->paginate($perPage)->withQueryString();
         $categories = Category::where('is_active', true)->get();
 
         return view('admin.products.index', compact('products', 'categories'));
@@ -265,3 +266,4 @@ class ProductController extends Controller
         return back()->with('success', "Produk berhasil {$status}!");
     }
 }
+

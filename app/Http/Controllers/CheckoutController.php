@@ -134,7 +134,7 @@ class CheckoutController extends Controller
 
             // Send email notification to customer
             if ($order->customer_email) {
-                Mail::to($order->customer_email)->queue(new OrderCreated($order, 'customer'));
+                Mail::to($order->customer_email)->send(new OrderCreated($order, 'customer'));
             }
 
             // Send email notification to owner/admin
@@ -143,7 +143,7 @@ class CheckoutController extends Controller
             })->get();
 
             foreach ($adminUsers as $admin) {
-                Mail::to($admin->email)->queue(new OrderCreated($order, 'admin'));
+                Mail::to($admin->email)->send(new OrderCreated($order, 'admin'));
             }
 
             return redirect()->route('customer.orders.show', $order)
@@ -155,3 +155,4 @@ class CheckoutController extends Controller
         }
     }
 }
+

@@ -37,7 +37,8 @@ class PaymentVerificationController extends Controller
             });
         }
 
-        $payments = $query->paginate(10);
+        $perPage = $request->input('per_page', 10);
+        $payments = $query->paginate($perPage)->withQueryString();
 
         return view('owner.payments.index', compact('payments'));
     }
@@ -72,7 +73,7 @@ class PaymentVerificationController extends Controller
 
             // Send email to customer
             if ($payment->order->customer_email) {
-                Mail::to($payment->order->customer_email)->queue(new PaymentVerified($payment));
+                Mail::to($payment->order->customer_email)->send(new PaymentVerified($payment));
             }
 
             DB::commit();
@@ -106,7 +107,7 @@ class PaymentVerificationController extends Controller
 
             // Send email to customer
             if ($payment->order->customer_email) {
-                Mail::to($payment->order->customer_email)->queue(new PaymentRejected($payment));
+                Mail::to($payment->order->customer_email)->send(new PaymentRejected($payment));
             }
 
             DB::commit();
@@ -163,7 +164,7 @@ class PaymentVerificationController extends Controller
 
             // Send shipping email to customer
             if ($payment->order->customer_email) {
-                Mail::to($payment->order->customer_email)->queue(new \App\Mail\OrderShipped($payment->order));
+                Mail::to($payment->order->customer_email)->send(new \App\Mail\OrderShipped($payment->order));
             }
 
             DB::commit();
@@ -192,7 +193,7 @@ class PaymentVerificationController extends Controller
 
             // Send email to customer
             if ($payment->order->customer_email) {
-                Mail::to($payment->order->customer_email)->queue(new OrderCompleted($payment->order));
+                Mail::to($payment->order->customer_email)->send(new OrderCompleted($payment->order));
             }
 
             DB::commit();
@@ -205,3 +206,4 @@ class PaymentVerificationController extends Controller
         }
     }
 }
+

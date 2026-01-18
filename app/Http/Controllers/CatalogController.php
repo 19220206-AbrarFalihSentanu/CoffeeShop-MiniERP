@@ -177,3 +177,4 @@ class CatalogController extends Controller
         ]);
     }
 }
+

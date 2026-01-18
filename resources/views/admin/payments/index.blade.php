@@ -84,8 +84,7 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('admin.payments.show', $payment) }}" 
-                                       class="btn btn-sm btn-primary">
+                                    <a href="{{ route('admin.payments.show', $payment) }}" class="btn btn-sm btn-primary">
                                         <i class="bx bx-show me-1"></i>Detail
                                     </a>
                                 </td>
@@ -103,10 +102,9 @@
             </div>
         </div>
 
-        @if($payments->hasPages())
-            <div class="card-footer">
-                {{ $payments->links() }}
-            </div>
-        @endif
+        <div class="card-footer">
+            <x-pagination-with-info :paginator="$payments" />
+        </div>
     </div>
 @endsection
+

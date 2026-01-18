@@ -119,9 +119,8 @@
             </div>
 
             <!-- Pagination -->
-            <div class="mt-3">
-                {{ $users->links() }}
-            </div>
+            <x-pagination-with-info :paginator="$users" />
         </div>
     </div>
 @endsection
+

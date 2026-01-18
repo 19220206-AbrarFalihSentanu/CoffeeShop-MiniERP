@@ -1,0 +1,883 @@
+/* =====================================================
+   SOFT BLUE COFFEE UI THEME - Eureka Kopi
+   Konsep: Biru sebagai aksen & primary, kopi tetap terasa lewat cream + beige
+   Color Palette: "Blue Latte UI"
+   ===================================================== */
+
+:root {
+  /* ========== BACKGROUND COLORS ========== */
+  /* Warm off-white & milk cream - bukan biru sebagai background */
+  --bg-primary: #F8FAFC;         /* Warm off-white */
+  --bg-secondary: #F3F6F9;       /* Milk cream */
+  --bg-white: #FFFFFF;
+  --bg-card: #FFFFFF;
+  
+  /* ========== PRIMARY BLUE (Soft UI) ========== */
+  /* Biru pucat dengan hint abu - bukan biru tajam */
+  --blue-soft: #AFC8E8;          /* Soft sky blue */
+  --blue-powder: #BFD4EA;        /* Powder blue */
+  --blue-muted: #9FB6CF;         /* Muted blue gray */
+  
+  /* ========== CTA COLORS (Biru ramah mata) ========== */
+  --cta-primary: #6F8FBF;        /* Dusty blue - CTA utama */
+  --cta-hover: #5F7FA8;          /* Soft navy pastel - hover */
+  --cta-active: #4F6F98;         /* Darker for active state */
+  
+  /* ========== ACCENT KOPI (Identitas Coffee) ========== */
+  /* Warna hangat untuk card, badge, harga */
+  --coffee-beige: #E6D3B1;       /* Latte beige */
+  --coffee-caramel: #EAC086;     /* Soft caramel */
+  --coffee-cream: #FAF1E6;       /* Light cream */
+  --coffee-latte: #F5EDE0;       /* Latte background */
+  
+  /* ========== TEXT COLORS ========== */
+  /* Lebih lembut dari hitam, cocok untuk UI coffee */
+  --text-title: #3E4A59;         /* Judul */
+  --text-body: #5F6B78;          /* Body text */
+  --text-muted: #9AA6B2;         /* Muted text */
+  --text-light: #B8C4D0;         /* Very light text */
+  
+  /* ========== STATUS COLORS ========== */
+  --color-success: #6BBF7B;      /* Soft green */
+  --color-warning: #E8B86D;      /* Warm warning */
+  --color-danger: #E07575;       /* Soft red */
+  --color-info: #7EB8D8;         /* Light blue info */
+  
+  /* ========== SHADOWS ========== */
+  --shadow-sm: 0 1px 3px rgba(62, 74, 89, 0.08);
+  --shadow-md: 0 4px 12px rgba(62, 74, 89, 0.1);
+  --shadow-lg: 0 8px 24px rgba(62, 74, 89, 0.12);
+  
+  /* ========== BORDERS ========== */
+  --border-light: rgba(159, 182, 207, 0.2);
+  --border-medium: rgba(159, 182, 207, 0.3);
+}
+
+/* Override Bootstrap Primary Color */
+[data-bs-theme=light],
+:root {
+  --bs-primary: #6F8FBF !important;
+  --bs-primary-rgb: 111, 143, 191 !important;
+  --bs-link-color: #6F8FBF !important;
+  --bs-link-hover-color: #5F7FA8 !important;
+}
+
+/* =====================================================
+   BASE LAYOUT
+   ===================================================== */
+
+body.light-style {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-body);
+}
+
+.layout-wrapper,
+.layout-container {
+  background-color: var(--bg-primary) !important;
+}
+
+.content-wrapper {
+  background-color: var(--bg-primary) !important;
+}
+
+/* =====================================================
+   SIDEBAR MENU - Soft Blue Gradient
+   ===================================================== */
+
+.bg-menu-theme {
+  background: linear-gradient(180deg, #3E4A59 0%, #4A5666 50%, #566274 100%) !important;
+}
+
+/* Hide the white scroll shadow */
+.menu-inner-shadow {
+  display: none !important;
+  background: transparent !important;
+}
+
+.bg-menu-theme .menu-inner > .menu-item.active > .menu-link {
+  background: linear-gradient(90deg, var(--cta-primary) 0%, var(--blue-muted) 100%) !important;
+  color: #fff !important;
+  border-radius: 8px;
+  margin: 4px 12px;
+  box-shadow: 0 4px 12px rgba(111, 143, 191, 0.3);
+}
+
+.bg-menu-theme .menu-inner > .menu-item > .menu-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: all 0.2s ease;
+}
+
+.bg-menu-theme .menu-inner > .menu-item > .menu-link:hover {
+  background-color: rgba(175, 200, 232, 0.15) !important;
+  color: var(--blue-soft) !important;
+  border-radius: 8px;
+  margin: 4px 12px;
+}
+
+.bg-menu-theme .menu-inner > .menu-item > .menu-link .menu-icon {
+  color: var(--blue-soft) !important;
+}
+
+.bg-menu-theme .menu-header {
+  color: var(--blue-powder) !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.bg-menu-theme .menu-inner .menu-sub > .menu-item > .menu-link::before {
+  background-color: var(--blue-soft) !important;
+}
+
+.app-brand-text {
+  color: var(--blue-soft) !important;
+  font-weight: 700;
+}
+
+.layout-menu-toggle {
+  color: var(--blue-soft) !important;
+}
+
+/* =====================================================
+   NAVBAR
+   ===================================================== */
+
+.layout-navbar {
+  background-color: var(--bg-white) !important;
+  box-shadow: var(--shadow-sm) !important;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.navbar-nav .nav-link {
+  color: var(--text-body) !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--cta-primary) !important;
+}
+
+/* =====================================================
+   CARDS - Coffee Accent Style
+   ===================================================== */
+
+.card {
+  background-color: var(--bg-white) !important;
+  border: 1px solid var(--border-light) !important;
+  box-shadow: var(--shadow-sm) !important;
+  border-radius: 12px !important;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md) !important;
+}
+
+.card-header {
+  background-color: transparent !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  color: var(--text-title);
+}
+
+/* Special Coffee Card Style - untuk product cards */
+.card.coffee-card {
+  border-left: 4px solid var(--coffee-caramel) !important;
+}
+
+/* =====================================================
+   BUTTONS - CTA (Biru ramah mata)
+   ===================================================== */
+
+.btn-primary {
+  background-color: var(--cta-primary) !important;
+  border-color: var(--cta-primary) !important;
+  color: #fff !important;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--cta-hover) !important;
+  border-color: var(--cta-hover) !important;
+  box-shadow: 0 4px 12px rgba(111, 143, 191, 0.3) !important;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active,
+.btn-primary.active {
+  background-color: var(--cta-active) !important;
+  border-color: var(--cta-active) !important;
+  transform: translateY(0);
+}
+
+.btn-outline-primary {
+  color: var(--cta-primary) !important;
+  border-color: var(--cta-primary) !important;
+  border-radius: 8px;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--cta-primary) !important;
+  border-color: var(--cta-primary) !important;
+  color: #fff !important;
+}
+
+.btn-label-primary {
+  background-color: rgba(111, 143, 191, 0.12) !important;
+  color: var(--cta-primary) !important;
+  border-radius: 8px;
+}
+
+.btn-label-primary:hover {
+  background-color: var(--cta-primary) !important;
+  color: #fff !important;
+}
+
+/* Secondary Button - Coffee Accent */
+.btn-secondary {
+  background-color: var(--coffee-beige) !important;
+  border-color: var(--coffee-beige) !important;
+  color: var(--text-title) !important;
+}
+
+.btn-secondary:hover {
+  background-color: var(--coffee-caramel) !important;
+  border-color: var(--coffee-caramel) !important;
+}
+
+/* =====================================================
+   BADGES - Coffee Theme
+   ===================================================== */
+
+.badge.bg-primary {
+  background-color: var(--cta-primary) !important;
+}
+
+.badge.bg-label-primary {
+  background-color: rgba(111, 143, 191, 0.15) !important;
+  color: var(--cta-primary) !important;
+}
+
+/* Coffee badges untuk menu items */
+.badge.bg-coffee {
+  background-color: var(--coffee-caramel) !important;
+  color: var(--text-title) !important;
+}
+
+.badge.bg-label-coffee {
+  background-color: var(--coffee-cream) !important;
+  color: var(--text-title) !important;
+}
+
+/* =====================================================
+   TEXT COLORS
+   ===================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-title) !important;
+}
+
+.text-primary {
+  color: var(--cta-primary) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+a {
+  color: var(--cta-primary);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--cta-hover);
+}
+
+/* =====================================================
+   FORMS
+   ===================================================== */
+
+.form-control,
+.form-select {
+  border-color: var(--border-medium);
+  color: var(--text-body);
+  border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--cta-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(111, 143, 191, 0.2) !important;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-check-input:checked {
+  background-color: var(--cta-primary) !important;
+  border-color: var(--cta-primary) !important;
+}
+
+.form-switch .form-check-input:checked {
+  background-color: var(--cta-primary) !important;
+}
+
+.form-label {
+  color: var(--text-title);
+  font-weight: 500;
+}
+
+/* =====================================================
+   PAGINATION - Blue Theme
+   ===================================================== */
+
+.page-item.active .page-link {
+  background-color: var(--cta-primary) !important;
+  border-color: var(--cta-primary) !important;
+  box-shadow: 0 2px 8px rgba(111, 143, 191, 0.3);
+}
+
+.page-link {
+  color: var(--cta-primary) !important;
+  border-color: var(--border-light);
+  border-radius: 6px !important;
+  margin: 0 2px;
+}
+
+.page-link:hover {
+  color: var(--cta-hover) !important;
+  background-color: rgba(111, 143, 191, 0.1) !important;
+  border-color: var(--blue-soft);
+}
+
+.page-item.disabled .page-link {
+  color: var(--text-muted) !important;
+}
+
+/* =====================================================
+   TABLES - Soft Style
+   ===================================================== */
+
+.table {
+  color: var(--text-body);
+}
+
+.table thead th {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-title) !important;
+  border-bottom: 2px solid var(--border-medium) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.table tbody td {
+  border-color: var(--border-light) !important;
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(175, 200, 232, 0.08) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: var(--bg-secondary);
+}
+
+/* =====================================================
+   DROPDOWNS
+   ===================================================== */
+
+.dropdown-menu {
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+  border-radius: 10px;
+}
+
+.dropdown-item {
+  color: var(--text-body);
+  border-radius: 6px;
+  margin: 2px 8px;
+  width: calc(100% - 16px);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: rgba(111, 143, 191, 0.1) !important;
+  color: var(--cta-primary) !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: var(--cta-primary) !important;
+  color: #fff !important;
+}
+
+/* =====================================================
+   PROGRESS BARS
+   ===================================================== */
+
+.progress {
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background-color: var(--cta-primary) !important;
+}
+
+.bg-primary {
+  background-color: var(--cta-primary) !important;
+}
+
+/* =====================================================
+   ALERTS
+   ===================================================== */
+
+.alert-primary {
+  background-color: rgba(111, 143, 191, 0.1) !important;
+  border-color: rgba(111, 143, 191, 0.2) !important;
+  color: var(--cta-hover) !important;
+  border-radius: 10px;
+}
+
+.alert-success {
+  background-color: rgba(107, 191, 123, 0.1) !important;
+  border-color: rgba(107, 191, 123, 0.2) !important;
+  color: #4A9F5A !important;
+}
+
+.alert-warning {
+  background-color: rgba(232, 184, 109, 0.15) !important;
+  border-color: rgba(232, 184, 109, 0.3) !important;
+  color: #C4963A !important;
+}
+
+.alert-danger {
+  background-color: rgba(224, 117, 117, 0.1) !important;
+  border-color: rgba(224, 117, 117, 0.2) !important;
+  color: #C45555 !important;
+}
+
+.alert-info {
+  background-color: rgba(126, 184, 216, 0.1) !important;
+  border-color: rgba(126, 184, 216, 0.2) !important;
+  color: #5A9BB8 !important;
+}
+
+/* =====================================================
+   NAV TABS & PILLS
+   ===================================================== */
+
+.nav-pills .nav-link.active {
+  background-color: var(--cta-primary) !important;
+  box-shadow: 0 2px 8px rgba(111, 143, 191, 0.3);
+}
+
+.nav-pills .nav-link {
+  border-radius: 8px;
+  color: var(--text-body);
+}
+
+.nav-pills .nav-link:hover {
+  background-color: rgba(111, 143, 191, 0.1);
+  color: var(--cta-primary);
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--cta-primary) !important;
+  border-bottom: 2px solid var(--cta-primary) !important;
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link {
+  color: var(--text-muted);
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--cta-primary);
+  border-bottom-color: var(--blue-soft);
+}
+
+/* =====================================================
+   LIST GROUP
+   ===================================================== */
+
+.list-group-item {
+  border-color: var(--border-light);
+  color: var(--text-body);
+}
+
+.list-group-item.active {
+  background-color: var(--cta-primary) !important;
+  border-color: var(--cta-primary) !important;
+}
+
+.list-group-item-action:hover {
+  background-color: rgba(111, 143, 191, 0.08);
+  color: var(--cta-primary);
+}
+
+/* =====================================================
+   AVATAR & ICONS
+   ===================================================== */
+
+.avatar-initial.bg-label-primary {
+  background-color: rgba(111, 143, 191, 0.15) !important;
+  color: var(--cta-primary) !important;
+}
+
+.avatar.bg-label-primary {
+  background-color: rgba(111, 143, 191, 0.15) !important;
+  color: var(--cta-primary) !important;
+}
+
+.avatar.bg-label-primary i,
+.avatar.bg-label-primary .bx {
+  color: var(--cta-primary) !important;
+}
+
+/* Coffee themed avatars */
+.avatar.bg-label-coffee {
+  background-color: var(--coffee-cream) !important;
+  color: var(--text-title) !important;
+}
+
+/* =====================================================
+   SPINNER
+   ===================================================== */
+
+.spinner-border.text-primary {
+  color: var(--cta-primary) !important;
+}
+
+/* =====================================================
+   MENU BADGE
+   ===================================================== */
+
+.bg-menu-theme .menu-inner > .menu-item > .menu-link .badge {
+  background-color: var(--coffee-caramel) !important;
+  color: var(--text-title) !important;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.footer {
+  background-color: var(--bg-white) !important;
+  border-top: 1px solid var(--border-light);
+  color: var(--text-muted);
+}
+
+/* =====================================================
+   DASHBOARD WIDGETS & STATS
+   ===================================================== */
+
+.card .card-border-shadow-primary {
+  border-bottom: 3px solid var(--cta-primary) !important;
+}
+
+/* Stats cards with coffee accent */
+.stats-card {
+  border-left: 4px solid var(--coffee-caramel);
+}
+
+.stats-card .stats-icon {
+  background-color: rgba(111, 143, 191, 0.1);
+  color: var(--cta-primary);
+}
+
+/* =====================================================
+   PRICE DISPLAY - Coffee Caramel Accent
+   ===================================================== */
+
+.price-tag,
+.product-price {
+  color: var(--coffee-caramel) !important;
+  font-weight: 700;
+}
+
+.price-original {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+/* =====================================================
+   MODAL
+   ===================================================== */
+
+.modal-content {
+  background-color: var(--bg-white) !important;
+  border-radius: 16px;
+  border: none;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-light);
+}
+
+/* =====================================================
+   BREADCRUMB
+   ===================================================== */
+
+.breadcrumb-item.active {
+  color: var(--cta-primary) !important;
+}
+
+.breadcrumb-item a {
+  color: var(--text-muted) !important;
+}
+
+.breadcrumb-item a:hover {
+  color: var(--cta-primary) !important;
+}
+
+/* =====================================================
+   TOOLTIPS & POPOVERS
+   ===================================================== */
+
+.tooltip-inner {
+  background-color: var(--text-title);
+}
+
+.popover {
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-md);
+}
+
+/* =====================================================
+   SIDEBAR SCROLL FIX
+   ===================================================== */
+
+.layout-menu-fixed .layout-menu,
+.layout-menu-fixed-offcanvas .layout-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: 100vh !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.menu-inner {
+  flex: 1 1 auto;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: calc(100vh - 64px) !important;
+}
+
+.menu-inner.ps {
+  overflow: hidden !important;
+}
+
+.menu-vertical {
+  overflow: visible !important;
+}
+
+.app-brand.demo {
+  flex: 0 0 auto;
+}
+
+/* Scrollbar for sidebar */
+.menu-inner > .ps__rail-y {
+  background-color: transparent !important;
+}
+
+.menu-inner > .ps__rail-y > .ps__thumb-y {
+  background-color: rgba(175, 200, 232, 0.4) !important;
+  width: 4px !important;
+}
+
+.menu-inner > .ps__rail-y:hover > .ps__thumb-y,
+.menu-inner > .ps__rail-y:focus > .ps__thumb-y {
+  background-color: rgba(175, 200, 232, 0.6) !important;
+  width: 6px !important;
+}
+
+/* =====================================================
+   CUSTOM SCROLLBAR - Global
+   ===================================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--blue-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cta-primary);
+}
+
+/* =====================================================
+   SPECIAL COFFEE PRODUCT CARDS
+   ===================================================== */
+
+.product-card {
+  background: var(--bg-white);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.product-card .product-image {
+  background-color: var(--coffee-cream);
+}
+
+.product-card .product-name {
+  color: var(--text-title);
+  font-weight: 600;
+}
+
+.product-card .product-price {
+  color: var(--coffee-caramel);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.product-card .btn-order {
+  background-color: var(--cta-primary);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  transition: all 0.2s ease;
+}
+
+.product-card .btn-order:hover {
+  background-color: var(--cta-hover);
+  transform: scale(1.02);
+}
+
+/* =====================================================
+   STATUS BADGES - Soft Colors
+   ===================================================== */
+
+.badge.bg-success,
+.badge.bg-label-success {
+  background-color: rgba(107, 191, 123, 0.15) !important;
+  color: #4A9F5A !important;
+}
+
+.badge.bg-warning,
+.badge.bg-label-warning {
+  background-color: rgba(232, 184, 109, 0.2) !important;
+  color: #B88A3A !important;
+}
+
+.badge.bg-danger,
+.badge.bg-label-danger {
+  background-color: rgba(224, 117, 117, 0.15) !important;
+  color: #C45555 !important;
+}
+
+.badge.bg-info,
+.badge.bg-label-info {
+  background-color: rgba(126, 184, 216, 0.15) !important;
+  color: #5A9BB8 !important;
+}
+
+.badge.bg-secondary,
+.badge.bg-label-secondary {
+  background-color: var(--coffee-cream) !important;
+  color: var(--text-body) !important;
+}
+
+/* =====================================================
+   HIGHLIGHT / SELECTION
+   ===================================================== */
+
+::selection {
+  background-color: rgba(111, 143, 191, 0.3);
+  color: var(--text-title);
+}
+
+/* =====================================================
+   LOADING OVERLAY
+   ===================================================== */
+
+.loading-overlay {
+  background-color: rgba(248, 250, 252, 0.9);
+}
+
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
+
+.empty-state {
+  color: var(--text-muted);
+}
+
+.empty-state i {
+  color: var(--blue-soft);
+}
+
+/* =====================================================
+   CHART COLORS
+   ===================================================== */
+
+.apexcharts-bar-area[fill="#696cff"],
+.apexcharts-bar-area[fill="#8c57ff"] {
+  fill: var(--cta-primary) !important;
+}
+
+/* =====================================================
+   UTILITIES
+   ===================================================== */
+
+.bg-soft-blue {
+  background-color: rgba(175, 200, 232, 0.15) !important;
+}
+
+.bg-coffee-cream {
+  background-color: var(--coffee-cream) !important;
+}
+
+.bg-coffee-beige {
+  background-color: var(--coffee-beige) !important;
+}
+
+.text-coffee {
+  color: var(--coffee-caramel) !important;
+}
+
+.border-soft-blue {
+  border-color: var(--blue-soft) !important;
+}
+
+.border-coffee {
+  border-color: var(--coffee-beige) !important;
+}

@@ -140,9 +140,8 @@
             </div>
 
             {{-- Pagination --}}
-            <div class="mt-3">
-                {{ $purchaseOrders->links() }}
-            </div>
+            <x-pagination-with-info :paginator="$purchaseOrders" />
         </div>
     </div>
 @endsection
+

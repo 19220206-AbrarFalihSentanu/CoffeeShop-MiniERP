@@ -98,7 +98,7 @@ class CheckLowStock extends Command
 
         foreach ($adminUsers as $user) {
             try {
-                Mail::to($user->email)->queue(new LowStockAlert($products));
+                Mail::to($user->email)->send(new LowStockAlert($products));
                 $this->info("✅ Notification queued for: {$user->email}");
             } catch (\Exception $e) {
                 $this->error("❌ Failed to send to {$user->email}: {$e->getMessage()}");
@@ -108,3 +108,4 @@ class CheckLowStock extends Command
         $this->info('📬 All notifications have been queued.');
     }
 }
+

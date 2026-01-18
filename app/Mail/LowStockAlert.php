@@ -3,14 +3,13 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 
-class LowStockAlert extends Mailable implements ShouldQueue
+class LowStockAlert extends Mailable 
 {
     use Queueable, SerializesModels;
 
@@ -52,3 +51,4 @@ class LowStockAlert extends Mailable implements ShouldQueue
         return [];
     }
 }
+

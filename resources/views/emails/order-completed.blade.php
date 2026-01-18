@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
             margin: 0 auto;
             padding: 20px;
         }
+
         .header {
             background: linear-gradient(135deg, #71dd37 0%, #5cb85c 100%);
             color: white;
@@ -22,21 +24,25 @@
             text-align: center;
             border-radius: 8px 8px 0 0;
         }
+
         .content {
             background-color: #f8f9fa;
             padding: 30px;
             border: 1px solid #dee2e6;
         }
+
         .order-info {
             background-color: white;
             padding: 20px;
             margin: 20px 0;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .order-info p {
             margin: 10px 0;
         }
+
         .btn {
             display: inline-block;
             padding: 12px 30px;
@@ -46,6 +52,7 @@
             border-radius: 5px;
             margin: 20px 0;
         }
+
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -54,6 +61,7 @@
             color: #6c757d;
             font-size: 14px;
         }
+
         .success-banner {
             background-color: #d1e7dd;
             border: 2px solid #71dd37;
@@ -62,21 +70,25 @@
             border-radius: 8px;
             text-align: center;
         }
+
         .items-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
         }
+
         .items-table th,
         .items-table td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #dee2e6;
         }
+
         .items-table th {
             background-color: #f8f9fa;
             font-weight: bold;
         }
+
         .feedback-box {
             background-color: #fff3cd;
             border-left: 4px solid #ffc107;
@@ -86,6 +98,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1 style="margin: 0;">🎉 Pesanan Selesai!</h1>
@@ -100,11 +113,12 @@
             <p style="margin: 0; font-size: 18px;">Order <strong>{{ $order->order_number }}</strong></p>
         </div>
 
-        <p>Kami dengan senang hati menginformasikan bahwa pesanan Anda telah selesai diproses dan telah dikirim/diserahkan.</p>
+        <p>Kami dengan senang hati menginformasikan bahwa pesanan Anda telah selesai diproses dan telah
+            dikirim/diserahkan.</p>
 
         <div class="order-info">
             <h3 style="margin-top: 0; color: #71dd37;">📦 Detail Pesanan</h3>
-            
+
             <table class="items-table">
                 <thead>
                     <tr>
@@ -114,12 +128,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($order->items as $item)
-                    <tr>
-                        <td>{{ $item->product_name }}</td>
-                        <td style="text-align: center;">{{ $item->quantity }}</td>
-                        <td style="text-align: right;">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
-                    </tr>
+                    @foreach ($order->items as $item)
+                        <tr>
+                            <td>{{ $item->product_name }}</td>
+                            <td style="text-align: center;">{{ $item->quantity }}</td>
+                            <td style="text-align: right;">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
@@ -138,7 +152,8 @@
         <div class="feedback-box">
             <strong>💭 Kami Ingin Mendengar Pendapat Anda!</strong><br>
             <p style="margin-top: 10px; margin-bottom: 10px;">
-                Bagaimana pengalaman berbelanja Anda? Feedback Anda sangat berarti untuk kami agar dapat terus meningkatkan layanan.
+                Bagaimana pengalaman berbelanja Anda? Feedback Anda sangat berarti untuk kami agar dapat terus
+                meningkatkan layanan.
             </p>
             <p style="margin: 0;">
                 <small>(Fitur review akan segera hadir!)</small>
@@ -159,17 +174,20 @@
         </div>
 
         <p style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #71dd37;">
-            <strong>Terima kasih telah mempercayai Mini ERP Kopi!</strong><br>
+            <strong>Terima kasih telah mempercayai Eureka Kopi!</strong><br>
             Kami berharap dapat melayani Anda kembali di masa mendatang. ☕
         </p>
 
-        <p>Salam hangat,<br><strong>Tim Mini ERP Kopi</strong></p>
+        <p>Salam hangat,<br><strong>Tim Eureka Kopi</strong></p>
     </div>
 
     <div class="footer">
         <p><strong>Hubungi Kami:</strong></p>
-        <p>📧 Email: info@mini-erp-kopi.com | 📱 WhatsApp: +62 812-3456-7890</p>
-        <p>&copy; {{ date('Y') }} Mini ERP Kopi. All rights reserved.</p>
+        <p>📧 Email: info@eurekakopi.com | 📱 WhatsApp: +62 812-3456-7890</p>
+        <p>&copy; {{ date('Y') }} Eureka Kopi. All rights reserved.</p>
     </div>
 </body>
+
 </html>
+
+

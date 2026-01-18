@@ -127,3 +127,4 @@ class LandingController extends Controller
         return view('landing.tracking', compact('settings'));
     }
 }
+

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ setting('company_name') ?? config('app.name', 'Mini ERP Kopi') }}</title>
+    <title>{{ setting('company_name') ?? config('app.name', 'Eureka Kopi') }}</title>
 
     <!-- Favicon -->
     @if (setting('company_logo'))
@@ -26,7 +26,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* Coffee Theme Styles */
+        /* Soft Blue Coffee Theme Styles */
         .bg-coffee-gradient {
             background: linear-gradient(135deg, #8B5A2B 0%, #6F4E37 50%, #5D4037 100%);
         }
@@ -65,7 +65,7 @@
         select:focus,
         textarea:focus {
             border-color: #8B5A2B !important;
-            --tw-ring-color: rgba(139, 90, 43, 0.5) !important;
+            --tw-ring-color: rgba(111, 143, 191, 0.5) !important;
         }
 
         /* Password input with eye icon inside */
@@ -164,7 +164,7 @@
                         </div>
                     @endif
                     <h1 style="font-size: 1.25rem; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                        {{ setting('company_name') ?? 'Mini ERP Kopi' }}
+                        {{ setting('company_name') ?? 'Eureka Kopi' }}
                     </h1>
                 </a>
                 <p style="margin-top: 0.5rem; opacity: 0.8; text-align: center; font-size: 0.75rem;">
@@ -205,7 +205,7 @@
 
         <!-- Footer -->
         <p class="mt-6 text-sm text-white/80">
-            &copy; {{ date('Y') }} {{ setting('company_name') ?? 'Mini ERP Kopi' }}. All rights reserved.
+            &copy; {{ date('Y') }} {{ setting('company_name') ?? 'Eureka Kopi' }}. All rights reserved.
         </p>
     </div>
 
@@ -253,7 +253,7 @@
             });
         @endif
 
-        // SweetAlert2 Coffee Theme Configuration
+        // SweetAlert2 Soft Blue Coffee Theme Configuration
         const swalCoffee = Swal.mixin({
             confirmButtonColor: '#8B5A2B',
             cancelButtonColor: '#6c757d',
@@ -298,3 +298,4 @@
 </body>
 
 </html>
+
