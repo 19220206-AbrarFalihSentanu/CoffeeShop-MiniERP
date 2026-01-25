@@ -1,4 +1,4 @@
-{{-- File: resources/views/owner/orders/approval/show.blade.php --}}
+{{-- File: resources/views/admin/orders/approval/show.blade.php --}}
 
 @extends('layouts.app')
 
@@ -51,7 +51,7 @@
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('owner.orders.approval.index') }}">Approval Order</a>
+                <a href="{{ route('admin.orders.approval.index') }}">Approval Order</a>
             </li>
             <li class="breadcrumb-item active">{{ $order->order_number }}</li>
         </ol>
@@ -280,7 +280,7 @@
                     <div class="row g-3">
                         {{-- Approve Form --}}
                         <div class="col-md-6">
-                            <form action="{{ route('owner.orders.approval.approve', $order) }}" method="POST"
+                            <form action="{{ route('admin.orders.approval.approve', $order) }}" method="POST"
                                 id="approveForm">
                                 @csrf
                                 <div class="mb-3">
@@ -440,7 +440,7 @@
                         </div>
                     @endif
 
-                    <a href="{{ route('owner.orders.approval.index') }}" class="btn btn-outline-secondary w-100 mb-2">
+                    <a href="{{ route('admin.orders.approval.index') }}" class="btn btn-outline-secondary w-100 mb-2">
                         <i class="bx bx-left-arrow-alt me-1"></i>Kembali ke List
                     </a>
 
@@ -460,7 +460,7 @@
     {{-- Reject Modal --}}
     <div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('owner.orders.approval.reject', $order) }}" method="POST">
+            <form action="{{ route('admin.orders.approval.reject', $order) }}" method="POST">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">

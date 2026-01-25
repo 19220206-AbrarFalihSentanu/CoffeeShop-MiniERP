@@ -217,13 +217,12 @@ class PurchaseOrderController extends Controller
             }
 
             $purchaseOrder->update($updateData);
-
             // Get all owners
             $owners = User::where('role_id', 1)->get(); // role_id 1 = Owner
 
-            // Send email to all owners
+            // Send email to all owners (async queue)
             foreach ($owners as $owner) {
-                Mail::to($owner->email)->send(new PurchaseOrderSubmitted($purchaseOrder));
+                Mail::to($owner->email)->queue(new PurchaseOrderSubmitted($purchaseOrder));
             }
 
             DB::commit();
@@ -241,4 +240,3 @@ class PurchaseOrderController extends Controller
         }
     }
 }
-

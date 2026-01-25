@@ -164,10 +164,8 @@ class CartController extends Controller
      */
     public function update(Request $request, Cart $cart)
     {
-        // Ensure user owns this cart item
-        if ($cart->user_id !== auth()->id()) {
-            abort(403);
-        }
+        // Use policy for authorization
+        $this->authorize('update', $cart);
 
         $validated = $request->validate([
             'quantity' => ['required', 'numeric', 'min:0.001']
@@ -204,10 +202,8 @@ class CartController extends Controller
      */
     public function remove(Cart $cart)
     {
-        // Ensure user owns this cart item
-        if ($cart->user_id !== auth()->id()) {
-            abort(403);
-        }
+        // Use policy for authorization
+        $this->authorize('delete', $cart);
 
         try {
             $productName = $cart->product->name;
@@ -268,4 +264,3 @@ class CartController extends Controller
         ]);
     }
 }
-

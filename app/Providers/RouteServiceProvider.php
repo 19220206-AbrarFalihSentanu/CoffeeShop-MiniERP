@@ -28,6 +28,12 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        // Explicit route model bindings
+        Route::model('order', \App\Models\Order::class);
+        Route::model('cart', \App\Models\Cart::class);
+        Route::model('product', \App\Models\Product::class);
+        Route::model('payment', \App\Models\Payment::class);
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')

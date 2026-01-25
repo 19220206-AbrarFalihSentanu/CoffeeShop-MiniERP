@@ -67,4 +67,9 @@ return [
     'manage_suppliers' => 'Kelola Supplier',
     'partners' => 'Partner',
     'customers' => 'Pelanggan',
+
+    // History Section
+    'history' => 'Riwayat',
+    'order_history' => 'Riwayat Pesanan',
+    'po_history' => 'Riwayat PO',
 ];

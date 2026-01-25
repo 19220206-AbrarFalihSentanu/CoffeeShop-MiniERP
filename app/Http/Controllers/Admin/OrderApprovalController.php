@@ -1,8 +1,8 @@
 <?php
-// File: app/Http/Controllers/Owner/OrderApprovalController.php
-// Jalankan: php artisan make:controller Owner/OrderApprovalController
+// File: app/Http/Controllers/Admin/OrderApprovalController.php
+// Jalankan: php artisan make:controller Admin/OrderApprovalController
 
-namespace App\Http\Controllers\Owner;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\OrderApproved;
@@ -33,7 +33,7 @@ class OrderApprovalController extends Controller
         $perPage = $request->input('per_page', 10);
         $orders = $query->paginate($perPage)->withQueryString();
 
-        return view('owner.orders.approval.index', compact('orders'));
+        return view('admin.orders.approval.index', compact('orders'));
     }
 
     /**
@@ -43,7 +43,7 @@ class OrderApprovalController extends Controller
     {
         $order->load(['customer', 'items.product.inventory', 'approver']);
 
-        return view('owner.orders.approval.show', compact('order'));
+        return view('admin.orders.approval.show', compact('order'));
     }
 
     /**
@@ -129,7 +129,7 @@ class OrderApprovalController extends Controller
             ]);
 
             // Auto-generate Invoice PDF
-            $invoiceController = new \App\Http\Controllers\Owner\InvoiceController();
+            $invoiceController = new \App\Http\Controllers\Admin\InvoiceController();
             $invoiceController->generate($order);
 
             DB::commit();
@@ -139,7 +139,7 @@ class OrderApprovalController extends Controller
                 Mail::to($order->customer_email)->queue(new OrderApproved($order));
             }
 
-            return redirect()->route('owner.orders.approval.show', $order)
+            return redirect()->route('admin.orders.approval.show', $order)
                 ->with('success', 'Order berhasil disetujui! Stok telah dikurangi. Invoice telah dibuat.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -184,7 +184,7 @@ class OrderApprovalController extends Controller
                 Mail::to($order->customer_email)->queue(new OrderRejected($order));
             }
 
-            return redirect()->route('owner.orders.approval.show', $order)
+            return redirect()->route('admin.orders.approval.show', $order)
                 ->with('success', 'Order berhasil ditolak. Stok reserved telah dilepas. Email notifikasi telah dikirim ke customer.');
         } catch (\Exception $e) {
             DB::rollBack();

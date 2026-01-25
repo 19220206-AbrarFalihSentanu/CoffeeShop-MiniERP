@@ -34,9 +34,8 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        if ($order->customer_id !== auth()->id()) {
-            abort(403, 'Anda tidak memiliki akses ke order ini.');
-        }
+        // Use policy for authorization
+        $this->authorize('view', $order);
 
         $order->load(['items.product', 'approver', 'payment']);
 
@@ -45,9 +44,8 @@ class OrderController extends Controller
 
     public function uploadPayment(UploadPaymentRequest $request, Order $order)
     {
-        if ($order->customer_id !== auth()->id()) {
-            abort(403);
-        }
+        // Use policy for authorization
+        $this->authorize('uploadPayment', $order);
 
         if (!$order->canUploadPayment() && !$order->canReuploadPayment()) {
             return back()->with('error', 'Order ini tidak dapat melakukan pembayaran. Status: ' . $order->status_display);
@@ -101,7 +99,7 @@ class OrderController extends Controller
             })->get();
 
             foreach ($admins as $admin) {
-                Mail::to($admin->email)->send(new PaymentProofUploaded($payment));
+                Mail::to($admin->email)->queue(new PaymentProofUploaded($payment));
             }
 
             DB::commit();
@@ -115,9 +113,8 @@ class OrderController extends Controller
 
     public function cancel(Order $order)
     {
-        if ($order->customer_id !== auth()->id()) {
-            abort(403);
-        }
+        // Use policy for authorization
+        $this->authorize('cancel', $order);
 
         if (!$order->isPending()) {
             return back()->with('error', 'Order tidak dapat dibatalkan. Status: ' . $order->status_display);
@@ -140,9 +137,8 @@ class OrderController extends Controller
 
     public function confirmReceived(Order $order)
     {
-        if ($order->customer_id !== auth()->id()) {
-            abort(403, 'Anda tidak memiliki akses ke order ini.');
-        }
+        // Use policy for authorization
+        $this->authorize('confirmReceived', $order);
 
         if (!$order->canComplete()) {
             return back()->with('error', 'Pesanan tidak dapat dikonfirmasi. Status: ' . $order->status_display);
@@ -160,4 +156,3 @@ class OrderController extends Controller
         }
     }
 }
-

@@ -88,7 +88,7 @@ class CheckLowStock extends Command
 
         // Get admin/owner users to notify
         $adminUsers = User::whereHas('role', function ($query) {
-            $query->whereIn('slug', ['owner', 'admin', 'inventory']);
+            $query->whereIn('name', ['owner', 'admin']);
         })->get();
 
         if ($adminUsers->isEmpty()) {
@@ -98,14 +98,13 @@ class CheckLowStock extends Command
 
         foreach ($adminUsers as $user) {
             try {
-                Mail::to($user->email)->send(new LowStockAlert($products));
+                Mail::to($user->email)->queue(new LowStockAlert($products));
                 $this->info("✅ Notification queued for: {$user->email}");
             } catch (\Exception $e) {
-                $this->error("❌ Failed to send to {$user->email}: {$e->getMessage()}");
+                $this->error("❌ Failed to queue notification for {$user->email}: {$e->getMessage()}");
             }
         }
 
         $this->info('📬 All notifications have been queued.');
     }
 }
-

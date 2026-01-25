@@ -129,6 +129,23 @@
                 </a>
             </li>
 
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">{{ __('menu.history') }}</span>
+            </li>
+
+            <li class="menu-item {{ request()->routeIs('owner.orders.history.*') ? 'active' : '' }}">
+                <a href="{{ route('owner.orders.history.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-history"></i>
+                    <div>{{ __('menu.order_history') }}</div>
+                </a>
+            </li>
+
+            <li class="menu-item {{ request()->routeIs('owner.purchase-orders.history.*') ? 'active' : '' }}">
+                <a href="{{ route('owner.purchase-orders.history.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-archive"></i>
+                    <div>{{ __('menu.po_history') }}</div>
+                </a>
+            </li>
+
             <li class="menu-header small text-uppercase"><span
                     class="menu-header-text">{{ __('menu.financial') }}</span></li>
 
@@ -260,6 +277,24 @@
             </li>
 
             <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.approval') }}</span></li>
+
+            {{-- ADMIN MENU - Order Approval --}}
+            <li class="menu-item {{ request()->routeIs('admin.orders.approval.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.orders.approval.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-check-circle"></i>
+                    <div>{{ __('menu.order_approval') }}</div>
+                    @php
+                        $pendingOrderCount = \App\Models\Order::where('status', 'pending')->count();
+                    @endphp
+                    @if ($pendingOrderCount > 0)
+                        <span
+                            class="badge badge-center rounded-pill bg-danger ms-auto">{{ $pendingOrderCount }}</span>
+                    @endif
+                </a>
+            </li>
+
+            <li class="menu-header small text-uppercase"><span
                     class="menu-header-text">{{ __('menu.transactions') }}</span></li>
 
             <li class="menu-item {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
@@ -273,6 +308,23 @@
                         <span
                             class="badge badge-center rounded-pill bg-danger ms-auto">{{ $pendingPaymentsCount }}</span>
                     @endif
+                </a>
+            </li>
+
+            <li class="menu-header small text-uppercase"><span
+                    class="menu-header-text">{{ __('menu.history') }}</span></li>
+
+            <li class="menu-item {{ request()->routeIs('admin.orders.history.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.orders.history.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-history"></i>
+                    <div>{{ __('menu.order_history') }}</div>
+                </a>
+            </li>
+
+            <li class="menu-item {{ request()->routeIs('admin.purchase-orders.history.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.purchase-orders.history.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-archive"></i>
+                    <div>{{ __('menu.po_history') }}</div>
                 </a>
             </li>
         @elseif(Auth::user()->isCustomer())
@@ -315,8 +367,9 @@
             <li class="menu-header small text-uppercase"><span
                     class="menu-header-text">{{ __('menu.orders') }}</span></li>
 
-            {{-- CUSTOMER MENU - Ubah menu Pesanan Saya --}}
-            <li class="menu-item {{ request()->routeIs('customer.orders.*') ? 'active' : '' }}">
+            {{-- CUSTOMER MENU - Pesanan Aktif --}}
+            <li
+                class="menu-item {{ request()->routeIs('customer.orders.*') && !request()->is('*history*') ? 'active' : '' }}">
                 <a href="{{ route('customer.orders.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-shopping-bag"></i>
                     <div>{{ __('menu.my_orders') }}</div>
@@ -329,6 +382,14 @@
                     @if ($myOrderCount > 0)
                         <span class="badge bg-info ms-auto">{{ $myOrderCount }}</span>
                     @endif
+                </a>
+            </li>
+
+            {{-- CUSTOMER MENU - History Order --}}
+            <li class="menu-item {{ request()->routeIs('customer.orders.history.*') ? 'active' : '' }}">
+                <a href="{{ route('customer.orders.history.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-history"></i>
+                    <div>{{ __('menu.order_history') }}</div>
                 </a>
             </li>
         @endif
@@ -347,13 +408,13 @@
         </li>
 
         <li class="menu-item">
-            <form method="POST" action="{{ route('logout') }}">
+            <form method="POST" action="{{ route('logout') }}" style="width: 100%;">
                 @csrf
-                <a href="{{ route('logout') }}" class="menu-link"
-                    onclick="event.preventDefault(); this.closest('form').submit();">
+                <button type="submit" class="menu-link w-100 text-start border-0 bg-transparent p-0"
+                    style="cursor: pointer;">
                     <i class="menu-icon tf-icons bx bx-log-out"></i>
                     <div>{{ __('menu.logout') }}</div>
-                </a>
+                </button>
             </form>
         </li>
     </ul>

@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Detail Pembayaran - ' . $payment->order->order_number)
+@section('title', __('payments.payment_details') . ' - ' . $payment->order->order_number)
 
 @push('styles')
     <style>
@@ -26,7 +26,8 @@
     {{-- Breadcrumb --}}
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.payments.index') }}">Verifikasi Pembayaran</a></li>
+            <li class="breadcrumb-item"><a
+                    href="{{ route('admin.payments.index') }}">{{ __('payments.payment_verification') }}</a></li>
             <li class="breadcrumb-item active">{{ $payment->order->order_number }}</li>
         </ol>
     </nav>
@@ -36,16 +37,16 @@
         <div class="col-lg-7">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="bx bx-image me-2"></i>Bukti Pembayaran</h5>
+                    <h5 class="mb-0"><i class="bx bx-image me-2"></i>{{ __('payments.payment_proof') }}</h5>
                 </div>
                 <div class="card-body text-center">
                     @if ($payment->payment_proof)
                         <a href="{{ Storage::url($payment->payment_proof) }}" target="_blank">
-                            <img src="{{ Storage::url($payment->payment_proof) }}" alt="Bukti Pembayaran"
+                            <img src="{{ Storage::url($payment->payment_proof) }}" alt="{{ __('payments.payment_proof') }}"
                                 class="payment-proof-image">
                         </a>
                         <p class="mt-3 mb-0">
-                            <small class="text-muted">Klik gambar untuk memperbesar</small>
+                            <small class="text-muted">{{ __('landing.click_image_enlarge') }}</small>
                         </p>
                     @else
                         <div class="py-5">
@@ -83,7 +84,8 @@
                             <tfoot class="table-light">
                                 <tr>
                                     <td colspan="2" class="text-end">Subtotal</td>
-                                    <td class="text-end">Rp {{ number_format($payment->order->subtotal, 0, ',', '.') }}</td>
+                                    <td class="text-end">Rp {{ number_format($payment->order->subtotal, 0, ',', '.') }}
+                                    </td>
                                 </tr>
                                 @if ($payment->order->tax_amount > 0)
                                     <tr>
@@ -226,9 +228,6 @@
                         {{-- Current Status Display --}}
                         <div class="alert alert-{{ $payment->order->status === 'completed' ? 'success' : 'info' }} mb-3">
                             <strong>Status:</strong> {{ $payment->order->status_display }}
-                            @if ($payment->order->tracking_number)
-                                <br><small>Resi: {{ $payment->order->tracking_number }}</small>
-                            @endif
                         </div>
 
                         {{-- Step 1: Process Order (paid -> processing) --}}
@@ -282,6 +281,52 @@
                                     class="text-muted">{{ $payment->order->completed_at?->format('d M Y, H:i') }}</small>
                             </div>
                         @endif
+                    </div>
+                </div>
+
+                {{-- Tracking Number Card - Always visible when payment is verified --}}
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bx bx-barcode me-2"></i>Nomor Resi / Tracking</h5>
+                    </div>
+                    <div class="card-body">
+                        @if ($payment->order->tracking_number)
+                            <div class="alert alert-success mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong><i class="bx bx-check-circle me-1"></i>Nomor Resi:</strong>
+                                        <span
+                                            class="fs-5 ms-2 user-select-all">{{ $payment->order->tracking_number }}</span>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-success"
+                                        onclick="navigator.clipboard.writeText('{{ $payment->order->tracking_number }}').then(() => alert('Nomor resi berhasil disalin!'))">
+                                        <i class="bx bx-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        @else
+                            <div class="alert alert-warning mb-3">
+                                <i class="bx bx-info-circle me-1"></i>
+                                Nomor resi belum diinput. Isi nomor resi jika menggunakan jasa ekspedisi.
+                            </div>
+                        @endif
+
+                        {{-- Form to update tracking number --}}
+                        <form action="{{ route('admin.payments.updateTracking', $payment) }}" method="POST">
+                            @csrf
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-barcode"></i></span>
+                                <input type="text" name="tracking_number" class="form-control"
+                                    placeholder="Masukkan nomor resi ekspedisi..."
+                                    value="{{ $payment->order->tracking_number }}">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bx bx-save me-1"></i>Simpan
+                                </button>
+                            </div>
+                            <small class="text-muted mt-2 d-block">
+                                Contoh: JNE1234567890, J&T12345678, SICEPAT12345
+                            </small>
+                        </form>
                     </div>
                 </div>
             @endif
@@ -385,4 +430,3 @@
         </div>
     </div>
 @endsection
-

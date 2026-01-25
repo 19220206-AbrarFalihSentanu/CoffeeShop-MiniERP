@@ -2,11 +2,11 @@
 
 @extends('layouts.app')
 
-@section('title', 'Verifikasi Pembayaran')
+@section('title', __('payments.payment_verification'))
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4><i class="bx bx-credit-card me-2"></i>Verifikasi Pembayaran</h4>
+        <h4><i class="bx bx-credit-card me-2"></i>{{ __('payments.payment_verification') }}</h4>
     </div>
 
     {{-- Filter --}}
@@ -14,25 +14,25 @@
         <div class="card-body py-2">
             <form method="GET" class="row g-2 align-items-center">
                 <div class="col-auto">
-                    <label class="col-form-label col-form-label-sm">Status:</label>
+                    <label class="col-form-label col-form-label-sm">{{ __('payments.filter_by_status') }}:</label>
                 </div>
                 <div class="col-auto">
                     <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
-                        <option value="">Semua Status</option>
+                        <option value="">{{ __('payments.all_status') }}</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
-                            Pending
+                            {{ __('general.pending') }}
                         </option>
                         <option value="verified" {{ request('status') == 'verified' ? 'selected' : '' }}>
-                            Verified
+                            {{ __('general.verified') }}
                         </option>
                         <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>
-                            Rejected
+                            {{ __('general.rejected') }}
                         </option>
                     </select>
                 </div>
                 <div class="col-auto">
                     <a href="{{ route('admin.payments.index') }}" class="btn btn-sm btn-secondary">
-                        <i class="bx bx-reset"></i> Reset
+                        <i class="bx bx-reset"></i> {{ __('general.reset') }}
                     </a>
                 </div>
             </form>
@@ -107,4 +107,3 @@
         </div>
     </div>
 @endsection
-

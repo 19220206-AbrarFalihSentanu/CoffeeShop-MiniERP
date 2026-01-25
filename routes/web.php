@@ -99,6 +99,12 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(fun
         Route::post('/{order}/reject', [\App\Http\Controllers\Owner\OrderApprovalController::class, 'reject'])->name('reject');
     });
 
+    // Order History
+    Route::prefix('orders/history')->name('orders.history.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Owner\OrderHistoryController::class, 'index'])->name('index');
+        Route::get('/{order}', [\App\Http\Controllers\Owner\OrderHistoryController::class, 'show'])->name('show');
+    });
+
     // Purchase Order Approval Routes
     Route::prefix('purchase-orders')->name('purchase-orders.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Owner\PurchaseOrderApprovalController::class, 'index'])
@@ -109,6 +115,12 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(fun
             ->name('approve');
         Route::post('/{purchaseOrder}/reject', [\App\Http\Controllers\Owner\PurchaseOrderApprovalController::class, 'reject'])
             ->name('reject');
+    });
+
+    // Purchase Order History Routes
+    Route::prefix('purchase-orders/history')->name('purchase-orders.history.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Owner\PurchaseOrderHistoryController::class, 'index'])->name('index');
+        Route::get('/{purchaseOrder}', [\App\Http\Controllers\Owner\PurchaseOrderHistoryController::class, 'show'])->name('show');
     });
 
     // Payment Verification (Owner)
@@ -127,6 +139,8 @@ Route::middleware(['auth', 'owner'])->prefix('owner')->name('owner.')->group(fun
             ->name('shipOrder');
         Route::post('/{payment}/complete-order', [\App\Http\Controllers\Owner\PaymentVerificationController::class, 'completeOrder'])
             ->name('completeOrder');
+        Route::post('/{payment}/update-tracking', [\App\Http\Controllers\Owner\PaymentVerificationController::class, 'updateTrackingNumber'])
+            ->name('updateTracking');
     });
 
     // Settings Routes
@@ -284,6 +298,26 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('purchase-orders/{purchaseOrder}/submit', [\App\Http\Controllers\Admin\PurchaseOrderController::class, 'submit'])
         ->name('purchase-orders.submit');
 
+    // Order Approval (Admin) - Same as Owner
+    Route::prefix('orders/approval')->name('orders.approval.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\OrderApprovalController::class, 'index'])->name('index');
+        Route::get('/{order}', [\App\Http\Controllers\Admin\OrderApprovalController::class, 'show'])->name('show');
+        Route::post('/{order}/approve', [\App\Http\Controllers\Admin\OrderApprovalController::class, 'approve'])->name('approve');
+        Route::post('/{order}/reject', [\App\Http\Controllers\Admin\OrderApprovalController::class, 'reject'])->name('reject');
+    });
+
+    // Order History (Admin)
+    Route::prefix('orders/history')->name('orders.history.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\OrderHistoryController::class, 'index'])->name('index');
+        Route::get('/{order}', [\App\Http\Controllers\Admin\OrderHistoryController::class, 'show'])->name('show');
+    });
+
+    // Purchase Order History (Admin)
+    Route::prefix('purchase-orders/history')->name('purchase-orders.history.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\PurchaseOrderHistoryController::class, 'index'])->name('index');
+        Route::get('/{purchaseOrder}', [\App\Http\Controllers\Admin\PurchaseOrderHistoryController::class, 'show'])->name('show');
+    });
+
     // Payment Verification (Admin)
     Route::prefix('payments')->name('payments.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'index'])
@@ -300,6 +334,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
             ->name('shipOrder');
         Route::post('/{payment}/complete-order', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'completeOrder'])
             ->name('completeOrder');
+        Route::post('/{payment}/update-tracking', [\App\Http\Controllers\Admin\PaymentVerificationController::class, 'updateTrackingNumber'])
+            ->name('updateTracking');
     });
 });
 
@@ -327,7 +363,10 @@ Route::middleware(['auth', 'customer'])->prefix('customer')->name('customer.')->
     Route::get('/checkout', [\App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [\App\Http\Controllers\CheckoutController::class, 'process'])->name('checkout.process');
 
-    // Orders
+    // Order History (HARUS sebelum orders/{order} agar tidak konflik)
+    Route::get('/orders/history', [\App\Http\Controllers\Customer\OrderHistoryController::class, 'index'])->name('orders.history.index');
+
+    // Orders - menggunakan resource routes dengan implicit binding
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Customer\OrderController::class, 'index'])->name('index');
         Route::get('/{order}', [\App\Http\Controllers\Customer\OrderController::class, 'show'])->name('show');

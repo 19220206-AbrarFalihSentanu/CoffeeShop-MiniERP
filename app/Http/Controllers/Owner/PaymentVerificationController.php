@@ -71,9 +71,9 @@ class PaymentVerificationController extends Controller
                 'paid_at' => now(),
             ]);
 
-            // Send email to customer
+            // Send email to customer (async queue)
             if ($payment->order->customer_email) {
-                Mail::to($payment->order->customer_email)->send(new PaymentVerified($payment));
+                Mail::to($payment->order->customer_email)->queue(new PaymentVerified($payment));
             }
 
             DB::commit();
@@ -105,9 +105,9 @@ class PaymentVerificationController extends Controller
                 'rejection_reason' => $validated['rejection_reason'],
             ]);
 
-            // Send email to customer
+            // Send email to customer (async queue)
             if ($payment->order->customer_email) {
-                Mail::to($payment->order->customer_email)->send(new PaymentRejected($payment));
+                Mail::to($payment->order->customer_email)->queue(new PaymentRejected($payment));
             }
 
             DB::commit();
@@ -162,9 +162,9 @@ class PaymentVerificationController extends Controller
                 'admin_notes' => $validated['shipping_notes'] ?? null,
             ]);
 
-            // Send shipping email to customer
+            // Send shipping email to customer (async queue)
             if ($payment->order->customer_email) {
-                Mail::to($payment->order->customer_email)->send(new \App\Mail\OrderShipped($payment->order));
+                Mail::to($payment->order->customer_email)->queue(new \App\Mail\OrderShipped($payment->order));
             }
 
             DB::commit();
@@ -191,9 +191,9 @@ class PaymentVerificationController extends Controller
                 'completed_at' => now(),
             ]);
 
-            // Send email to customer
+            // Send email to customer (async queue)
             if ($payment->order->customer_email) {
-                Mail::to($payment->order->customer_email)->send(new OrderCompleted($payment->order));
+                Mail::to($payment->order->customer_email)->queue(new OrderCompleted($payment->order));
             }
 
             DB::commit();
@@ -205,5 +205,31 @@ class PaymentVerificationController extends Controller
             return back()->with('error', 'Gagal menyelesaikan order: ' . $e->getMessage());
         }
     }
-}
 
+    /**
+     * Update tracking number for the order
+     */
+    public function updateTrackingNumber(Request $request, Payment $payment)
+    {
+        $validated = $request->validate([
+            'tracking_number' => 'nullable|string|max:100',
+        ], [
+            'tracking_number.max' => 'Nomor resi maksimal 100 karakter.',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $payment->order->update([
+                'tracking_number' => $validated['tracking_number'] ?? null,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('owner.payments.show', $payment)
+                ->with('success', 'Nomor resi berhasil diperbarui!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal memperbarui nomor resi: ' . $e->getMessage());
+        }
+    }
+}

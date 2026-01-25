@@ -329,6 +329,13 @@
                         <span>Approved:</span> <strong>{{ $order->approved_at->format('d M Y H:i') }}</strong>
                     </div>
                 @endif
+                @if ($order->tracking_number)
+                    <div class="detail-row"
+                        style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd; background-color: #e8f5e9; padding: 8px; border-radius: 4px;">
+                        <span style="color: #2e7d32;"><strong>Nomor Resi:</strong></span>
+                        <strong style="color: #2e7d32; font-size: 12px;">{{ $order->tracking_number }}</strong>
+                    </div>
+                @endif
                 @if ($order->due_date)
                     <div class="detail-row" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd;">
                         <span style="color: #dc3545;">Due Date:</span>
@@ -461,5 +468,3 @@
 </body>
 
 </html>
-
-

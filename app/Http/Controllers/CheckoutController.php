@@ -132,18 +132,18 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            // Send email notification to customer
+            // Send email notification to customer (async queue)
             if ($order->customer_email) {
-                Mail::to($order->customer_email)->send(new OrderCreated($order, 'customer'));
+                Mail::to($order->customer_email)->queue(new OrderCreated($order, 'customer'));
             }
 
-            // Send email notification to owner/admin
+            // Send email notification to owner/admin (async queue)
             $adminUsers = User::whereHas('role', function ($query) {
-                $query->whereIn('slug', ['owner', 'admin']);
+                $query->whereIn('name', ['owner', 'admin']);
             })->get();
 
             foreach ($adminUsers as $admin) {
-                Mail::to($admin->email)->send(new OrderCreated($order, 'admin'));
+                Mail::to($admin->email)->queue(new OrderCreated($order, 'admin'));
             }
 
             return redirect()->route('customer.orders.show', $order)
@@ -155,4 +155,3 @@ class CheckoutController extends Controller
         }
     }
 }
-

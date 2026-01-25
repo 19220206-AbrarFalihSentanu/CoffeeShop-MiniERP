@@ -67,4 +67,9 @@ return [
     'manage_suppliers' => 'Manage Suppliers',
     'partners' => 'Partners',
     'customers' => 'Customers',
+
+    // History Section
+    'history' => 'History',
+    'order_history' => 'Order History',
+    'po_history' => 'PO History',
 ];

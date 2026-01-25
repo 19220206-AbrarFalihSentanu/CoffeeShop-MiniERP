@@ -68,9 +68,9 @@ class PurchaseOrderApprovalController extends Controller
                 'transaction_date' => now()->toDateString(),
             ]);
 
-            // Send email to admin who created the PO
+            // Send email to admin who created the PO (async queue)
             if ($purchaseOrder->creator && $purchaseOrder->creator->email) {
-                Mail::to($purchaseOrder->creator->email)->send(new PurchaseOrderApproved($purchaseOrder));
+                Mail::to($purchaseOrder->creator->email)->queue(new PurchaseOrderApproved($purchaseOrder));
             }
 
             DB::commit();
@@ -103,9 +103,9 @@ class PurchaseOrderApprovalController extends Controller
                 'rejection_reason' => $validated['rejection_reason'],
             ]);
 
-            // Send email to admin who created the PO
+            // Send email to admin who created the PO (async queue)
             if ($purchaseOrder->creator && $purchaseOrder->creator->email) {
-                Mail::to($purchaseOrder->creator->email)->send(new PurchaseOrderRejected($purchaseOrder));
+                Mail::to($purchaseOrder->creator->email)->queue(new PurchaseOrderRejected($purchaseOrder));
             }
 
             DB::commit();
@@ -118,4 +118,3 @@ class PurchaseOrderApprovalController extends Controller
         }
     }
 }
-
